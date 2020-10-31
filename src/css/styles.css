@@ -1,0 +1,16 @@
+h1{
+    text-align: center;
+    color: dodgerblue;
+}
+h2{
+    text-align: center;
+    color: dodgerblue;
+}
+
+.header {
+    padding: 60px;
+    text-align: center;
+    background: #FBBC04;
+    color: white;
+    font-size: 30px;
+}
