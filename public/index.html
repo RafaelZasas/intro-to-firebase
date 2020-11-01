@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intro To Firebase</title>
+
+
+
+  <!--    custom css and js     -->
+  <link type="text/css" href="./src/css/styles.css" rel="stylesheet">
+  <script type="text/javascript" src="./src/js/main.js"></script>
+  <script type="text/javascript" src="./src/js/styles.js"></script>
+
+
+  <!--    bulma css framework-->
+  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+  <!-- FIREBASE IMPORT TAGS-->
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that we want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+
+  <script SRC="./src/js/app.js" defer></script> <!-- separating firebase configuration files-->
+
+</head>
+<body>
+
+
+<!--Begin Nav-Bar Here-->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="">
+      <img src="src/assets/dsc_lockup.png" width="112" height="28">
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item">
+        Products
+      </a>
+
+      <a class="navbar-item"> <!-- empty for now- could be cool to implement google maps api -->
+        Locations
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item">
+            About
+          </a>
+          <a class="navbar-item">
+            Jobs
+          </a>
+          <a class="navbar-item">
+            Contact
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+            Report an issue
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-primary">
+            <strong>Sign up</strong>
+          </a>
+          <a class="button is-light">
+            Log in
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<!--End Nav-Bar Here-->
+
+
+
+
+<section class="section is-desktop is-vcentered">
+  <div class="container">
+    <h1 class="title">Products</h1>
+<!--TODO: ADD ON-HOVER ANIMATION -->
+    <br>
+
+    <div class="columns columns">
+      <div class="column">
+        <a href="./src/html/shoes.html">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQNj8tqqvuhdsi_HtAMrSIeTJrmYUAoyTcSVM0--dX8D4CpHjEvJSDc-nrN1iOrcNlMbYClhOJcnQ&usqp=CAc" alt="Placeholder image">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-4">Shoes</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="column">
+        <a href="./src/html/shirts.html">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://cache.mrporter.com/variants/images/5983760397844637/in/w2000_q80.jpg"
+                     alt="Balenci Shirt">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-4">Shirts</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="column">
+        <a href="./src/html/bags.html">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTyEe8t0AjQx8AK3BafhXwWmmFdu1H5pV17Mw&usqp=CAU" alt="Goyard Bags">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-4">Bags</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="column">
+        <a href="./src/html/hats.html">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTbKLG_47KxpPCvBENhLU6Nb032bHq68aONyb1oNxOK3HJCcQSY3vOxGy5vXbn0bPLK88gE1rGV&usqp=CAc"
+                     alt="Shiny Hats">
+              </figure>
+            </div>
+            <div class="card-content">
+              <p class="title is-4">Hats</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+</body>
+</html>
