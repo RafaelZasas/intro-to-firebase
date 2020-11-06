@@ -11,6 +11,7 @@
   <link type="text/css" href="./src/css/styles.css" rel="stylesheet">
   <script type="text/javascript" src="./src/js/main.js"></script>
   <script type="text/javascript" src="./src/js/styles.js"></script>
+  <script type="text/javascript" src="./src/js/auth.js"></script>
 
 
   <!--    bulma css framework-->
@@ -24,7 +25,7 @@
   <!-- TODO: Add SDKs for Firebase products that we want to use
        https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
 
   <script SRC="./src/js/app.js" defer></script> <!-- separating firebase configuration files-->
 
@@ -85,7 +86,7 @@
           <a class="button is-primary">
             <strong>Sign up</strong>
           </a>
-          <a class="button is-light">
+          <a id="log-in" class="button is-light">
             Log in
           </a>
         </div>
