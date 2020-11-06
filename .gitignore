@@ -27,6 +27,9 @@ hs_err_pid*
 .idea
 ./idea/
 
+# VS Code files
+.vscode
+
 
 #firebase
 service-account.json
