@@ -13,23 +13,5 @@ var firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = firebase;
-app.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 firebase.analytics(); // initialize firebase analytics
-
-console.log(app)
-
-function isUserLoggedIn(){
-    var user = app.auth().currentUser;
-
-    console.log(!!user) ; // print true if user exists
-    if (user){ // check is user is signed in
-        // hide the login and sign up buttons when user signs in
-        document.getElementById('loginSection').hidden=true;
-        // show the profile button when user signs in
-        document.getElementById('ProfileSection').hidden=false;
-    }
-    return !!user;
-}
-
-
