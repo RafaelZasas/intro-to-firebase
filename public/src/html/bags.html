@@ -1,22 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bags</title>
+    <title>Intro To Firebase</title>
 
-    <!--    custom css and js     -->
+
+    <!--    custom css and js files    -->
     <link type="text/css" href="../css/styles.css" rel="stylesheet">
-    <script type="text/javascript" src="../js/main.js"></script>
-    <script type="text/javascript" src="../js/styles.js"></script>
-
+    <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
+    <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
 
     <!--    bulma css framework-->
-
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
+    <!-- FIREBASE IMPORT TAGS-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that we want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
 </head>
+
 <body>
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -48,35 +59,49 @@
                 </a>
 
                 <div class="navbar-dropdown">
-                    <a class="navbar-item">
-                        About
+                    <a class="navbar-item" href="resources.html">
+                        Resources
                     </a>
-                    <a class="navbar-item">
-                        Jobs
-                    </a>
-                    <a class="navbar-item">
-                        Contact
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
+                        Contribute to this website
                     </a>
                     <hr class="navbar-divider">
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
                         Report an issue
                     </a>
                 </div>
             </div>
         </div>
 
-        <div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="button is-primary">
-                        <strong>Sign up</strong>
-                    </a>
-                    <a class="button is-light">
-                        Log in
-                    </a>
+        <div id='loginSection'>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-primary">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a onclick="login()" class="button is-light">
+                            <strong>Log in</strong>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
+
+
+        <div hidden id='ProfileSection'>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <a class="button is-light" href="../html/profile.html">
+                            <strong>Profile</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div>
 </nav>
 
