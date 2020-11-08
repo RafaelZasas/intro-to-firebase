@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profile</title>
+
+
+    <!--    custom css and js     -->
+    <link type="text/css" href="../css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/main.js"></script><!-- the main app's logic -->
+    <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
+    <script src="../js/profile.js"></script> <!-- profile page specific logic-->
+    <script src="../js/app.js" defer></script> <!-- separating firebase configuration files -->
+
+
+    <!--    bulma css framework-->
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <!-- FIREBASE IMPORT TAGS-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that we want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+
+</head>
+<body onload="populateProfile()"> <!-- populate the users information when the page loads -->
+
+<!--Begin Nav-Bar Here-->
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="../assets/dsc_lockup.png" width="112" height="28">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="../../index.html">
+                Products
+            </a>
+
+            <a class="navbar-item"> <!-- empty for now- could be cool to implement google maps api -->
+                Locations
+            </a>
+
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    More
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="resources.html">
+                        Resources
+                    </a>
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
+                        Contribute to this website
+                    </a>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+                        Report an issue
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons" id="log-out" onclick="logout()">
+                        <a class="button is-light" href="../../index.html" >
+                            <strong>Logout</strong>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+
+
+    </div>
+</nav>
+<!--End Nav-Bar Here-->
+
+
+<div class="container" style="padding: 10px">
+    <h1 class="title">Profile</h1>
+</div>
+
+<div class="container is-primary" style="padding: 10px;">  <!-- Display the users information -->
+    <div class="card-image" style="display: none">
+        <figure class="image is-4by3">
+            <!--  larger profile image -->
+            <img id="profile_image" alt="Placeholder image"
+                 src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png">
+        </figure>
+    </div>
+    <div class="card-content">
+        <div class="media">
+            <div class="media-left">
+                <figure class="image is-48x48">
+                    <!--  smaller profile image -->
+                    <img src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png"
+                         id="small_profile_image" alt="Placeholder image">
+                </figure>
+            </div>
+            <div class="media-content">
+                <p class="title is-4" id="fullName">users name</p>
+                <p class="subtitle is-6" id="twitter_handle">users twitter handle</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>
