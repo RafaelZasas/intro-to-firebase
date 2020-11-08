@@ -18,7 +18,10 @@ firebase.analytics(); // initialize firebase analytics
 
 document.addEventListener('DOMContentLoaded', () => {
     const $logInButton = document.getElementById('log-in');
+    const $logOutButton = document.getElementById('log-out');
+
     $logInButton.addEventListener('click', Auth.signInWithGoogle);
+    $logOutButton.addEventListener('click', Auth.signOut);
 
     // call method to update UI according to users log in state
     firebase.auth().onAuthStateChanged(displayProfileUI)
