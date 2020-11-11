@@ -1,6 +1,6 @@
 
 async function login() {
-    
+
     const provider = new firebase.auth.GoogleAuthProvider();
 
     // added this as given by docs: https://firebase.google.com/docs/auth/web/auth-state-persistence
@@ -20,8 +20,8 @@ async function login() {
     }
 
     updateUI();
-    
-    
+
+
 }
 
 async function logout() {
@@ -29,21 +29,22 @@ async function logout() {
     // event handler for logout button
 
     await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    firebase.auth().signOut().then(function () {
+    try {
+        await firebase.auth().signOut();
         // Sign-out successful.
         console.log('User signed out successfully.')
-    }).catch(function (error) {
+    } catch (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(`Error Code:${errorCode}\nError Message:${errorMessage}`)
-    });
+    }
 
     updateUI();
 
 }
 
-function updateUI(){
+function updateUI() {
     firebase.auth().onAuthStateChanged((user) => {
         displayAuthenticatedUI(); // call method to update UI according to users log in state
     })
@@ -64,5 +65,3 @@ function displayAuthenticatedUI() {
     document.getElementById('ProfileSection').hidden = !userSignedIn;
     return userSignedIn;
 }
-
-
