@@ -1,4 +1,3 @@
-
 async function login() {
 
     const provider = new firebase.auth.GoogleAuthProvider();

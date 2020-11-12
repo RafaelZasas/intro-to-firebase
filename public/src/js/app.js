@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
  * Checks if the user exists and changes the UI appropriately
  */
 function displayProfileUI(user) {
+    console.log('auth changed');
     const userSignedIn = !!user
     // hide the login and sign up buttons when user signs in
     document.getElementById('loginSection').hidden = userSignedIn;
