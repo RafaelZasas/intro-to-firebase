@@ -7,28 +7,37 @@
     <title>Intro To Firebase</title>
 
 
-    <!--    custom css and js files    -->
+    <!--    CUSTOM CSS & JS    -->
     <link type="text/css" href="../css/styles.css" rel="stylesheet">
     <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
 
-    <!--    bulma css framework-->
+
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-    <!-- FIREBASE IMPORT TAGS-->
+
+    <!--   FIREBASE    -->
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that we want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <!--Firebase Authentication-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+
 </head>
 
-<body>
+<body onload="getProducts('shirts')"> <!-- call database for shirts collection -->
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
@@ -115,7 +124,7 @@
         <div class="columns columns">
             <div class="column">
                 <a href="">
-                    <div class="card">
+                    <div class="card" id='card0'>
                         <div class="card-image">
                             <figure class="image is-4by3">
                                 <img src="https://cache.mrporter.com/variants/images/5983760397844637/in/w2000_q80.jpg"
@@ -131,7 +140,7 @@
 
             <div class="column">
                 <a href="">
-                    <div class="card">
+                    <div class="card" id='card1'>
                         <div class="card-image">
                             <figure class="image is-4by3">
                                 <img src="https://cache.mrporter.com/variants/images/5983760397844637/in/w2000_q80.jpg"
@@ -147,7 +156,7 @@
 
             <div class="column">
                 <a href="">
-                    <div class="card">
+                    <div class="card" id='card2'>
                         <div class="card-image">
                             <figure class="image is-4by3">
                                 <img src="https://cache.mrporter.com/variants/images/5983760397844637/in/w2000_q80.jpg"
@@ -163,7 +172,7 @@
 
             <div class="column">
                 <a href="">
-                    <div class="card">
+                    <div class="card" id='card3'>
                         <div class="card-image">
                             <figure class="image is-4by3">
                                 <img src="https://cache.mrporter.com/variants/images/5983760397844637/in/w2000_q80.jpg"
