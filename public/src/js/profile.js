@@ -6,11 +6,3 @@ function populateProfile() {
         }
     })
 }
-
-function getFirestoreData(){
-    var output = document.getElementById('forData');
-    output.innerText = "test";
-    console.log("test")
-}
-
-document.getElementById('btnGet').addEventListener('click', getFirestoreData);

@@ -1,20 +1,29 @@
 
-function renderData(doc, index) {
+let productsSection = document.querySelector(`#productsSection`);
+let productsHTML ='';
 
 
-    let productCard = document.querySelector(`#card${index}`);
+function populateProductCards(doc, index) {
 
-    productCard.innerHTML = `
-                            <div class="card-image">
+    let cardHTML = `
+                 <div class="column is-one-quarter"> <!-- specify exactly 4 cards per row-->
+<!--                 todo: create onCLick events to display individual Product Details -->
+                <a href="" id=${doc.id}>  <!--store doc ID in card for reference purposes -->
+                    <div class="card" id='card${index}'>
+                        <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src= ${doc.data().image}
-                                     alt="Shoe${index}">
+                                <img src= ${doc.data().image} alt="item${index}">
                             </figure>
                         </div>
                         <div class="card-content">
                             <p class="title is-4" >${doc.data().name}</p>
                         </div>
-    `
+                    </div>
+                </a>
+            </div>
+    `;
+
+    productsHTML += cardHTML; // add the individual cards to the stack
 
 }
 
@@ -27,16 +36,18 @@ function getProducts(productType) {
     db.collection(`products/${productType}/inventory`).get().then((querySnapshot) => {
 
         querySnapshot.docs.forEach((doc) => {
-            // todo: Figure out if should use this or keep original data structure from firestore
+            
+            
+            // todo: determine if we even need a locally stored map of documents
             products[doc.id] = {
-                "brand": doc.data().brand,
-                "price": doc.data().price,
-                "name": doc.data().name,
-                "onSale": doc.data().onSale
+                ...doc.data() // this replaces the need for individual assignments such as "brand": doc.data().brand,
             }
-            renderData(doc, index); // populate the display
+
+            populateProductCards(doc, index); // add each card individually; index is used to reference each of the cards
             index++;
         });
+
+        productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
 
     });
 
