@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,101 +31,115 @@
 
 
 </head>
-<body onload="populateProfile()"> <!-- populate the users information when the page loads -->
 
-<!--Begin Nav-Bar Here-->
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="">
-            <img src="../assets/dsc_lockup.png" width="112" height="28">
-        </a>
+<body onload="populateProfile()">
+    <!-- populate the users information when the page loads -->
 
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-           data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-            <a class="navbar-item" href="../../index.html">
-                Products
+    <!--Begin Nav-Bar Here-->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="../assets/dsc_lockup.png" width="112" height="28">
             </a>
 
-            <a class="navbar-item"> <!-- empty for now- could be cool to implement google maps api -->
-                Locations
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
-                </a>
-
-                <div class="navbar-dropdown">
-                    <a class="navbar-item" href="resources.html">
-                        Resources
-                    </a>
-                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
-                        Contribute to this website
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
-                        Report an issue
-                    </a>
-                </div>
-            </div>
         </div>
 
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="../../index.html">
+                    Products
+                </a>
 
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons" id="log-out" onclick="logout()">
-                        <a class="button is-light" href="../../index.html" >
-                            <strong>Logout</strong>
+                <a class="navbar-item">
+                    <!-- empty for now- could be cool to implement google maps api -->
+                    Locations
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="resources.html">
+                            Resources
+                        </a>
+                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
+                            Contribute to this website
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+                            Report an issue
                         </a>
                     </div>
                 </div>
             </div>
 
 
-
-    </div>
-</nav>
-<!--End Nav-Bar Here-->
-
-
-<div class="container" style="padding: 10px">
-    <h1 class="title">Profile</h1>
-</div>
-
-<div class="container is-primary" style="padding: 10px;">  <!-- Display the users information -->
-    <div class="card-image" style="display: none">
-        <figure class="image is-4by3">
-            <!--  larger profile image -->
-            <img id="profile_image" alt="Placeholder image"
-                 src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png">
-        </figure>
-    </div>
-    <div class="card-content">
-        <div class="media">
-            <div class="media-left">
-                <figure class="image is-48x48">
-                    <!--  smaller profile image -->
-                    <img src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png"
-                         id="small_profile_image" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="media-content">
-                <p class="title is-4" id="fullName">users name</p>
-                <p class="subtitle is-6" id="twitter_handle">users twitter handle</p>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons" onclick="signOut()">
+                        <!-- <div id="log-in">
+                            <a class="button is-light" href="src/html/signIn.html">
+                                <strong>Log in</strong>
+                            </a>
+                        </div> -->
+                        <div id="log-in">
+                            <a class="button is-light" onclick="signInWithGoogle()">
+                                <strong>Log in</strong>
+                            </a>
+                        </div>
+                        <div id="log-out">
+                            <a class="button is-light" href="../../index.html">
+                                <strong>Logout</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </nav>
+    <!--End Nav-Bar Here-->
 
+
+    <div class="container" style="padding: 10px">
+        <h1 class="title">Profile</h1>
     </div>
-</div>
+
+    <div class="container is-primary" style="padding: 10px;">
+        <!-- Display the users information -->
+        <div class="card-image" style="display: none">
+            <figure class="image is-4by3">
+                <!--  larger profile image -->
+                <img id="profile_image" alt="Placeholder image"
+                    src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png">
+            </figure>
+        </div>
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-48x48">
+                        <!--  smaller profile image -->
+                        <img src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png"
+                            id="small_profile_image" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4" id="fullName">users name</p>
+                    <p class="subtitle is-6" id="twitter_handle">users twitter handle</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 </body>
+
 </html>

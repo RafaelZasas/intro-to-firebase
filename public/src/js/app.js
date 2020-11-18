@@ -16,25 +16,33 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics(); // initialize firebase analytics
 
+
+var $logInButton = document.getElementById('log-in');
+var $logOutButton = document.getElementById('log-out');
+var $profileButton = document.getElementById('profile');
+
+
 document.addEventListener('DOMContentLoaded', () => {
-    const $logInButton = document.getElementById('log-in');
-    const $logOutButton = document.getElementById('log-out');
-
-    $logInButton.addEventListener('click', Auth.signInWithGoogle);
-    $logOutButton.addEventListener('click', Auth.signOut);
-
     // call method to update UI according to users log in state
     firebase.auth().onAuthStateChanged(displayProfileUI)
+    displayProfileUI(firebase.auth().currentUser)
 });
 
 /**
  * Checks if the user exists and changes the UI appropriately
  */
 function displayProfileUI(user) {
-    console.log('auth changed');
+    console.log('User: ', user);
     const userSignedIn = !!user
     // hide the login and sign up buttons when user signs in
-    document.getElementById('loginSection').hidden = userSignedIn;
+    if ($logInButton) {
+        $logInButton.hidden = userSignedIn;
+    }
     // show the profile button when user signs in
-    document.getElementById('ProfileSection').hidden = !userSignedIn;
+    if ($profileButton) {
+        $profileButton.hidden = !userSignedIn;
+    }
+    if ($logOutButton) {
+        $logOutButton.hidden = !userSignedIn;
+    }
 }
