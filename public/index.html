@@ -6,25 +6,32 @@
     <title>Intro To Firebase</title>
 
 
-    <!--    custom css and js files    -->
+    <!--    CUSTOM CSS & JS    -->
     <link type="text/css" href="./src/css/styles.css" rel="stylesheet">
     <script type="text/javascript" src="./src/js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="./src/js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="./src/js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="./src/js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="./src/js/app.js" defer></script> <!-- separating firebase configuration files-->
 
-    <!--    bulma css framework-->
+
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-    <!-- FIREBASE IMPORT TAGS-->
+
+    <!--   FIREBASE    -->
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that we want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <!--Firebase Authentication-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
 
 
 </head>
@@ -32,7 +39,7 @@
 
 
 <!--Begin Nav-Bar Here-->
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <a class="navbar-item" href="">
             <img src="src/assets/dsc_lockup.png" width="112" height="28">
@@ -48,14 +55,37 @@
 
     <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-start">
-            <a class="navbar-item">
-                Products
-            </a>
 
-            <a class="navbar-item"> <!-- empty for now- could be cool to implement google maps api -->
+            <div class="navbar-item has-dropdown is-hoverable">
+
+                <a class="navbar-link">
+                    Products
+                </a>
+
+                <!--   dropdown section for products -->
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="src/html/shoes.html">
+                        Shoes
+                    </a>
+                    <a class="navbar-item" href="src/html/shirts.html">
+                        Shirts
+                    </a>
+                    <a class="navbar-item" href="src/html/bags.html">
+                        Bags
+                    </a>
+                    <a class="navbar-item" href="src/html/hats.html">
+                        Hats
+                    </a>
+                </div>
+            </div>
+
+            <a class="navbar-item" href="https://dsc.community.dev">
+                <!--  could be cool to implement google maps api -->
                 Locations
             </a>
 
+
+            <!--  dropdown section for More -->
             <div class="navbar-item has-dropdown is-hoverable">
                 <a class="navbar-link">
                     More
@@ -65,7 +95,8 @@
                     <a class="navbar-item" href="src/html/resources.html">
                         Resources
                     </a>
-                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop
+/docs/CONTRIBUTING.md">
                         Contribute to this website
                     </a>
                     <hr class="navbar-divider">
@@ -74,15 +105,17 @@
                     </a>
                 </div>
             </div>
+
+
         </div>
         <div id='loginSection'>
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-primary">
+                        <a class="button is-primary" id="sign-up">
                             <strong>Sign up</strong>
                         </a>
-                        <a  class="button is-light" onclick="login()">
+                        <a class="button is-light" onclick="login()" id="log-in">
                             <strong>Log in</strong>
                         </a>
                     </div>
@@ -103,7 +136,6 @@
             </div>
         </div>
 
-
     </div>
 </nav>
 <!--End Nav-Bar Here-->
@@ -120,8 +152,11 @@
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQNj8tqqvuhdsi_HtAMrSIeTJrmYUAoyTcSVM0--dX8D4CpHjEvJSDc-nrN1iOrcNlMbYClhOJcnQ&usqp=CAc"
-                                     alt="Placeholder image">
+                                <img src="
+                                https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/
+products%2Fshoes%2FNike%2FWomens%20Air%20Max%20Bella%202%20Training%20Shoe.jpg?alt=media&token=6be860a8-7100-4324-81b4-
+bf6cbd7da943"
+                                     alt="Shoes">
                             </figure>
                         </div>
                         <div class="card-content">
@@ -136,8 +171,9 @@
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src="https://cache.mrporter.com/variants/images/5983760397844637/in/w2000_q80.jpg"
-                                     alt="Balenci Shirt">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.
+appspot.com/o/products%2Fshirts%2Fkaws%20x%20uniqlo%20companion.jpg?alt=media&token=de3cebb2-eee9-480d-bb1e-0e5b4ab5d7a2"
+                                     alt="Shirts">
                             </figure>
                         </div>
                         <div class="card-content">
@@ -152,8 +188,9 @@
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTyEe8t0AjQx8AK3BafhXwWmmFdu1H5pV17Mw&usqp=CAU"
-                                     alt="Goyard Bags">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-
+a7af6.appspot.com/o/products%2Fbags%2FChampion%20Sling%20Pack.jpg?alt=media&token=a5ce1c14-7577-477a-ad42-e88c01646130"
+                                     alt="Bags">
                             </figure>
                         </div>
                         <div class="card-content">
@@ -168,8 +205,10 @@
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTbKLG_47KxpPCvBENhLU6Nb032bHq68aONyb1oNxOK3HJCcQSY3vOxGy5vXbn0bPLK88gE1rGV&usqp=CAc"
-                                     alt="Shiny Hats">
+                                <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.
+appspot.com/o/products%2Fhats%2FGoorin%20Brothers%20Stallion.jpg?alt=media&token=a88bff91-d6ff-4eba-a986-c8ecb7c65d9b"
+
+                                     alt="Hats">
                             </figure>
                         </div>
                         <div class="card-content">

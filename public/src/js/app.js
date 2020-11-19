@@ -1,7 +1,7 @@
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-var firebaseConfig = {
+const firebaseConfig = {
     apiKey: "AIzaSyCbhU8BmjoxnZ128tZyRUKc4U2p4Q0j9Iw",
     authDomain: "ecommerce-with-firebase-a7af6.firebaseapp.com",
     databaseURL: "https://ecommerce-with-firebase-a7af6.firebaseio.com",
@@ -15,10 +15,12 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics(); // initialize firebase analytics
+const db = firebase.firestore(); // object of our firestore database to be used throughout the site
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => { 
     const $logInButton = document.getElementById('log-in');
     const $logOutButton = document.getElementById('log-out');
+
 
     $logInButton.addEventListener('click', Auth.signInWithGoogle);
     $logOutButton.addEventListener('click', Auth.signOut);
@@ -37,3 +39,8 @@ function displayProfileUI(user) {
     // show the profile button when user signs in
     document.getElementById('ProfileSection').hidden = !userSignedIn;
 }
+
+
+
+
+
