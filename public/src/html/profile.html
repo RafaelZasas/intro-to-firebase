@@ -114,13 +114,6 @@
 
     <div class="container is-primary" style="padding: 10px;">
         <!-- Display the users information -->
-        <div class="card-image" style="display: none">
-            <figure class="image is-4by3">
-                <!--  larger profile image -->
-                <img id="profile_image" alt="Placeholder image"
-                    src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png">
-            </figure>
-        </div>
         <div class="card-content">
             <div class="media">
                 <div class="media-left">
@@ -132,7 +125,15 @@
                 </div>
                 <div class="media-content">
                     <p class="title is-4" id="fullName">users name</p>
-                    <p class="subtitle is-6" id="twitter_handle">users twitter handle</p>
+                    <p class="subtitle is-6" id="email-verified">
+                        <span id="email-verified-success" class="icon has-text-success">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span id="email-verified-failure" class="icon has-text-danger">
+                            <i class="fas fa-times"></i>
+                        </span>
+                        Email Verified
+                    </p>
                 </div>
             </div>
 
