@@ -16,3 +16,13 @@ async function signOut() {
         console.log(`Error Code:${error.code}\nError Message:${error.message}`)
     }
 }
+
+async function verifyEmail() {
+    try {
+        const user = firebase.auth().currentUser
+        await user.sendEmailVerification()
+        alert('Check your inbox for ' + user.email)
+    } catch (error) {
+        console.log(`Error Code:${error.code}\nError Message:${error.message}`)
+    }
+}

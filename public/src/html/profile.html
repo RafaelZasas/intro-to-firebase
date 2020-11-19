@@ -12,8 +12,8 @@
     <script type="text/javascript" src="../js/main.js"></script><!-- the main app's logic -->
     <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
-    <script src="../js/profile.js"></script> <!-- profile page specific logic-->
     <script src="../js/app.js" defer></script> <!-- separating firebase configuration files -->
+    <script src="../js/profile.js" defer></script> <!-- profile page specific logic-->
 
 
     <!--    bulma css framework-->
@@ -85,16 +85,16 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons" onclick="signOut()">
-                        <!-- <div id="log-in">
-                            <a class="button is-light" href="src/html/signIn.html">
-                                <strong>Log in</strong>
-                            </a>
-                        </div> -->
                         <div id="log-in">
-                            <a class="button is-light" onclick="signInWithGoogle()">
+                            <a class="button is-light" href="./signIn.html">
                                 <strong>Log in</strong>
                             </a>
                         </div>
+                        <!-- <div id="log-in">
+                            <a class="button is-light" onclick="signInWithGoogle()">
+                                <strong>Log in</strong>
+                            </a>
+                        </div> -->
                         <div id="log-out">
                             <a class="button is-light" href="../../index.html">
                                 <strong>Logout</strong>
@@ -133,6 +133,8 @@
                             <i class="fas fa-times"></i>
                         </span>
                         Email Verified
+                        <button id="verify-email" class="button is-primary is-small"
+                            onclick="verifyEmail()">Verify</button>
                     </p>
                 </div>
             </div>
