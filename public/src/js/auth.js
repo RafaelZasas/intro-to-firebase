@@ -30,3 +30,7 @@ async function verifyEmail() {
 async function signIn(email, password) {
     await firebase.auth().signInWithEmailAndPassword(email, password)
 }
+
+async function signUp(email, password) {
+    await firebase.auth().createUserWithEmailAndPassword(email, password)
+}

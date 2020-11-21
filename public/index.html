@@ -138,21 +138,45 @@
                 <button class="delete" aria-label="close" onclick="toggleAuthModal()"></button>
             </header>
             <section class="modal-card-body">
-                <div class="field">
-                    <label class="label">Email</label>
-                    <div class="control">
-                        <input id="auth-signin-email" class="input" type="text" placeholder="Text input">
+                <div class="columns">
+                    <div class="column">
+                        <h1>Have an account?</h1>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input id="auth-signin-password" class="input" type="password">
+                            </div>
+                        </div>
+                        <p id="auth-signin-errors" class="help is-danger"></p>
+                        <div class="control">
+                            <button class="button" onclick="handleSignIn()">Sign In</button>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Password</label>
-                    <div class="control">
-                        <input id="auth-signin-password" class="input" type="password">
+                    <div class="column">
+                        <h1>Create one</h1>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input id="auth-signup-password" class="input" type="password">
+                            </div>
+                        </div>
+                        <p id="auth-signup-errors" class="help is-danger"></p>
+                        <div class="control">
+                            <button class="button" onclick="handleSignUp()">Sign Up</button>
+                        </div>
                     </div>
-                </div>
-                <p id="auth-signin-errors" class="help is-danger"></p>
-                <div class="control">
-                    <button class="button" onclick="handleSignIn()">Sign In</button>
                 </div>
             </section>
         </div>

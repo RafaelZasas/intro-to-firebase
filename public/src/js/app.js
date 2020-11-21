@@ -66,3 +66,16 @@ async function handleSignIn() {
         $errors.innerText = e.message
     }
 }
+
+async function handleSignUp() {
+    const $errors = document.getElementById('auth-signup-errors')
+    const $emailInput = document.getElementById('auth-signup-email')
+    const $passwordInput = document.getElementById('auth-signup-password')
+    try {
+        $errors.innerText = ''
+        await signUp($emailInput.value, $passwordInput.value)
+        toggleAuthModal()
+    } catch (e) {
+        $errors.innerText = e.message
+    }
+}
