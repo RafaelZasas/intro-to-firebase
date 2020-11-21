@@ -44,3 +44,25 @@ function displayProfileUI(user) {
         $logOutButton.hidden = !userSignedIn;
     }
 }
+
+function toggleAuthModal() {
+    const $modal = document.getElementById('auth-modal')
+    if ($modal.classList.contains('is-active')) {
+        $modal.classList.remove('is-active')
+    } else {
+        $modal.classList.add('is-active')
+    }
+}
+
+async function handleSignIn() {
+    const $errors = document.getElementById('auth-signin-errors')
+    const $emailInput = document.getElementById('auth-signin-email')
+    const $passwordInput = document.getElementById('auth-signin-password')
+    try {
+        $errors.innerText = ''
+        await signIn($emailInput.value, $passwordInput.value)
+        toggleAuthModal()
+    } catch (e) {
+        $errors.innerText = e.message
+    }
+}

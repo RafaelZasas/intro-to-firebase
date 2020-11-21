@@ -108,16 +108,16 @@
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <div id="log-in">
+                        <!-- <div id="log-in">
                             <a class="button is-light" href="src/html/signIn.html">
                                 <strong>Log in</strong>
                             </a>
+                        </div> -->
+                        <div id="log-in">
+                            <a class="button is-light" onclick="toggleAuthModal()">
+                                <strong>Log in</strong>
+                            </a>
                         </div>
-                        <!-- <div id="log-in">
-                                <a class="button is-light" onclick="signInWithGoogle()">
-                                    <strong>Log in</strong>
-                                </a>
-                            </div> -->
                         <div id="profile">
                             <a class="button is-primary" href="src/html/profile.html">
                                 <strong>Profile</strong>
@@ -127,10 +127,36 @@
                 </div>
             </div>
         </div>
-
-        </div>
     </nav>
     <!--End Nav-Bar Here-->
+
+    <div id="auth-modal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Modal title</p>
+                <button class="delete" aria-label="close" onclick="toggleAuthModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input id="auth-signin-email" class="input" type="text" placeholder="Text input">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control">
+                        <input id="auth-signin-password" class="input" type="password">
+                    </div>
+                </div>
+                <p id="auth-signin-errors" class="help is-danger"></p>
+                <div class="control">
+                    <button class="button" onclick="handleSignIn()">Sign In</button>
+                </div>
+            </section>
+        </div>
+    </div>
 
     <section class="section is-desktop is-vcentered">
         <div class="container">

@@ -26,3 +26,7 @@ async function verifyEmail() {
         console.log(`Error Code:${error.code}\nError Message:${error.message}`)
     }
 }
+
+async function signIn(email, password) {
+    await firebase.auth().signInWithEmailAndPassword(email, password)
+}
