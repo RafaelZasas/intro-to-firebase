@@ -4,30 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile</title>
+    <title>Intro To Firebase</title>
 
 
-    <!--    custom css and js     -->
+    <!--    CUSTOM CSS & JS    -->
     <link type="text/css" href="../css/styles.css" rel="stylesheet">
-    <script type="text/javascript" src="../js/main.js"></script><!-- the main app's logic -->
+    <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
-    <script src="../js/app.js" defer></script> <!-- separating firebase configuration files -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
     <script src="../js/profile.js" defer></script> <!-- profile page specific logic-->
 
 
-    <!--    bulma css framework-->
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-    <!-- FIREBASE IMPORT TAGS-->
+
+    <!--   FIREBASE    -->
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that we want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <!--Firebase Authentication-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
 
 
 </head>
@@ -38,7 +44,7 @@
     <!--Begin Nav-Bar Here-->
     <nav class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
-            <a class="navbar-item" href="">
+            <a class="navbar-item" href="../../index.html">
                 <img src="../assets/dsc_lockup.png" width="112" height="28">
             </a>
 
@@ -52,9 +58,28 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
-                <a class="navbar-item" href="../../index.html">
-                    Products
-                </a>
+                <div class="navbar-item has-dropdown is-hoverable">
+
+                    <a class="navbar-link">
+                        Products
+                    </a>
+
+                    <!--   dropdown section for products -->
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="./shoes.html">
+                            Shoes
+                        </a>
+                        <a class="navbar-item" href="./shirts.html">
+                            Shirts
+                        </a>
+                        <a class="navbar-item" href="./bags.html">
+                            Bags
+                        </a>
+                        <a class="navbar-item" href="./hats.html">
+                            Hats
+                        </a>
+                    </div>
+                </div>
 
                 <a class="navbar-item">
                     <!-- empty for now- could be cool to implement google maps api -->
@@ -81,7 +106,6 @@
                 </div>
             </div>
 
-
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons" onclick="signOut()">
@@ -91,10 +115,10 @@
                             </a>
                         </div>
                         <!-- <div id="log-in">
-                            <a class="button is-light" onclick="signInWithGoogle()">
-                                <strong>Log in</strong>
-                            </a>
-                        </div> -->
+                        <a class="button is-light" onclick="signInWithGoogle()">
+                            <strong>Log in</strong>
+                        </a>
+                    </div> -->
                         <div id="log-out">
                             <a class="button is-light" href="../../index.html">
                                 <strong>Logout</strong>
@@ -141,7 +165,6 @@
 
         </div>
     </div>
-
 
 </body>
 

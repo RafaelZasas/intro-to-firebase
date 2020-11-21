@@ -1,8 +1,8 @@
-var $verifyEmailButton = document.getElementById('verify-email')
-
 firebase.auth().onAuthStateChanged(populateProfile)
 
 function populateProfile(user) {
+    var $verifyEmailButton = document.getElementById('verify-email')
+
     if (user) {
         document.getElementById('fullName').innerHTML = user.displayName;
         document.getElementById('small_profile_image').setAttribute('src', user.photoURL);
