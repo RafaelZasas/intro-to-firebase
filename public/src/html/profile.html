@@ -1,130 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profile</title>
+    <title>Intro To Firebase</title>
 
 
-    <!--    custom css and js     -->
+    <!--    CUSTOM CSS & JS    -->
     <link type="text/css" href="../css/styles.css" rel="stylesheet">
-    <script type="text/javascript" src="../js/main.js"></script><!-- the main app's logic -->
+    <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
-    <script src="../js/profile.js"></script> <!-- profile page specific logic-->
-    <script src="../js/app.js" defer></script> <!-- separating firebase configuration files -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+    <script src="../js/profile.js" defer></script> <!-- profile page specific logic-->
 
 
-    <!--    bulma css framework-->
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
     <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
 
-    <!-- FIREBASE IMPORT TAGS-->
+
+    <!--   FIREBASE    -->
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 
-    <!-- TODO: Add SDKs for Firebase products that we want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <!--Firebase Authentication-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
 
 
 </head>
-<body onload="populateProfile()"> <!-- populate the users information when the page loads -->
 
-<!--Begin Nav-Bar Here-->
-<nav class="navbar" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-        <a class="navbar-item" href="../../index.html">
-            <img src="../assets/dsc_lockup.png" width="112" height="28">
-        </a>
+<body>
+    <!-- populate the users information when the page loads -->
 
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-           data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-
-    </div>
-
-    <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
+    <!--Begin Nav-Bar Here-->
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
             <a class="navbar-item" href="../../index.html">
-                Products
+                <img src="../assets/dsc_lockup.png" width="112" height="28">
             </a>
 
-            <a class="navbar-item"> <!-- empty for now- could be cool to implement google maps api -->
-                Locations
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
             </a>
-
-            <div class="navbar-item has-dropdown is-hoverable">
-                <a class="navbar-link">
-                    More
-                </a>
-
-                <div class="navbar-dropdown">
-                    <a class="navbar-item" href="resources.html">
-                        Resources
-                    </a>
-                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
-                        Contribute to this website
-                    </a>
-                    <hr class="navbar-divider">
-                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
-                        Report an issue
-                    </a>
-                </div>
-            </div>
         </div>
 
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item has-dropdown is-hoverable">
 
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons" id="log-out" onclick="logout()">
-                        <a class="button is-light" href="../../index.html" >
-                            <strong>Logout</strong>
+                    <a class="navbar-link">
+                        Products
+                    </a>
+
+                    <!--   dropdown section for products -->
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="./shoes.html">
+                            Shoes
+                        </a>
+                        <a class="navbar-item" href="./shirts.html">
+                            Shirts
+                        </a>
+                        <a class="navbar-item" href="./bags.html">
+                            Bags
+                        </a>
+                        <a class="navbar-item" href="./hats.html">
+                            Hats
+                        </a>
+                    </div>
+                </div>
+
+                <a class="navbar-item">
+                    <!-- empty for now- could be cool to implement google maps api -->
+                    Locations
+                </a>
+
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="resources.html">
+                            Resources
+                        </a>
+                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
+                            Contribute to this website
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+                            Report an issue
                         </a>
                     </div>
                 </div>
             </div>
 
-
-
-    </div>
-</nav>
-<!--End Nav-Bar Here-->
-
-
-<div class="container" style="padding: 10px">
-    <h1 class="title">Profile</h1>
-</div>
-
-<div class="container is-primary" style="padding: 10px;">  <!-- Display the users information -->
-    <div class="card-image" style="display: none">
-        <figure class="image is-4by3">
-            <!--  larger profile image -->
-            <img id="profile_image" alt="Placeholder image"
-                 src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png">
-        </figure>
-    </div>
-    <div class="card-content">
-        <div class="media">
-            <div class="media-left">
-                <figure class="image is-48x48">
-                    <!--  smaller profile image -->
-                    <img src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png"
-                         id="small_profile_image" alt="Placeholder image">
-                </figure>
-            </div>
-            <div class="media-content">
-                <p class="title is-4" id="fullName">users name</p>
-                <p class="subtitle is-6" id="twitter_handle">users twitter handle</p>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons" onclick="signOut()">
+                        <div id="log-in">
+                            <a class="button is-light" href="./signIn.html">
+                                <strong>Log in</strong>
+                            </a>
+                        </div>
+                        <!-- <div id="log-in">
+                        <a class="button is-light" onclick="signInWithGoogle()">
+                            <strong>Log in</strong>
+                        </a>
+                    </div> -->
+                        <div id="log-out">
+                            <a class="button is-light" href="../../index.html">
+                                <strong>Logout</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </nav>
+    <!--End Nav-Bar Here-->
 
+
+    <div class="container" style="padding: 10px">
+        <h1 class="title">Profile</h1>
     </div>
-</div>
+
+    <div class="container is-primary" style="padding: 10px;">
+        <!-- Display the users information -->
+        <div class="card-content">
+            <div class="media">
+                <div class="media-left">
+                    <figure class="image is-48x48">
+                        <!--  smaller profile image -->
+                        <img src="https://breakthrough.org/wp-content/uploads/2018/10/default-placeholder-image.png"
+                            id="small_profile_image" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <p class="title is-4" id="fullName">users name</p>
+                    <p class="subtitle is-6" id="email-verified">
+                        <span id="email-verified-success" class="icon has-text-success">
+                            <i class="fas fa-check"></i>
+                        </span>
+                        <span id="email-verified-failure" class="icon has-text-danger">
+                            <i class="fas fa-times"></i>
+                        </span>
+                        Email Verified
+                        <button id="verify-email" class="button is-primary is-small"
+                            onclick="verifyEmail()">Verify</button>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </body>
+
 </html>

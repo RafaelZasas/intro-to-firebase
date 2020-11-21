@@ -1,5 +1,5 @@
 // This function will be called in every html page other than index due to path's being different
-function populateNavbar(){
+function populateNavbar() {
     let headTag = document.querySelector('#navbar');
     headTag.innerHTML = `
     <div class="navbar-brand">
@@ -73,30 +73,25 @@ function populateNavbar(){
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
-                        <a class="button is-primary" id="sign-up">
-                            <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light" onclick="login()" id="log-in">
-                            <strong>Log in</strong>
-                        </a>
+                        <div id="log-in">
+                            <a class="button is-light" href="./signIn.html">
+                                <strong>Log in</strong>
+                            </a>
+                        </div>
+                        <!-- <div id="log-in">
+                            <a class="button is-light" onclick="signInWithGoogle()">
+                                <strong>Log in</strong>
+                            </a>
+                        </div> -->
+                        <div id="profile">
+                            <a class="button is-primary" href="./profile.html">
+                                <strong>Profile</strong>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-        <div hidden id='ProfileSection'>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-primary" href="../html/profile.html">
-                            <strong>Profile</strong>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
     `;
 }
