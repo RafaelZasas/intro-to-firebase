@@ -21,3 +21,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+# Jetbrains IDEA files
+.idea/*
+.idea
+./idea/
+
+# VS Code files
+.vscode
+
+
+#firebase
+service-account.json

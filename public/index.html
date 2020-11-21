@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intro To Firebase</title>
+
+
+    <!--    CUSTOM CSS & JS    -->
+    <link type="text/css" href="./src/css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="./src/js/main.js"></script> <!-- the main app's logic -->
+    <script type="text/javascript" src="./src/js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="./src/js/firestore.js" defer></script> <!-- database related logic-->
+    <script type="text/javascript" src="./src/js/auth.js"></script> <!-- authentication state logic -->
+    <script type="text/javascript" src="./src/js/app.js" defer></script> <!-- separating firebase configuration files-->
+
+
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+
+    <!--   FIREBASE    -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css" />
+
+    <!--Firebase Authentication-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+
+</head>
+
+<body>
+    <!--Begin Nav-Bar Here-->
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="src/assets/dsc_lockup.png" width="112" height="28">
+            </a>
+
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item has-dropdown is-hoverable">
+
+                    <a class="navbar-link">
+                        Products
+                    </a>
+
+                    <!--   dropdown section for products -->
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="src/html/shoes.html">
+                            Shoes
+                        </a>
+                        <a class="navbar-item" href="src/html/shirts.html">
+                            Shirts
+                        </a>
+                        <a class="navbar-item" href="src/html/bags.html">
+                            Bags
+                        </a>
+                        <a class="navbar-item" href="src/html/hats.html">
+                            Hats
+                        </a>
+                    </div>
+                </div>
+
+                <a class="navbar-item" href="https://dsc.community.dev">
+                    <!--  could be cool to implement google maps api -->
+                    Locations
+                </a>
+                <!--  dropdown section for More -->
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="src/html/resources.html">
+                            Resources
+                        </a>
+                        <a class="navbar-item"
+                            href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop/docs/CONTRIBUTING.md">
+                            Contribute to this website
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <div id="log-in">
+                            <a class="button is-light" href="src/html/signIn.html">
+                                <strong>Log in</strong>
+                            </a>
+                        </div>
+                        <!-- <div id="log-in">
+                                <a class="button is-light" onclick="signInWithGoogle()">
+                                    <strong>Log in</strong>
+                                </a>
+                            </div> -->
+                        <div id="profile">
+                            <a class="button is-primary" href="src/html/profile.html">
+                                <strong>Profile</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </nav>
+    <!--End Nav-Bar Here-->
+
+    <section class="section is-desktop is-vcentered">
+        <div class="container">
+            <h1 class="title">Products</h1>
+            <br>
+
+            <div class="columns columns">
+                <div class="column">
+                    <a href="./src/html/shoes.html">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="
+                                    https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fshoes%2FNike%2FWomens%20Air%20Max%20Bella%202%20Training%20Shoe.jpg?alt=media&token=6be860a8-7100-4324-81b4-bf6cbd7da943"
+                                        alt="Shoes">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">Shoes</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="column">
+                    <a href="./src/html/shirts.html">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fshirts%2Fkaws%20x%20uniqlo%20companion.jpg?alt=media&token=de3cebb2-eee9-480d-bb1e-0e5b4ab5d7a2"
+                                        alt="Shirts">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">Shirts</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="column">
+                    <a href="./src/html/bags.html">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fbags%2FChampion%20Sling%20Pack.jpg?alt=media&token=a5ce1c14-7577-477a-ad42-e88c01646130"
+                                        alt="Bags">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">Bags</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="column">
+                    <a href="./src/html/hats.html">
+                        <div class="card">
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fhats%2FGoorin%20Brothers%20Stallion.jpg?alt=media&token=a88bff91-d6ff-4eba-a986-c8ecb7c65d9b"
+                                        alt="Hats">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4">Hats</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+</body>
+
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intro To Firebase</title>
+
+
+    <!--    CUSTOM CSS & JS    -->
+    <link type="text/css" href="../css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
+    <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
+    <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+
+
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+
+    <!--   FIREBASE    -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+    <!--Firebase Authentication-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+
+</head>
+
+<body onload="populateNavbar();getProducts('bags')">
+    <!-- call database for bags collection  -->
+
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <!--    Navbar information will be populated in here-->
+    </nav>
+
+    <section class="section is-desktop is-vcentered">
+        <div class="container">
+            <h1 class="title center">Bags</h1>
+
+            <br>
+
+            <div class="columns is-multiline" id="productsSection">
+
+            </div>
+
+
+        </div>
+    </section>
+
+
+</body>
+
+</html>

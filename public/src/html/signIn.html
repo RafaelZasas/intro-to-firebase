@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Intro To Firebase</title>
+
+
+    <!--    custom css and js files    -->
+    <link type="text/css" href="../css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
+    <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+    <script type="text/javascript" src="../js/auth-ui.js" defer></script> <!-- authentication ui logic -->
+
+    <!--    bulma css framework-->
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+    <!-- FIREBASE IMPORT TAGS-->
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css" />
+
+    <!-- TODO: Add SDKs for Firebase products that we want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+
+</head>
+
+<body>
+    <h1>Welcome to The E-Commerce App</h1>
+    <div id="firebaseui-auth-container"></div>
+</body>
+
+</html>
