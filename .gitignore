@@ -29,7 +29,3 @@ hs_err_pid*
 
 # VS Code files
 .vscode
-
-
-#firebase
-service-account.json

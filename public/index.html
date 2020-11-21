@@ -11,8 +11,6 @@
     <link type="text/css" href="./src/css/styles.css" rel="stylesheet">
     <script type="text/javascript" src="./src/js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="./src/js/styles.js"></script> <!-- styling related logic -->
-    <script type="text/javascript" src="./src/js/firestore.js" defer></script> <!-- database related logic-->
-    <script type="text/javascript" src="./src/js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="./src/js/app.js" defer></script> <!-- separating firebase configuration files-->
 
 
@@ -25,18 +23,7 @@
     <!--   FIREBASE    -->
 
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css" />
-
-    <!--Firebase Authentication-->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-    <!--Cloud Firestore-->
-    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
-    <!--Google Analytics-->
-    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
-
-
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script> -->
 </head>
 
 <body>
@@ -57,6 +44,7 @@
 
         <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
+
                 <div class="navbar-item has-dropdown is-hoverable">
 
                     <a class="navbar-link">
@@ -65,16 +53,16 @@
 
                     <!--   dropdown section for products -->
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="src/html/shoes.html">
+                        <a class="navbar-item" href="#">
                             Shoes
                         </a>
-                        <a class="navbar-item" href="src/html/shirts.html">
+                        <a class="navbar-item" href="#">
                             Shirts
                         </a>
-                        <a class="navbar-item" href="src/html/bags.html">
+                        <a class="navbar-item" href="#">
                             Bags
                         </a>
-                        <a class="navbar-item" href="src/html/hats.html">
+                        <a class="navbar-item" href="#">
                             Hats
                         </a>
                     </div>
@@ -84,6 +72,8 @@
                     <!--  could be cool to implement google maps api -->
                     Locations
                 </a>
+
+
                 <!--  dropdown section for More -->
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">
@@ -91,7 +81,7 @@
                     </a>
 
                     <div class="navbar-dropdown">
-                        <a class="navbar-item" href="src/html/resources.html">
+                        <a class="navbar-item" href="./src/html/resources.html">
                             Resources
                         </a>
                         <a class="navbar-item"
@@ -104,23 +94,15 @@
                         </a>
                     </div>
                 </div>
+
+
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
                         <div id="log-in">
-                            <a class="button is-light" href="src/html/signIn.html">
+                            <a class="button is-light" onclick="alert('Coming soon...')">
                                 <strong>Log in</strong>
-                            </a>
-                        </div>
-                        <!-- <div id="log-in">
-                                <a class="button is-light" onclick="signInWithGoogle()">
-                                    <strong>Log in</strong>
-                                </a>
-                            </div> -->
-                        <div id="profile">
-                            <a class="button is-primary" href="src/html/profile.html">
-                                <strong>Profile</strong>
                             </a>
                         </div>
                     </div>
@@ -128,7 +110,6 @@
             </div>
         </div>
 
-        </div>
     </nav>
     <!--End Nav-Bar Here-->
 
@@ -139,13 +120,11 @@
 
             <div class="columns columns">
                 <div class="column">
-                    <a href="./src/html/shoes.html">
+                    <a href="#">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="
-                                    https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fshoes%2FNike%2FWomens%20Air%20Max%20Bella%202%20Training%20Shoe.jpg?alt=media&token=6be860a8-7100-4324-81b4-bf6cbd7da943"
-                                        alt="Shoes">
+                                    <img src="./src/assets/img/Air Max 90 Paris.jpg" alt="Shoes">
                                 </figure>
                             </div>
                             <div class="card-content">
@@ -156,12 +135,11 @@
                 </div>
 
                 <div class="column">
-                    <a href="./src/html/shirts.html">
+                    <a href="#">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fshirts%2Fkaws%20x%20uniqlo%20companion.jpg?alt=media&token=de3cebb2-eee9-480d-bb1e-0e5b4ab5d7a2"
-                                        alt="Shirts">
+                                    <img src="./src/assets/img/kaws x uniqlo companion.jpg" alt="Shirts">
                                 </figure>
                             </div>
                             <div class="card-content">
@@ -172,12 +150,11 @@
                 </div>
 
                 <div class="column">
-                    <a href="./src/html/bags.html">
+                    <a href="#">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fbags%2FChampion%20Sling%20Pack.jpg?alt=media&token=a5ce1c14-7577-477a-ad42-e88c01646130"
-                                        alt="Bags">
+                                    <img src="./src/assets/img/Champion Sling Pack.jpg" alt="Bags">
                                 </figure>
                             </div>
                             <div class="card-content">
@@ -188,12 +165,11 @@
                 </div>
 
                 <div class="column">
-                    <a href="./src/html/hats.html">
+                    <a href="#">
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fhats%2FGoorin%20Brothers%20Stallion.jpg?alt=media&token=a88bff91-d6ff-4eba-a986-c8ecb7c65d9b"
-                                        alt="Hats">
+                                    <img src="./src/assets/img/Goorin Brothers Stallion.png" alt="Hats">
                                 </figure>
                             </div>
                             <div class="card-content">

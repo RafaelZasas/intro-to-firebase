@@ -7,8 +7,6 @@
 [![Issues](https://img.shields.io/github/issues/RafaelZasas/intro-to-firebase.svg)](https://github.com/RafaelZasas/Raff-App.git/issues)
 [![License](https://img.shields.io/github/license/RafaelZasas/intro-to-firebase.svg)](/docs/LICENSE.md)
 
-
-
 ## Learn How to Make a Full Stack Web Application using Firebase 💥
 
 -   Fork/clone this repo to your local machine using `https://github.com/RafaelZasas/intro-to-firebase/`.
@@ -17,6 +15,10 @@
 -   Deploy your app(s) to Firebase
 -   Play around and have fun!
 
+## Slide Decks
+-   [Hosting](https://docs.google.com/presentation/d/1qdmhkkQiwgwwPnIH2pQEK0-8F2-MzTQdfrATMuNDdLU/edit?usp=sharing)
+-   Auth
+-   Firestore
 
 ## Contributing 👥
 

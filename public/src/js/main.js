@@ -26,16 +26,16 @@ function populateNavbar() {
 
                 <!--   dropdown section for products -->
                 <div class="navbar-dropdown">
-                    <a class="navbar-item" href="../html/shoes.html">
+                    <a class="navbar-item" href="#">
                         Shoes
                     </a>
-                    <a class="navbar-item" href="../html/shirts.html">
+                    <a class="navbar-item" href="#">
                         Shirts
                     </a>
-                    <a class="navbar-item" href="../html/bags.html">
+                    <a class="navbar-item" href="#">
                         Bags
                     </a>
-                    <a class="navbar-item" href="../html/hats.html">
+                    <a class="navbar-item" href="#">
                         Hats
                     </a>
                 </div>
@@ -69,25 +69,13 @@ function populateNavbar() {
 
 
         </div>
-        <div id='loginSection'>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <div id="log-in">
-                            <a class="button is-light" href="./signIn.html">
-                                <strong>Log in</strong>
-                            </a>
-                        </div>
-                        <!-- <div id="log-in">
-                            <a class="button is-light" onclick="signInWithGoogle()">
-                                <strong>Log in</strong>
-                            </a>
-                        </div> -->
-                        <div id="profile">
-                            <a class="button is-primary" href="./profile.html">
-                                <strong>Profile</strong>
-                            </a>
-                        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <div id="log-in">
+                        <a class="button is-light" onclick="alert('Coming soon...')">
+                            <strong>Log in</strong>
+                        </a>
                     </div>
                 </div>
             </div>
