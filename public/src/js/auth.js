@@ -8,6 +8,16 @@ async function signInWithGoogle() {
     }
 }
 
+async function signInWithGitHub() {
+    const provider = new firebase.auth.GithubAuthProvider();
+
+    try {
+        await firebase.auth().signInWithPopup(provider);
+    } catch (error) {
+        console.log(`Error Code:${error.code}\nError Message:${error.message}`)
+    }
+}
+
 async function signOut() {
     try {
         await firebase.auth().signOut();

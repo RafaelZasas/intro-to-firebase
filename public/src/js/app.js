@@ -89,3 +89,8 @@ async function handleSignInWithGoogle() {
     await signInWithGoogle()
     toggleAuthModal()
 }
+
+async function handleSignInWithGitHub() {
+    await signInWithGitHub()
+    toggleAuthModal()
+}
