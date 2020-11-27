@@ -84,3 +84,8 @@ async function handleSignUp() {
         $errors.innerText = e.message
     }
 }
+
+async function handleSignInWithGoogle() {
+    await signInWithGoogle()
+    toggleAuthModal()
+}
