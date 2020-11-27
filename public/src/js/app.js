@@ -71,8 +71,13 @@ async function handleSignUp() {
     const $errors = document.getElementById('auth-signup-errors')
     const $emailInput = document.getElementById('auth-signup-email')
     const $passwordInput = document.getElementById('auth-signup-password')
+    const $passwordConfirmationInput = document.getElementById('auth-signup-password-confirm')
+
     try {
         $errors.innerText = ''
+        if ($passwordInput.value !== $passwordConfirmationInput.value) {
+            throw new Error('Passwords do not match')
+        }
         await signUp($emailInput.value, $passwordInput.value)
         toggleAuthModal()
     } catch (e) {
