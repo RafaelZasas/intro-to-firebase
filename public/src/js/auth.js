@@ -1,21 +1,11 @@
 async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-
-    try {
-        await firebase.auth().signInWithPopup(provider);
-    } catch (error) {
-        console.log(`Error Code:${error.code}\nError Message:${error.message}`)
-    }
+    await firebase.auth().signInWithPopup(provider);
 }
 
 async function signInWithGitHub() {
     const provider = new firebase.auth.GithubAuthProvider();
-
-    try {
-        await firebase.auth().signInWithPopup(provider);
-    } catch (error) {
-        console.log(`Error Code:${error.code}\nError Message:${error.message}`)
-    }
+    await firebase.auth().signInWithPopup(provider);
 }
 
 async function signOut() {
