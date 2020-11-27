@@ -85,21 +85,10 @@ async function handleSignUp() {
     }
 }
 
-async function handleSignInWithGoogle() {
+async function handleSignInWithProvider(providerName) {
     $errors = document.getElementById('auth-provider-errors')
     try {
-        await signInWithGoogle()
-        toggleAuthModal()
-    } catch (e) {
-        $errors.innerText = e.message
-    }
-}
-
-async function handleSignInWithGitHub() {
-    $errors = document.getElementById('auth-provider-errors')
-
-    try {
-        await signInWithGitHub()
+        await signInWithProvider(providerName)
         toggleAuthModal()
     } catch (e) {
         $errors.innerText = e.message

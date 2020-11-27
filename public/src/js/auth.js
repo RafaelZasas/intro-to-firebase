@@ -1,10 +1,16 @@
-async function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await firebase.auth().signInWithPopup(provider);
+function getProviderInstance(providerName) {
+    switch (providerName) {
+        case 'google':
+            return new firebase.auth.GoogleAuthProvider()
+        case 'github':
+            return new firebase.auth.GithubAuthProvider()
+        default:
+            throw new Error(`Provider ${providerName} is not supported`)
+    }
 }
 
-async function signInWithGitHub() {
-    const provider = new firebase.auth.GithubAuthProvider();
+async function signInWithProvider(providerName) {
+    const provider = getProviderInstance(providerName)
     await firebase.auth().signInWithPopup(provider);
 }
 
