@@ -56,8 +56,10 @@ function populateNavbar() {
                     <a class="navbar-item" href="../html/resources.html">
                         Resources
                     </a>
-                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop
-/docs/CONTRIBUTING.md">
+                    <a class="navbar-item" href="https://firebase.google.com/">
+                        Firebase Console
+                    </a>
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop/docs/CONTRIBUTING.md">
                         Contribute to this website
                     </a>
                     <hr class="navbar-divider">
