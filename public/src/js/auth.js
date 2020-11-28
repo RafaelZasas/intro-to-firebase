@@ -1,11 +1,17 @@
-async function signInWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    try {
-        await firebase.auth().signInWithPopup(provider);
-    } catch (error) {
-        console.log(`Error Code:${error.code}\nError Message:${error.message}`)
+function getProviderInstance(providerName) {
+    switch (providerName) {
+        case 'google':
+            return new firebase.auth.GoogleAuthProvider()
+        case 'github':
+            return new firebase.auth.GithubAuthProvider()
+        default:
+            throw new Error(`Provider ${providerName} is not supported`)
     }
+}
+
+async function signInWithProvider(providerName) {
+    const provider = getProviderInstance(providerName)
+    await firebase.auth().signInWithPopup(provider);
 }
 
 async function signOut() {
@@ -25,4 +31,12 @@ async function verifyEmail() {
     } catch (error) {
         console.log(`Error Code:${error.code}\nError Message:${error.message}`)
     }
+}
+
+async function signIn(email, password) {
+    await firebase.auth().signInWithEmailAndPassword(email, password)
+}
+
+async function signUp(email, password) {
+    await firebase.auth().createUserWithEmailAndPassword(email, password)
 }
