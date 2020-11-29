@@ -94,3 +94,8 @@ async function handleSignInWithProvider(providerName) {
         $errors.innerText = e.message
     }
 }
+
+async function handleResetPassword() {
+    const $emailInput = document.getElementById('auth-signin-email')
+    await resetPassword($emailInput.value)
+}

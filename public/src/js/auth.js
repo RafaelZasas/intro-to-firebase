@@ -33,6 +33,15 @@ async function verifyEmail() {
     }
 }
 
+async function resetPassword(email) {
+    try {
+        await firebase.auth().sendPasswordResetEmail(email)
+        alert('Check your inbox for ' + email)
+    } catch (error) {
+        console.log(`Error Code:${error.code}\nError Message:${error.message}`)
+    }
+}
+
 async function signIn(email, password) {
     await firebase.auth().signInWithEmailAndPassword(email, password)
 }
