@@ -1,58 +1,4 @@
 let productsSection = document.querySelector(`#productsSection`);
-let productsHTML = '';
-
-
-function populateProductCards(doc, index) {
-
-    let cardHTML = `
-                 <div class="column is-one-quarter"> <!-- specify exactly 4 cards per row-->
-                 <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html">
-                    <div class="card" id='card${index}' >
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src= ${doc.data().image} alt="item${index}">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <p class="title is-4" >${doc.data().name}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-    `;
-
-    productsHTML += cardHTML; // add the individual cards to the stack
-
-}
-
-function populateProductDetails(doc) {
-    // this function will retrieve the details for the selected product
-
-    let productDetails = document.querySelector(`#product`);
-    let cardHTML = `
-                 <div class="column is-full"> 
-                 <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html">
-                        <!-- Save the ID of the selected doc to be used after page navigation-->
-                        <div class="card-image">
-                            <figure class="image is-5by4">
-                                <img src= ${doc.data().image} alt=${doc.data().name}>
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <p class="title is-4" >Brand: ${doc.data().brand}</p>
-                            <p class="title is-4" >Name: ${doc.data().name}</p>
-                            <p class="title is-4" >Price: $${doc.data().price}</p>
-                        </div>
-
-                </a>
-            </div>
-    `;
-
-    productDetails.innerHTML = cardHTML;
-
-}
-
-
 function getProducts(product_type) {
     // this function queries the firestore database for all the product docs within the selected category
 
@@ -74,7 +20,6 @@ function getProducts(product_type) {
 
 
 }
-
 
 function getProductInfo() {
     // this function queries firestore for the selected product document

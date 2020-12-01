@@ -1,4 +1,11 @@
-// This function will be called in every html page other than index due to path's being different
+/*
+* This file serves as controller to populate DOM elements with HTML "widgets"
+ */
+
+
+/*
+  This function will be called in every html page other than index due to path's being different
+ */
 function populateNavbar() {
     let headTag = document.querySelector('#navbar');
     headTag.innerHTML = `
@@ -165,4 +172,56 @@ function populateNavbar() {
         </div>
     </div>
     `;
+}
+
+/*
+  This function will be called once an individual product is selected and firestore data is received
+ */
+function populateProductDetails(doc) {
+    // this function will retrieve the details for the selected product
+
+    let productDetails = document.querySelector(`#product`);
+
+    productDetails.innerHTML = `
+                 <div class="column is-two-thirds is-offset-one-fifth"> 
+                    <p class="title is-1 is-spaced">Name: ${doc.data().name}</p>
+                    <p class="subtitle is-3">Brand: ${doc.data().brand}</p>
+                        <div class="card-image">
+                            <figure class="image is-5by4">
+                                <img src= ${doc.data().image} alt=${doc.data().name}>
+                            </figure>
+                        </div>
+                        <br>
+                    <p class="title is-3" >Price: $${doc.data().price}</p>
+
+
+             
+            </div>
+    `;
+
+}
+
+let productsHTML = '';
+
+function populateProductCards(doc, index) {
+
+    let cardHTML = `
+                 <div class="column is-one-quarter"> <!-- specify exactly 4 cards per row-->
+                 <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html">
+                    <div class="card" id='card${index}' >
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src= ${doc.data().image} alt="item${index}">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <p class="title is-4" >${doc.data().name}</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+    `;
+
+    productsHTML += cardHTML; // add the individual cards to the stack
+
 }
