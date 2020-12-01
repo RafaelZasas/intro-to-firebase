@@ -18,6 +18,11 @@
 -   Play around and have fun!
 
 
+## Slide Decks
+-   [Hosting](https://docs.google.com/presentation/d/1qdmhkkQiwgwwPnIH2pQEK0-8F2-MzTQdfrATMuNDdLU/edit?usp=sharing)
+-   [Auth](https://docs.google.com/presentation/d/1qqwxzNbSGoCCdZLuDsNv5bfumJU_nvOEjUzToQsm0Ak/edit?usp=sharing)
+-   Firestore
+
 ## Contributing 👥
 
 We are encouraging a collaborative effort throughout this series. We will recognize all the individuals who wish to 

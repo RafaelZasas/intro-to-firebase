@@ -2,20 +2,19 @@
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyCbhU8BmjoxnZ128tZyRUKc4U2p4Q0j9Iw",
-    authDomain: "ecommerce-with-firebase-a7af6.firebaseapp.com",
-    databaseURL: "https://ecommerce-with-firebase-a7af6.firebaseio.com",
-    projectId: "ecommerce-with-firebase-a7af6",
-    storageBucket: "ecommerce-with-firebase-a7af6.appspot.com",
-    messagingSenderId: "1086804382186",
-    appId: "1:1086804382186:web:c8ca6c306569919e132293",
-    measurementId: "G-7FEL1DERZ2"
+    apiKey: "",
+    authDomain: "",
+    databaseURL: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics(); // initialize firebase analytics
-const db = firebase.firestore(); // object of our firestore database to be used throughout the site
 
 document.addEventListener('DOMContentLoaded', () => {
     // call method to update UI according to users log in state
@@ -47,6 +46,8 @@ function displayProfileUI(user) {
 
 function toggleAuthModal() {
     const $modal = document.getElementById('auth-modal')
+
+    // toggle the visibility class
     if ($modal.classList.contains('is-active')) {
         $modal.classList.remove('is-active')
     } else {
@@ -54,10 +55,14 @@ function toggleAuthModal() {
     }
 }
 
+/**
+ * Gets user's email/password and signs them in
+ */
 async function handleSignIn() {
     const $errors = document.getElementById('auth-signin-errors')
     const $emailInput = document.getElementById('auth-signin-email')
     const $passwordInput = document.getElementById('auth-signin-password')
+
     try {
         $errors.innerText = ''
         await signIn($emailInput.value, $passwordInput.value)
@@ -67,6 +72,9 @@ async function handleSignIn() {
     }
 }
 
+/**
+ * Gets user's email/password and signs them up
+ */
 async function handleSignUp() {
     const $errors = document.getElementById('auth-signup-errors')
     const $emailInput = document.getElementById('auth-signup-email')
@@ -85,6 +93,10 @@ async function handleSignUp() {
     }
 }
 
+/**
+ * Signs in with the appropriate provider
+ * @param {string} providerName - the string identifier for the provider
+ */
 async function handleSignInWithProvider(providerName) {
     $errors = document.getElementById('auth-provider-errors')
     try {
@@ -95,6 +107,9 @@ async function handleSignInWithProvider(providerName) {
     }
 }
 
+/**
+ * Gets user's email and sends them the password reset email
+ */
 async function handleResetPassword() {
     const $emailInput = document.getElementById('auth-signin-email')
     await resetPassword($emailInput.value)

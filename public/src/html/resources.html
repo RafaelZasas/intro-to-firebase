@@ -30,52 +30,138 @@
 
 <body onload="populateNavbar()">
 
-<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-    <!--    Navbar information will be populated in here-->
-</nav>
+    <!--Begin Nav-Bar Here-->
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="">
+                <img src="src/assets/dsc_lockup.png" width="112" height="28">
+            </a>
 
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
 
-<section class="section">
-    <div class="container">
-        <h1 class="title">Official Documentation</h1>
-        <br>
-        <h2 class="subtitle">
-            <a href="https://firebase.google.com/docs">Firebase Documentation</a>
-        </h2>
+        <div id="navbarBasicExample" class="navbar-menu">
+            <div class="navbar-start">
+                <div class="navbar-item has-dropdown is-hoverable">
 
-        <h2 class="subtitle">
-            <a href="https://github.com/firebase">Documentation and Examples on Github</a>
-        </h2>
+                    <a class="navbar-link">
+                        Products
+                    </a>
 
-        <h2 class="subtitle">
-            <a href="https://stackoverflow.com/questions/tagged/firebase">Firebase Questions on Stack Overflow</a>
-        </h2>
+                    <!--   dropdown section for products -->
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="#">
+                            Shoes
+                        </a>
+                        <a class="navbar-item" href="#">
+                            Shirts
+                        </a>
+                        <a class="navbar-item" href="#">
+                            Bags
+                        </a>
+                        <a class="navbar-item" href="#">
+                            Hats
+                        </a>
+                    </div>
+                </div>
 
-    </div>
-</section>
+                <a class="navbar-item" href="https://dsc.community.dev">
+                    <!--  could be cool to implement google maps api -->
+                    Locations
+                </a>
+                <!--  dropdown section for More -->
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        More
+                    </a>
 
-<section class="section">
-    <div class="container">
-        <h1 class="title">Youtube Hero's</h1>
-        <br>
-        <h2 class="subtitle">
-            <a href="https://fireship.io">Jeff Delaney (Fireship)</a>
-        </h2>
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="src/html/resources.html">
+                            Resources
+                        </a>
 
-        <h2 class="subtitle">
-            <a href="https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg">The Net Ninja</a>
-        </h2>
+                        <a class="navbar-item" href="https://firebase.google.com/">
+                            Firebase Console
+                        </a>
 
-        <h2 class="subtitle">
+                        <a class="navbar-item"
+                            href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop/docs/CONTRIBUTING.md">
+                            Contribute to this website
+                        </a>
+                        <hr class="navbar-divider">
+                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+                            Report an issue
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <div id="log-in">
+                            <a class="button is-light" onclick="toggleAuthModal()">
+                                <strong>Log in</strong>
+                            </a>
+                        </div>
+                        <div id="profile">
+                            <a class="button is-primary" href="src/html/profile.html">
+                                <strong>Profile</strong>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--End Nav-Bar Here-->
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Official Documentation</h1>
+            <br>
             <h2 class="subtitle">
-                <a href="https://www.youtube.com/user/Firebase">Official Firebase Youtube</a>
+                <a href="https://firebase.google.com/docs">Firebase Documentation</a>
             </h2>
-        </h2>
+
+            <h2 class="subtitle">
+                <a href="https://github.com/firebase">Documentation and Examples on Github</a>
+            </h2>
+
+            <h2 class="subtitle">
+                <a href="https://stackoverflow.com/questions/tagged/firebase">Firebase Questions on Stack Overflow</a>
+            </h2>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Youtube Hero's</h1>
+            <br>
+            <h2 class="subtitle">
+                <a href="https://fireship.io">Jeff Delaney (Fireship)</a>
+            </h2>
+
+            <h2 class="subtitle">
+                <a href="https://www.youtube.com/channel/UCW5YeuERMmlnqo4oq8vwUpg">The Net Ninja</a>
+            </h2>
+
+            <h2 class="subtitle">
+                <h2 class="subtitle">
+                    <a href="https://www.youtube.com/user/Firebase">Official Firebase Youtube</a>
+                </h2>
+            </h2>
 
 
-    </div>
-</section>
+        </div>
+    </section>
 
 
 </body>
+
 </html>
