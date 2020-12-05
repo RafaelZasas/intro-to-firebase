@@ -95,6 +95,11 @@
                         <a class="navbar-item" href="resources.html">
                             Resources
                         </a>
+
+                        <a class="navbar-item" href="https://firebase.google.com/">
+                            Firebase Console
+                        </a>
+
                         <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase">
                             Contribute to this website
                         </a>
@@ -110,15 +115,10 @@
                 <div class="navbar-item">
                     <div class="buttons" onclick="signOut()">
                         <div id="log-in">
-                            <a class="button is-light" href="./signIn.html">
+                            <a class="button is-light" href="signIn.html">
                                 <strong>Log in</strong>
                             </a>
                         </div>
-                        <!-- <div id="log-in">
-                        <a class="button is-light" onclick="signInWithGoogle()">
-                            <strong>Log in</strong>
-                        </a>
-                    </div> -->
                         <div id="log-out">
                             <a class="button is-light" href="../../index.html">
                                 <strong>Logout</strong>
@@ -130,6 +130,80 @@
         </div>
     </nav>
     <!--End Nav-Bar Here-->
+
+    <div id="auth-modal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Log In</p>
+                <button class="delete" aria-label="close" onclick="toggleAuthModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="columns">
+                    <div class="column">
+                        <h1>Have an account?</h1>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input id="auth-signin-password" class="input" type="password">
+                            </div>
+                        </div>
+                        <p id="auth-signin-errors" class="help is-danger"></p>
+                        <div class="control">
+                            <button class="button" onclick="handleSignIn()">Sign In</button>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h1>Create one</h1>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input id="auth-signup-password" class="input" type="password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Confirm Password</label>
+                            <div class="control">
+                                <input id="auth-signup-password-confirm" class="input" type="password">
+                            </div>
+                        </div>
+                        <p id="auth-signup-errors" class="help is-danger"></p>
+                        <div class="control">
+                            <button class="button" onclick="handleSignUp()">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="control">
+                    <button class="button" onclick="handleSignInWithProvider('google')">
+                        <span class="icon">
+                            <i class="fab fa-google"></i>
+                        </span>
+                        <span>Google</span>
+                    </button>
+                    <button class="button" onclick="handleSignInWithProvider('github')">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>GitHub</span>
+                    </button>
+                </div>
+                <p id="auth-provider-errors" class="help is-danger"></p>
+            </section>
+        </div>
+    </div>
 
 
     <div class="container" style="padding: 10px">

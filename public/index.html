@@ -40,6 +40,7 @@
 </head>
 
 <body>
+
     <!--Begin Nav-Bar Here-->
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
@@ -94,6 +95,11 @@
                         <a class="navbar-item" href="src/html/resources.html">
                             Resources
                         </a>
+
+                        <a class="navbar-item" href="https://firebase.google.com/">
+                            Firebase Console
+                        </a>
+
                         <a class="navbar-item"
                             href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop/docs/CONTRIBUTING.md">
                             Contribute to this website
@@ -109,15 +115,10 @@
                 <div class="navbar-item">
                     <div class="buttons">
                         <div id="log-in">
-                            <a class="button is-light" href="src/html/signIn.html">
+                            <a class="button is-light" onclick="toggleAuthModal()">
                                 <strong>Log in</strong>
                             </a>
                         </div>
-                        <!-- <div id="log-in">
-                                <a class="button is-light" onclick="signInWithGoogle()">
-                                    <strong>Log in</strong>
-                                </a>
-                            </div> -->
                         <div id="profile">
                             <a class="button is-primary" href="src/html/profile.html">
                                 <strong>Profile</strong>
@@ -127,10 +128,83 @@
                 </div>
             </div>
         </div>
-
-        </div>
     </nav>
     <!--End Nav-Bar Here-->
+
+    <div id="auth-modal" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Log In</p>
+                <button class="delete" aria-label="close" onclick="toggleAuthModal()"></button>
+            </header>
+            <section class="modal-card-body">
+                <div class="columns">
+                    <div class="column">
+                        <h1 class="is-size-4">Have an account?</h1>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input id="auth-signin-password" class="input" type="password">
+                            </div>
+                        </div>
+                        <a onclick="handleResetPassword()">Forgot your password?</a>
+                        <p id="auth-signin-errors" class="help is-danger"></p>
+                        <div class="control">
+                            <button class="button" onclick="handleSignIn()">Sign In</button>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <h1 class="is-size-4">Create one</h1>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input id="auth-signup-password" class="input" type="password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Confirm Password</label>
+                            <div class="control">
+                                <input id="auth-signup-password-confirm" class="input" type="password">
+                            </div>
+                        </div>
+                        <p id="auth-signup-errors" class="help is-danger"></p>
+                        <div class="control">
+                            <button class="button" onclick="handleSignUp()">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="control">
+                    <button class="button" onclick="handleSignInWithProvider('google')">
+                        <span class="icon">
+                            <i class="fab fa-google"></i>
+                        </span>
+                        <span>Google</span>
+                    </button>
+                    <button class="button" onclick="handleSignInWithProvider('github')">
+                        <span class="icon">
+                            <i class="fab fa-github"></i>
+                        </span>
+                        <span>GitHub</span>
+                    </button>
+                </div>
+                <p id="auth-provider-errors" class="help is-danger"></p>
+            </section>
+        </div>
+    </div>
 
     <section class="section is-desktop is-vcentered">
         <div class="container">
@@ -143,8 +217,8 @@
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="
-                                    https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fshoes%2FNike%2FWomens%20Air%20Max%20Bella%202%20Training%20Shoe.jpg?alt=media&token=6be860a8-7100-4324-81b4-bf6cbd7da943"
+                                    <img src="src/assets/google-shoes.jpg"
+
                                         alt="Shoes">
                                 </figure>
                             </div>
@@ -160,7 +234,7 @@
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fshirts%2Fkaws%20x%20uniqlo%20companion.jpg?alt=media&token=de3cebb2-eee9-480d-bb1e-0e5b4ab5d7a2"
+                                    <img src="src/assets/google-shirt.jpg"
                                         alt="Shirts">
                                 </figure>
                             </div>
@@ -176,7 +250,7 @@
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fbags%2FChampion%20Sling%20Pack.jpg?alt=media&token=a5ce1c14-7577-477a-ad42-e88c01646130"
+                                    <img src="src/assets/google-bag.jpg"
                                         alt="Bags">
                                 </figure>
                             </div>
@@ -192,7 +266,7 @@
                         <div class="card">
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src="https://firebasestorage.googleapis.com/v0/b/ecommerce-with-firebase-a7af6.appspot.com/o/products%2Fhats%2FGoorin%20Brothers%20Stallion.jpg?alt=media&token=a88bff91-d6ff-4eba-a986-c8ecb7c65d9b"
+                                    <img src="src/assets/google-hat.jpg"
                                         alt="Hats">
                                 </figure>
                             </div>
