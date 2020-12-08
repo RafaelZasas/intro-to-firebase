@@ -11,7 +11,8 @@ function getProviderInstance(providerName) {
 
 async function signInWithProvider(providerName) {
     const provider = getProviderInstance(providerName)
-    await firebase.auth().signInWithPopup(provider);
+    let user = await firebase.auth().signInWithPopup(provider);
+    await insertNewUser(user);
 }
 
 async function signOut() {
@@ -47,5 +48,6 @@ async function signIn(email, password) {
 }
 
 async function signUp(email, password) {
-    await firebase.auth().createUserWithEmailAndPassword(email, password)
+    let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    await insertNewUser(userCredential.user);
 }

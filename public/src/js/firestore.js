@@ -39,3 +39,26 @@ function getProductInfo() {
         console.log("Error getting document:", error);
     });
 }
+
+
+async function insertNewUser(user) {
+
+    // Sets user data to firestore on login
+    const userRef = db.doc(`users/${user.uid}`);
+
+
+    const data = { // data payload we want to save
+        uid: user.uid,
+        email: user.email,
+        username: user.displayName,
+        photoURL: 'https://picsum.photos/300', // random img
+        permissions: { // for role based authentication
+            user: true,
+            edit: false,
+            admin: false
+        }
+    };
+
+    return userRef.set(data); 
+
+}
