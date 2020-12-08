@@ -42,10 +42,8 @@ function getProductInfo() {
 
 
 async function insertNewUser(user) {
-
     // Sets user data to firestore on login
     const userRef = db.doc(`users/${user.uid}`);
-
 
     const data = { // data payload we want to save
         uid: user.uid,
@@ -59,6 +57,6 @@ async function insertNewUser(user) {
         }
     };
 
-    return userRef.set(data); 
+    return userRef.set(data);
 
 }

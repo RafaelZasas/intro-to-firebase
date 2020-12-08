@@ -11,8 +11,8 @@ function getProviderInstance(providerName) {
 
 async function signInWithProvider(providerName) {
     const provider = getProviderInstance(providerName)
-    let user = await firebase.auth().signInWithPopup(provider);
-    await insertNewUser(user);
+    let userCredential = await firebase.auth().signInWithPopup(provider);
+    await insertNewUser(userCredential.user);
 }
 
 async function signOut() {
