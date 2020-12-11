@@ -32,13 +32,6 @@ function getUserRow(user) {
     `
 }
 
-async function isAdmin(user) {
-    if (!user) return false;
-    const userDocReference = await firebase.firestore().doc(`users/${user.uid}`).get()
-    if (!userDocReference.exists) return false
-    return userDocReference.data().permissions.admin
-}
-
 async function modifyPermissions(uid, target) {
     await updatePermission(uid, target.value)
     populateUsers(firebase.auth().currentUser)

@@ -25,9 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Checks if the user exists and changes the UI appropriately
  */
-function displayProfileUI(user) {
+async function displayProfileUI(user) {
     var $logInButton = document.getElementById('log-in');
     var $logOutButton = document.getElementById('log-out');
+    var $adminPanelButton = document.getElementById('admin-panel')
     var $profileButton = document.getElementById('profile');
 
     console.log('User: ', user);
@@ -40,8 +41,14 @@ function displayProfileUI(user) {
     if ($profileButton) {
         $profileButton.hidden = !userSignedIn;
     }
+
     if ($logOutButton) {
         $logOutButton.hidden = !userSignedIn;
+    }
+
+    if ($adminPanelButton) {
+        const isAdminUser = await isAdmin(user)
+        $adminPanelButton.hidden = !userSignedIn || !isAdminUser
     }
 }
 

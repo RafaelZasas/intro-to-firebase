@@ -60,6 +60,12 @@ async function insertNewUser(user) {
     return await userRef.set(data);
 }
 
+async function isAdmin(user) {
+    if (!user) return false;
+    const userDocReference = await firebase.firestore().doc(`users/${user.uid}`).get()
+    if (!userDocReference.exists) return false
+    return userDocReference.data().permissions.admin
+}
 
 async function updatePermission(uid, permission) {
     const userRef = db.doc(`users/${uid}`);
