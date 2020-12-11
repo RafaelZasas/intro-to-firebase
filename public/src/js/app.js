@@ -19,8 +19,15 @@ const db = firebase.firestore(); // object of our firestore database to be used 
 
 document.addEventListener('DOMContentLoaded', () => {
     // call method to update UI according to users log in state
-    firebase.auth().onAuthStateChanged(displayProfileUI)
+    firebase.auth().onAuthStateChanged(displayProfileUI);
 });
+
+/**
+ * Returns the currently logged in user for use in other js files
+ */
+function getCurrentUser(){
+    return firebase.auth().currentUser;
+}
 
 /**
  * Checks if the user exists and changes the UI appropriately

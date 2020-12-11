@@ -88,7 +88,7 @@ function populateNavbar() {
                             </a>
                         </div>
                         <div id="profile">
-                            <a class="button is-primary" href="./profile.html">
+                            <a class="button is-primary" href="../html/profile.html">
                                 <strong>Profile</strong>
                             </a>
                         </div>
