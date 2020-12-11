@@ -1,6 +1,6 @@
 firebase.auth().onAuthStateChanged(populateProfile)
 
-function populateProfile(user) {
+function populateProfile(user = getCurrentUser()) {
     var $verifyEmailButton = document.getElementById('verify-email')
 
     if (user) {
