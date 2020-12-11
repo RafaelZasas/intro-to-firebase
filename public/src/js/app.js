@@ -23,13 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Returns the currently logged in user for use in other js files
- */
-function getCurrentUser(){
-    return firebase.auth().currentUser;
-}
-
-/**
  * Checks if the user exists and changes the UI appropriately
  */
 async function displayProfileUI(user) {
