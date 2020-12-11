@@ -40,7 +40,10 @@ function getProductInfo() {
     });
 }
 
-
+/**
+ * Inserts a new user into Firestore
+ * @param {firebase.auth.User} user the newly registered user
+ */
 async function insertNewUser(user) {
     // Sets user data to firestore on login
     const userRef = db.doc(`users/${user.uid}`);
@@ -60,6 +63,13 @@ async function insertNewUser(user) {
     return await userRef.set(data);
 }
 
+/**
+ * Checks if the current user has admin permission. 
+ * Returns false if the user does not exist
+ * 
+ * @param {firebase.auth.User} user - the user to check
+ * @returns {Promise<boolean>} promise that resolves in the admin state
+ */
 async function isAdmin(user) {
     if (!user) return false;
 
@@ -70,6 +80,11 @@ async function isAdmin(user) {
     return userDocReference.data().permissions.admin
 }
 
+/**
+ * Enables a specific permission for the user with the provided ID
+ * @param {string} uid the ID of the target user
+ * @param {string} permission the name of the permission to enable
+ */
 async function updatePermission(uid, permission) {
     const userRef = db.doc(`users/${uid}`);
 
