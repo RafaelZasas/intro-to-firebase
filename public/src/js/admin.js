@@ -1,19 +1,5 @@
 firebase.auth().onAuthStateChanged(populateUsers)
 
-async function showAdminDashboard() {
-    const btnAdminDashboard = document.getElementById('btnAdminDashboard');
-    if (await isAdmin(getCurrentUser())) {
-
-        btnAdminDashboard.innerHTML = `
-                            <a class="button is-primary" href="../html/admin.html">
-                                <strong>Admin Dashboard</strong>
-                            </a>
-        `
-    } else {
-        btnAdminDashboard.innerText = 'nope';
-    }
-}
-
 async function populateUsers(user) {
     const $usersSection = document.getElementById('usersSection')
     const $usersRows = document.getElementById('usersRows')
