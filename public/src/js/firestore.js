@@ -57,6 +57,19 @@ async function insertNewUser(user) {
         }
     };
 
-    return userRef.set(data);
+    return await userRef.set(data);
+}
 
+
+async function updatePermission(uid, permission) {
+    const userRef = db.doc(`users/${uid}`);
+
+    return await userRef.update(
+        'permissions',
+        {
+            user: permission === 'user',
+            edit: permission === 'edit',
+            admin: permission === 'admin',
+        }
+    )
 }

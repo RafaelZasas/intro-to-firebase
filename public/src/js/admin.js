@@ -1,6 +1,6 @@
-firebase.auth().onAuthStateChanged(getUsers)
+firebase.auth().onAuthStateChanged(populateUsers)
 
-async function getUsers(currentUser) {
+async function populateUsers(currentUser) {
     const $usersSection = document.getElementById('usersSection')
     const $usersRows = document.getElementById('usersRows')
     if (await isAdmin(currentUser)) {
@@ -22,7 +22,7 @@ function getUserRow(user) {
         <td>${user.email}</td>
         <td>
             <div class="is-primary select">
-                <select>
+                <select onchange="modifyPermissions('${user.uid}', this)">
                     <option value="user" ${user.permissions.admin ? '' : 'selected'}>Mortal User</option>
                     <option value="admin" ${user.permissions.admin ? 'selected' : ''}>Almighty Admin</option>
                 </select>
@@ -37,4 +37,9 @@ async function isAdmin(user) {
     const userDocReference = await firebase.firestore().doc(`users/${user.uid}`).get()
     if (!userDocReference.exists) return false
     return userDocReference.data().permissions.admin
+}
+
+async function modifyPermissions(uid, target) {
+    await updatePermission(uid, target.value)
+    populateUsers(firebase.auth().currentUser)
 }
