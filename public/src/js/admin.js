@@ -14,10 +14,10 @@ async function showAdminDashboard() {
     }
 }
 
-async function populateUsers() {
+async function populateUsers(user) {
     const $usersSection = document.getElementById('usersSection')
     const $usersRows = document.getElementById('usersRows')
-    if (await isAdmin(getCurrentUser)) {
+    if (await isAdmin(user)) {
 
         const usersCollection = await firebase.firestore().collection('users').get()
         const userRows = usersCollection.docs
