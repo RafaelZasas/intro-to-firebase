@@ -56,6 +56,11 @@ async function getUserData() {
     return await db.doc(`users/${getCurrentUser().uid}`).get();;
 }
 
+async function getAllUsers() {
+    const usersCollection = await firebase.firestore().collection('users').get()
+    return usersCollection.docs
+}
+
 /**
  * Inserts a new user into Firestore
  * @param {userCredential.user} user: the newly registered user

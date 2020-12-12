@@ -5,9 +5,8 @@ async function populateUsers() {
     const usersSection = document.getElementById('usersSection')
     const usersRows = document.getElementById('usersRows')
     if (await hasPermission('admin')) {
-        const usersCollection = await firebase.firestore().collection('users').get()
-        const userRows = usersCollection.docs
-            .map(userDoc => getUserRow(userDoc.data()))
+        const allUsers = await getAllUsers()
+        const userRows = allUsers.map(userDoc => getUserRow(userDoc.data()))
 
         usersRows.innerHTML = userRows.join('\n')
     } else {
