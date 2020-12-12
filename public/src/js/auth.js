@@ -1,3 +1,9 @@
+/**
+ * Returns the currently logged in user for use in other js files
+ */
+function getCurrentUser() {
+    return firebase.auth().currentUser;
+}
 
 function getProviderInstance(providerName) {
     switch (providerName) {
@@ -10,15 +16,13 @@ function getProviderInstance(providerName) {
     }
 }
 
-
-
 async function signInWithProvider(providerName) {
     const provider = getProviderInstance(providerName)
     let userCredential = await firebase.auth().signInWithPopup(provider);
 
     // determine if user data has already saved to firestore. Insert data otherwise.
     let userDetails = await getUserData();
-    if (!userDetails){
+    if (!userDetails) {
         await insertNewUser(userCredential.user);
     }
 }

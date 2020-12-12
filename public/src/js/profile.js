@@ -1,12 +1,11 @@
 firebase.auth().onAuthStateChanged(populateProfile)
 
-async function populateProfile() {
-    let user = getCurrentUser();
+async function populateProfile(user) {
     let verifyEmailButton = document.getElementById('verify-email')
     let userPhoto = user.photoURL;
-    if (!user.photoURL){
+    if (!user.photoURL) {
         let userDetails = await getUserData();
-         userPhoto = userDetails.data().photoURL;
+        userPhoto = userDetails.data().photoURL;
     }
 
     if (user) {
