@@ -23,86 +23,92 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
+ * Returns the currently logged in user for use in other js files
+ */
+function getCurrentUser(){
+    return firebase.auth().currentUser;
+}
+
+/**
  * Checks if the user exists and changes the UI appropriately
  */
 async function displayProfileUI(user) {
-    var $logInButton = document.getElementById('log-in');
-    var $logOutButton = document.getElementById('log-out');
-    var $adminPanelButton = document.getElementById('admin-panel')
-    var $profileButton = document.getElementById('profile');
+    let logInButton = document.getElementById('log-in');
+    let logOutButton = document.getElementById('log-out');
+    let adminPanelButton = document.getElementById('admin-panel')
+    let profileButton = document.getElementById('profile');
 
-    console.log('User: ', user);
     const userSignedIn = !!user
     // hide the login and sign up buttons when user signs in
-    if ($logInButton) {
-        $logInButton.hidden = userSignedIn;
+    if (logInButton) {
+        logInButton.hidden = userSignedIn;
     }
     // show the profile button when user signs in
-    if ($profileButton) {
-        $profileButton.hidden = !userSignedIn;
+    if (profileButton) {
+        profileButton.hidden = !userSignedIn;
     }
 
-    if ($logOutButton) {
-        $logOutButton.hidden = !userSignedIn;
+    if (logOutButton) {
+        logOutButton.hidden = !userSignedIn;
     }
 
-    if ($adminPanelButton) {
-        const isAdminUser = await isAdmin(user)
-        $adminPanelButton.hidden = !userSignedIn || !isAdminUser
+    if (adminPanelButton) {
+        const isAdminUser = await isAdmin()
+        adminPanelButton.hidden = !userSignedIn || !isAdminUser
     }
 }
 
 function toggleAuthModal() {
-    const $modal = document.getElementById('auth-modal')
-    if ($modal.classList.contains('is-active')) {
-        $modal.classList.remove('is-active')
+    const modal = document.getElementById('auth-modal')
+    if (modal.classList.contains('is-active')) {
+        modal.classList.remove('is-active')
     } else {
-        $modal.classList.add('is-active')
+        modal.classList.add('is-active')
     }
 }
 
 async function handleSignIn() {
-    const $errors = document.getElementById('auth-signin-errors')
-    const $emailInput = document.getElementById('auth-signin-email')
-    const $passwordInput = document.getElementById('auth-signin-password')
+    const errors = document.getElementById('auth-signin-errors')
+    const emailInput = document.getElementById('auth-signin-email')
+    const passwordInput = document.getElementById('auth-signin-password')
     try {
-        $errors.innerText = ''
-        await signIn($emailInput.value, $passwordInput.value)
+        errors.innerText = ''
+        await signIn(emailInput.value, passwordInput.value)
         toggleAuthModal()
     } catch (e) {
-        $errors.innerText = e.message
+        errors.innerText = e.message
     }
 }
 
 async function handleSignUp() {
-    const $errors = document.getElementById('auth-signup-errors')
-    const $emailInput = document.getElementById('auth-signup-email')
-    const $passwordInput = document.getElementById('auth-signup-password')
-    const $passwordConfirmationInput = document.getElementById('auth-signup-password-confirm')
+    const errors = document.getElementById('auth-signup-errors')
+    const emailInput = document.getElementById('auth-signup-email')
+    const passwordInput = document.getElementById('auth-signup-password')
+    const passwordConfirmationInput = document.getElementById('auth-signup-password-confirm')
 
     try {
-        $errors.innerText = ''
-        if ($passwordInput.value !== $passwordConfirmationInput.value) {
+        errors.innerText = ''
+        if (passwordInput.value !== passwordConfirmationInput.value) {
             throw new Error('Passwords do not match')
         }
-        await signUp($emailInput.value, $passwordInput.value)
+        await signUp(emailInput.value, passwordInput.value)
         toggleAuthModal()
     } catch (e) {
-        $errors.innerText = e.message
+        errors.innerText = e.message
     }
 }
 
 async function handleSignInWithProvider(providerName) {
-    $errors = document.getElementById('auth-provider-errors')
+    let errors = document.getElementById('auth-provider-errors')
     try {
         await signInWithProvider(providerName)
         toggleAuthModal()
     } catch (e) {
-        $errors.innerText = e.message
+        errors.innerText = e.message
     }
 }
 
 async function handleResetPassword() {
-    const $emailInput = document.getElementById('auth-signin-email')
-    await resetPassword($emailInput.value)
+    const emailInput = document.getElementById('auth-signin-email')
+    await resetPassword(emailInput.value)
 }

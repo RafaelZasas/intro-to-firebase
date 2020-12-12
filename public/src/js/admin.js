@@ -1,17 +1,18 @@
 firebase.auth().onAuthStateChanged(populateUsers)
 
-async function populateUsers(user) {
-    const $usersSection = document.getElementById('usersSection')
-    const $usersRows = document.getElementById('usersRows')
-    if (await isAdmin(user)) {
+async function populateUsers() {
+
+    const usersSection = document.getElementById('usersSection')
+    const usersRows = document.getElementById('usersRows')
+    if (await isAdmin()) {
 
         const usersCollection = await firebase.firestore().collection('users').get()
         const userRows = usersCollection.docs
             .map(userDoc => getUserRow(userDoc.data()))
 
-        $usersRows.innerHTML = userRows.join('\n')
+        usersRows.innerHTML = userRows.join('\n')
     } else {
-        $usersSection.innerText = 'Insufficient permissions'
+        usersSection.innerText = 'Insufficient permissions'
     }
 }
 
