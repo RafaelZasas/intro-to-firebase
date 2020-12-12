@@ -35,7 +35,18 @@ function getUserRow(user) {
 }
 
 async function modifyPermissions(uid, target) {
-    await updatePermission(uid, target.value)
-    await populateUsers(getCurrentUser())
+    try {
+        await updatePermission(uid, target.value)
+        await populateUsers(getCurrentUser())
+    } catch (error) {
+        console.error(error)
+        console.log(error.code);
+        if (error.code === 'permission-denied') {
+            alert(error.message)
+        }
+    }
+    finally {
+        window.location.reload()
+    }
 }
 

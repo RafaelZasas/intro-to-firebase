@@ -21,8 +21,6 @@ function getProducts(product_type) {
         productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
 
     });
-
-
 }
 
 function getProductInfo() {
