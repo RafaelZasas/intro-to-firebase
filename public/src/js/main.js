@@ -177,10 +177,14 @@ function populateNavbar() {
 /*
   This function will be called once an individual product is selected and firestore data is received
  */
-function populateProductDetails(doc) {
+async function populateProductDetails(doc) {
     // this function will retrieve the details for the selected product
 
     let productDetails = document.querySelector(`#product`);
+
+    let deleteButton = `
+        <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">Delete</button>
+    `
 
     productDetails.innerHTML = `
             <div class="column is-two-thirds is-offset-one-fifth"> 
@@ -193,7 +197,7 @@ function populateProductDetails(doc) {
                     </div>
                     <br>
                 <p class="title is-3" >Price: $${doc.data().price}</p>
-                <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">Delete</button>
+                ${await hasPermission('admin') ? deleteButton : ''}
             </div>
     `;
 
