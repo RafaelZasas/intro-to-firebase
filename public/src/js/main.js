@@ -183,19 +183,17 @@ function populateProductDetails(doc) {
     let productDetails = document.querySelector(`#product`);
 
     productDetails.innerHTML = `
-                 <div class="column is-two-thirds is-offset-one-fifth"> 
-                    <p class="title is-1 is-spaced">Name: ${doc.data().name}</p>
-                    <p class="subtitle is-3">Brand: ${doc.data().brand}</p>
-                        <div class="card-image">
-                            <figure class="image is-5by4">
-                                <img src= ${doc.data().image} alt=${doc.data().name}>
-                            </figure>
-                        </div>
-                        <br>
-                    <p class="title is-3" >Price: $${doc.data().price}</p>
-
-
-             
+            <div class="column is-two-thirds is-offset-one-fifth"> 
+                <p class="title is-1 is-spaced">Name: ${doc.data().name}</p>
+                <p class="subtitle is-3">Brand: ${doc.data().brand}</p>
+                    <div class="card-image">
+                        <figure class="image is-5by4">
+                            <img src= ${doc.data().image} alt=${doc.data().name}>
+                        </figure>
+                    </div>
+                    <br>
+                <p class="title is-3" >Price: $${doc.data().price}</p>
+                <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">Delete</button>
             </div>
     `;
 

@@ -44,6 +44,12 @@ function getProductInfo() {
     });
 }
 
+async function deleteProduct(docPath) {
+    console.log(docPath);
+    await db.doc(docPath).delete()
+    window.history.back()
+}
+
 /*
 This section deals with firestore calls related to the user
  */
