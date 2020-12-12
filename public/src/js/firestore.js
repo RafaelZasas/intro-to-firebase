@@ -49,7 +49,7 @@ This section deals with firestore calls related to the user
  */
 
 
-async function getUserData(){
+async function getUserData() {
     return await db.doc(`users/${getCurrentUser().uid}`).get();;
 }
 
@@ -77,12 +77,12 @@ async function insertNewUser(user) {
 }
 
 /**
- * Checks if the current user has admin permission. 
+ * Checks if the current user has the provided permission. 
  * Returns false if the user does not exist
  *
- * @returns {Promise<boolean>} Boolean promise which determines if user has admin permission or not
+ * @returns {Promise<boolean>} Boolean promise which determines if user has the provided permission or not
  */
-async function isAdmin() {
+async function hasPermission(permission) {
     let user = getCurrentUser();
     if (!user) return false;
 
@@ -90,27 +90,8 @@ async function isAdmin() {
 
     if (!userDocReference.exists) return false
 
-    return userDocReference.data().permissions.admin
+    return !!userDocReference.data().permissions[permission]
 }
-
-/**
- * Checks if the current user has editor permission.
- * Returns false if the user does not exist
- *
- * @returns {Promise<boolean>} Boolean promise which determines if user has editor permission or not
- */
-async function isEditor() {
-    let user = getCurrentUser();
-    if (!user) return false;
-
-    const userDocReference = await firebase.firestore().doc(`users/${user.uid}`).get()
-
-    if (!userDocReference.exists) return false
-
-    return userDocReference.data().permissions.edit
-}
-
-
 
 /**
  * Enables a specific permission for the user with the provided ID

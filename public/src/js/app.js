@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Returns the currently logged in user for use in other js files
  */
-function getCurrentUser(){
+function getCurrentUser() {
     return firebase.auth().currentUser;
 }
 
@@ -53,7 +53,7 @@ async function displayProfileUI(user) {
     }
 
     if (adminPanelButton) {
-        const isAdminUser = await isAdmin()
+        const isAdminUser = await hasPermission('admin')
         adminPanelButton.hidden = !userSignedIn || !isAdminUser
     }
 }
