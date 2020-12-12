@@ -16,7 +16,7 @@
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
-
+    <script type="text/javascript" src="../js/admin.js" defer></script> <!-- admin state logic -->
 
     <!--    STYLING     -->
     <!--    bulma css framework   -->
@@ -39,28 +39,31 @@
 
 </head>
 
-<body onload="populateNavbar();getProducts('shirts')"> <!-- call database for shirts collection-->
+<body onload="populateNavbar();">
+    <!-- call database for shoes collection  -->
 
-<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-<!--    Navbar information will be populated in here-->
-</nav>
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <!--    Navbar information will be populated in here-->
+    </nav>
 
+    <section class="section is-desktop is-vcentered">
+        <div id="usersSection" class="container">
+            <h1 class="title center">Users</h1>
 
-
-<section class="section is-desktop is-vcentered">
-    <div class="container">
-        <h1 class="title center">Shirts</h1>
-
-        <br>
-
-        <div class="columns is-multiline" id="productsSection">
-            <!--            cards will populate into here-->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>UID</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody id="usersRows">
+                    <!-- users will populate into here -->
+                </tbody>
+            </table>
         </div>
-
-
-    </div>
-</section>
-
-
+    </section>
 </body>
+
 </html>

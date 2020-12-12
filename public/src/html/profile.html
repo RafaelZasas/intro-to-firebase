@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
     <title>Intro To Firebase</title>
 
 
@@ -14,7 +16,7 @@
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
-    <script src="../js/profile.js" defer></script> <!-- profile page specific logic-->
+    <script type="text/javascript" src="../js/profile.js" defer></script> <!-- profile page specific logic-->
 
 
     <!--    STYLING     -->
@@ -113,13 +115,18 @@
 
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <div class="buttons" onclick="signOut()">
+                    <div class="buttons">
                         <div id="log-in">
                             <a class="button is-light" href="signIn.html">
                                 <strong>Log in</strong>
                             </a>
                         </div>
-                        <div id="log-out">
+                        <div id="admin-panel">
+                            <a class="button is-primary" href="admin.html">
+                                <strong>Admin Panel</strong>
+                            </a>
+                        </div>
+                        <div id="log-out" onclick="signOut()">
                             <a class="button is-light" href="../../index.html">
                                 <strong>Logout</strong>
                             </a>

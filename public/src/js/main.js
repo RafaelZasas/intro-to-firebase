@@ -88,7 +88,7 @@ function populateNavbar() {
                             </a>
                         </div>
                         <div id="profile">
-                            <a class="button is-primary" href="./profile.html">
+                            <a class="button is-primary" href="../html/profile.html">
                                 <strong>Profile</strong>
                             </a>
                         </div>
@@ -177,25 +177,27 @@ function populateNavbar() {
 /*
   This function will be called once an individual product is selected and firestore data is received
  */
-function populateProductDetails(doc) {
+async function populateProductDetails(doc) {
     // this function will retrieve the details for the selected product
 
     let productDetails = document.querySelector(`#product`);
 
+    let deleteButton = `
+        <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">Delete</button>
+    `
+
     productDetails.innerHTML = `
-                 <div class="column is-two-thirds is-offset-one-fifth"> 
-                    <p class="title is-1 is-spaced">Name: ${doc.data().name}</p>
-                    <p class="subtitle is-3">Brand: ${doc.data().brand}</p>
-                        <div class="card-image">
-                            <figure class="image is-5by4">
-                                <img src= ${doc.data().image} alt=${doc.data().name}>
-                            </figure>
-                        </div>
-                        <br>
-                    <p class="title is-3" >Price: $${doc.data().price}</p>
-
-
-             
+            <div class="column is-two-thirds is-offset-one-fifth"> 
+                <p class="title is-1 is-spaced">Name: ${doc.data().name}</p>
+                <p class="subtitle is-3">Brand: ${doc.data().brand}</p>
+                    <div class="card-image">
+                        <figure class="image is-5by4">
+                            <img src= ${doc.data().image} alt=${doc.data().name}>
+                        </figure>
+                    </div>
+                    <br>
+                <p class="title is-3" >Price: $${doc.data().price}</p>
+                ${await hasPermission('admin') ? deleteButton : ''}
             </div>
     `;
 
