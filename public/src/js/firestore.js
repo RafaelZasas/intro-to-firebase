@@ -9,50 +9,50 @@ let productsSection = document.querySelector(`#productsSection`);
  * @param {string} productType 
  */
 function getProducts(productType) {
-    // // this function queries the firestore database for all the product docs within the selected category
+    // this function queries the firestore database for all the product docs within the selected category
 
-    // sessionStorage.setItem("productType", productType) // set globally for use in getProductInfo()
+    sessionStorage.setItem("productType", productType) // set globally for use in getProductInfo()
 
-    // let index = 0; // to keep track of which product document were passing through
+    let index = 0; // to keep track of which product document were passing through
 
-    // db.collection(`products/${productType}/inventory`).get().then((querySnapshot) => {
+    db.collection(`products/${productType}/inventory`).get().then((querySnapshot) => {
 
-    //     querySnapshot.docs.forEach((doc) => {
+        querySnapshot.docs.forEach((doc) => {
 
-    //         populateProductCards(doc, index);// add each card individually; index is used to reference each of the cards
-    //         index++;
-    //     });
+            populateProductCards(doc, index);// add each card individually; index is used to reference each of the cards
+            index++;
+        });
 
-    //     productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
+        productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
 
-    // });
+    });
 }
 
 /**
  * Get the product information for the currently selected product (from Session Storage)
  */
 function getProductInfo() {
-    // // this function queries firestore for the selected product document
+    // this function queries firestore for the selected product document
 
-    // let docID = sessionStorage.getItem("docID"); // retrieve selected doc ID from session storage
-    // let productType = sessionStorage.getItem("productType")
+    let docID = sessionStorage.getItem("docID"); // retrieve selected doc ID from session storage
+    let productType = sessionStorage.getItem("productType")
 
-    // let docRef = db.collection(`products/${productType}/inventory`).doc(docID); // reference the product document
-    // docRef.get().then(function (doc) {
-    //     if (doc.exists) {
-    //         populateProductDetails(doc);
-    //     } else {
-    //         // doc.data() will be undefined in this case
-    //         console.log("No such document!");
-    //     }
-    // }).catch(function (error) {
-    //     console.log("Error getting document:", error);
-    // });
+    let docRef = db.collection(`products/${productType}/inventory`).doc(docID); // reference the product document
+    docRef.get().then(function (doc) {
+        if (doc.exists) {
+            populateProductDetails(doc);
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch(function (error) {
+        console.log("Error getting document:", error);
+    });
 }
 
 async function deleteProduct(docPath) {
-    // await db.doc(docPath).delete()
-    // window.history.back()
+    await db.doc(docPath).delete()
+    window.history.back()
 }
 
 /*
@@ -113,7 +113,7 @@ async function hasPermission(permission) {
 
     if (!userDocReference.exists) return false
 
-    return !!userDocReference.data().permissions[permission]
+    return  !!userDocReference.data().permissions[permission]
 }
 
 /**
