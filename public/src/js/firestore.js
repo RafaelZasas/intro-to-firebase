@@ -64,7 +64,7 @@ This section deals with firestore calls related to the user
  * @returns {firebase.firestore.DocumentReference}
  */
 async function getUserData() {
-    // return await db.doc(`users/${getCurrentUser().uid}`).get();
+    return await db.doc(`users/${getCurrentUser().uid}`).get();
 }
 
 /**
@@ -72,8 +72,8 @@ async function getUserData() {
  * @returns {[firebase.firebase.DocumentReference]}
  */
 async function getAllUsers() {
-    // const usersCollection = await firebase.firestore().collection('users').get()
-    // return usersCollection.docs
+    const usersCollection = await firebase.firestore().collection('users').get()
+    return usersCollection.docs
 }
 
 /**
@@ -82,21 +82,21 @@ async function getAllUsers() {
  */
 async function insertNewUser(user) {
     // Sets user data to firestore on login
-    // const userRef = db.doc(`users/${user.uid}`);
+    const userRef = db.doc(`users/${user.uid}`);
 
-    // const data = { // data payload we want to save
-    //     uid: user.uid,
-    //     email: user.email,
-    //     username: user.displayName,
-    //     photoURL: 'https://picsum.photos/300', // random img
-    //     permissions: { // for role based authentication
-    //         user: true,
-    //         edit: false,
-    //         admin: false
-    //     }
-    // };
+    const data = { // data payload we want to save
+        uid: user.uid,
+        email: user.email,
+        username: user.displayName,
+        photoURL: 'https://picsum.photos/300', // random img
+        permissions: { // for role based authentication
+            user: true,
+            edit: false,
+            admin: false
+        }
+    };
 
-    // return await userRef.set(data);
+    return await userRef.set(data);
 }
 
 /**
@@ -106,14 +106,14 @@ async function insertNewUser(user) {
  * @returns {Promise<boolean>} Boolean promise which determines if user has the provided permission or not
  */
 async function hasPermission(permission) {
-    // let user = getCurrentUser();
-    // if (!user) return false;
+    let user = getCurrentUser();
+    if (!user) return false;
 
-    // const userDocReference = await db.doc(`users/${user.uid}`).get()
+    const userDocReference = await db.doc(`users/${user.uid}`).get()
 
-    // if (!userDocReference.exists) return false
+    if (!userDocReference.exists) return false
 
-    // return !!userDocReference.data().permissions[permission]
+    return !!userDocReference.data().permissions[permission]
 }
 
 /**
@@ -122,14 +122,14 @@ async function hasPermission(permission) {
  * @param {string} permission: the name of the permission to enable
  */
 async function updatePermission(uid, permission) {
-    // const userRef = db.doc(`users/${uid}`);
+    const userRef = db.doc(`users/${uid}`);
 
-    // return await userRef.update(
-    //     'permissions',
-    //     {
-    //         user: permission === 'user',
-    //         edit: permission === 'edit',
-    //         admin: permission === 'admin',
-    //     }
-    // )
+    return await userRef.update(
+        'permissions',
+        {
+            user: permission === 'user',
+            edit: permission === 'edit',
+            admin: permission === 'admin',
+        }
+    )
 }
