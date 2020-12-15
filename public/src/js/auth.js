@@ -1,3 +1,10 @@
+/**
+ * Returns the currently logged in user for use in other js files
+ */
+function getCurrentUser() {
+    return firebase.auth().currentUser;
+}
+
 function getProviderInstance(providerName) {
     switch (providerName) {
         case 'google':
@@ -11,7 +18,13 @@ function getProviderInstance(providerName) {
 
 async function signInWithProvider(providerName) {
     const provider = getProviderInstance(providerName)
-    await firebase.auth().signInWithPopup(provider);
+    let userCredential = await firebase.auth().signInWithPopup(provider);
+
+    // determine if user data has already saved to firestore. Insert data otherwise.
+    let userDetails = await getUserData();
+    if (!userDetails) {
+        await insertNewUser(userCredential.user);
+    }
 }
 
 async function signOut() {
@@ -47,5 +60,6 @@ async function signIn(email, password) {
 }
 
 async function signUp(email, password) {
-    await firebase.auth().createUserWithEmailAndPassword(email, password)
+    let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    await insertNewUser(userCredential.user);
 }
