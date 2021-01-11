@@ -3,26 +3,26 @@
 This section deals with firestore calls related to product data
  */
 let productsSection = document.querySelector(`#productsSection`);
+
+
+/**
+ * Queries the firestore database for all the product docs within the selected type
+ */
 async function getProducts(product_type) {
-    // this function queries the firestore database for all the product docs within the selected category
-
     sessionStorage.setItem("productType", product_type) // set globally for use in getProductInfo()
-
-    let index = 0; // to keep track of which product document were passing through
 
     const querySnapshot = await db.collection(`products/${product_type}/inventory`).get()
 
-    querySnapshot.docs.forEach((doc) => {
-        populateProductCards(doc, index);// add each card individually; index is used to reference each of the cards
-        index++;
-    });
+    // add each card individually; index is used to reference each of the cards
+    querySnapshot.docs.forEach((doc, i) => populateProductCards(doc, i));
 
     productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
 }
 
+/**
+ * Queries firestore for the selected product document
+ */
 async function getProductInfo() {
-    // this function queries firestore for the selected product document
-
     let docID = sessionStorage.getItem("docID"); // retrieve selected doc ID from session storage
     let productType = sessionStorage.getItem("productType")
 
@@ -64,6 +64,7 @@ async function getAllUsers() {
 /**
  * Inserts a new user into Firestore
  * @param {userCredential.user} user: the newly registered user
+ * @returns {Promise<void>}
  */
 async function insertNewUser(user) {
     // Sets user data to firestore on login
@@ -81,7 +82,7 @@ async function insertNewUser(user) {
         }
     };
 
-    return await userRef.set(data);
+    await userRef.set(data);
 }
 
 /**
@@ -103,13 +104,15 @@ async function hasPermission(permission) {
 
 /**
  * Enables a specific permission for the user with the provided ID
- * @param {string} uid: the ID of the target user
- * @param {string} permission: the name of the permission to enable
+ * @param {string} uid The ID of the target user
+ * @param {string} permission The name of the permission to enable
+ * 
+ * @returns {Promise<void>}
  */
 async function updatePermission(uid, permission) {
     const userRef = db.doc(`users/${uid}`);
 
-    return await userRef.update(
+    await userRef.update(
         'permissions',
         {
             user: permission === 'user',
