@@ -117,3 +117,8 @@ async function populateCurrentProduct() {
 
     populateProductDetails(product)
 }
+
+async function getProducts(productType) {
+    const products = await getProductsByType(productType)
+    populateProductCards(products, productType)
+}

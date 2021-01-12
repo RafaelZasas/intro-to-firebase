@@ -2,19 +2,14 @@
 /*
 This section deals with firestore calls related to product data
  */
-let productsSection = document.querySelector(`#productsSection`);
-
 
 /**
  * Queries the firestore database for all the product docs within the selected type
  */
-async function getProducts(product_type) {
-    const querySnapshot = await db.collection(`products/${product_type}/inventory`).get()
+async function getProductsByType(productType) {
+    const querySnapshot = await db.collection(`products/${productType}/inventory`).get()
 
-    // add each card individually; index is used to reference each of the cards
-    querySnapshot.docs.forEach(doc => populateProductCards(doc, product_type))
-
-    productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
+    return querySnapshot.docs
 }
 
 /**
