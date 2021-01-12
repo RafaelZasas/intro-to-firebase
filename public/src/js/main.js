@@ -205,15 +205,15 @@ async function populateProductDetails(doc) {
 
 let productsHTML = '';
 
-function populateProductCards(doc, index) {
+function populateProductCards(doc, product_type) {
 
     let cardHTML = `
                  <div class="column is-one-quarter"> <!-- specify exactly 4 cards per row-->
-                 <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html">
-                    <div class="card" id='card${index}' >
+                 <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html?docID=${doc.id}&productType=${product_type}">
+                    <div class="card" id='${doc.id}' >
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src= ${doc.data().image} alt="item${index}">
+                                <img src= ${doc.data().image} alt="item_${doc.id}">
                             </figure>
                         </div>
                         <div class="card-content">

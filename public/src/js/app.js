@@ -106,3 +106,14 @@ async function handleResetPassword() {
     const emailInput = document.getElementById('auth-signin-email')
     await resetPassword(emailInput.value)
 }
+
+async function populateCurrentProduct() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    let docID = urlParams.get("docID"); // retrieve selected doc ID from query params
+    let productType = urlParams.get("productType")    
+
+    const product = await getProductInfo(docID, productType)
+
+    populateProductDetails(product)
+}

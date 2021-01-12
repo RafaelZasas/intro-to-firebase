@@ -9,12 +9,10 @@ let productsSection = document.querySelector(`#productsSection`);
  * Queries the firestore database for all the product docs within the selected type
  */
 async function getProducts(product_type) {
-    sessionStorage.setItem("productType", product_type) // set globally for use in getProductInfo()
-
     const querySnapshot = await db.collection(`products/${product_type}/inventory`).get()
 
     // add each card individually; index is used to reference each of the cards
-    querySnapshot.docs.forEach((doc, i) => populateProductCards(doc, i));
+    querySnapshot.docs.forEach(doc => populateProductCards(doc, product_type))
 
     productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
 }
@@ -22,21 +20,11 @@ async function getProducts(product_type) {
 /**
  * Queries firestore for the selected product document
  */
-async function getProductInfo() {
-    let docID = sessionStorage.getItem("docID"); // retrieve selected doc ID from session storage
-    let productType = sessionStorage.getItem("productType")
-
+async function getProductInfo(docID, productType) {
     let docRef = db.collection(`products/${productType}/inventory`).doc(docID); // reference the product document
 
     try {
-        const doc = await docRef.get()
-    
-        if (doc.exists) {
-            populateProductDetails(doc);
-        } else {
-            // doc.data() will be undefined in this case
-            console.log("No such document!");
-        }
+        return await docRef.get()
     } catch (error) {
         console.log("Error getting document:", error);
     }
