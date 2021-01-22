@@ -118,3 +118,8 @@ async function updatePermission(uid, permission) {
         }
     )
 }
+
+async function getAllCategories() {
+    const productsSnap = await db.collection('products').get()
+    return productsSnap.docs.map(doc => doc.id)
+}

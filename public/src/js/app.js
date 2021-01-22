@@ -106,3 +106,33 @@ async function handleResetPassword() {
     const emailInput = document.getElementById('auth-signin-email')
     await resetPassword(emailInput.value)
 }
+
+async function populateForm() {
+    const categories = await getAllCategories()
+    const categoriesSelect = document.getElementById('category')
+
+    let dropdown = `<select size=${categories.length} multiple id="categories-dropdown" onchange="updateSearchResults()">`
+    dropdown += categories
+        .map(category => {
+            return `<option value="${category}">${category}</option>`
+        })
+        .join('\n')
+    dropdown += '</select>'
+
+    categoriesSelect.innerHTML = dropdown
+}
+
+async function updateSearchResults() {
+    const searchValue = document.getElementById('search').value
+    const categoriesDropdown = document.getElementById('categories-dropdown')
+
+    const selectedCategories = []
+    for (const option of categoriesDropdown.options) {
+        if (option.selected) {
+            selectedCategories.push(option.value)
+        }
+    }
+
+    console.log(selectedCategories);
+    console.log(searchValue);
+}
