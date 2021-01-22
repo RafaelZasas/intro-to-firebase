@@ -123,8 +123,9 @@ async function populateForm() {
 }
 
 async function updateSearchResults() {
-    const searchValue = document.getElementById('search').value
+    const searchValue = document.getElementById('search').value.toLowerCase()
     const categoriesDropdown = document.getElementById('categories-dropdown')
+    const searchResultsList = document.getElementById('search-results')
 
     const selectedCategories = []
     for (const option of categoriesDropdown.options) {
@@ -133,6 +134,9 @@ async function updateSearchResults() {
         }
     }
 
-    console.log(selectedCategories);
-    console.log(searchValue);
+    let filteredProducts = await getFilteredProducts(selectedCategories)
+
+    filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
+
+    searchResultsList.innerHTML = filteredProducts.map(product => `<li>${product.name}</li>`).join('\n')
 }

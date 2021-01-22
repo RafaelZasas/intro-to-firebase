@@ -123,3 +123,12 @@ async function getAllCategories() {
     const productsSnap = await db.collection('products').get()
     return productsSnap.docs.map(doc => doc.id)
 }
+
+async function getFilteredProducts(categories) {
+    const productPartsSnaps = await Promise.all(categories.map(category => {
+        return db.collection(`products/${category}/inventory`).get()
+    }))
+    return productPartsSnaps.reduce((acc, partSnap) => {
+        return [...acc, ...partSnap.docs.map(doc => doc.data())]
+    }, [])
+}
