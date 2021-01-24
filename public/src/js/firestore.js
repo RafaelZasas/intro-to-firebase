@@ -124,10 +124,14 @@ async function getAllCategories() {
     return productsSnap.docs.map(doc => doc.id)
 }
 
-async function getFilteredProducts(categories) {
+async function getFilteredProducts(categories, minPrice, maxPrice) {
     const productPartsSnaps = await Promise.all(categories.map(category => {
-        return db.collection(`products/${category}/inventory`).get()
+        return db.collection(`products/${category}/inventory`)
+            .where('price', '>=', minPrice)
+            .where('price', '<=', maxPrice)
+            .get()
     }))
+    console.log(productPartsSnaps.map(s => s.docs))
     return productPartsSnaps.reduce((acc, partSnap) => {
         return [...acc, ...partSnap.docs.map(doc => doc.data())]
     }, [])

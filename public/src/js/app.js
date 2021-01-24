@@ -125,6 +125,8 @@ async function populateForm() {
 async function updateSearchResults() {
     const searchValue = document.getElementById('search').value.toLowerCase()
     const categoriesDropdown = document.getElementById('categories-dropdown')
+    const minPrice = document.getElementById('price-min').value
+    const maxPrice = document.getElementById('price-max').value
     const searchResultsList = document.getElementById('search-results')
 
     const selectedCategories = []
@@ -134,7 +136,11 @@ async function updateSearchResults() {
         }
     }
 
-    let filteredProducts = await getFilteredProducts(selectedCategories)
+    let filteredProducts = await getFilteredProducts(
+        selectedCategories,
+        parseInt(minPrice),
+        parseInt(maxPrice)
+    )
 
     filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
 
