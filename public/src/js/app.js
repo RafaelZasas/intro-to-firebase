@@ -107,34 +107,48 @@ async function handleResetPassword() {
     await resetPassword(emailInput.value)
 }
 
-async function populateForm() {
+function handleCategorySelected(category) {
+    const categoriesSelect = document.getElementById('category')
+
+    for (child of categoriesSelect.children) {
+        if (child.classList.contains('is-active')) {
+            child.classList.remove('is-active')
+        }
+    }
+
+    category.classList.add('is-active')
+
+    updateSearchResults()
+}
+
+async function populateCategories() {
     const categories = await getAllCategories()
     const categoriesSelect = document.getElementById('category')
 
-    let dropdown = `<select size=${categories.length} multiple id="categories-dropdown" onchange="updateSearchResults()">`
-    dropdown += categories
-        .map(category => {
-            return `<option value="${category}">${category}</option>`
+    categoriesSelect.innerHTML = categories
+        .map((category, i) => {
+            return `<a onclick="handleCategorySelected(this)" class="${i === 0 ? 'is-active' : ''}">${category}</a>`
         })
         .join('\n')
-    dropdown += '</select>'
 
-    categoriesSelect.innerHTML = dropdown
+    updateSearchResults()
 }
 
 async function updateSearchResults() {
     const searchValue = document.getElementById('search').value.toLowerCase()
-    const categoriesDropdown = document.getElementById('categories-dropdown')
+    const categoriesDropdown = document.getElementById('category')
     const minPrice = document.getElementById('price-min').value
     const maxPrice = document.getElementById('price-max').value
     const searchResultsList = document.getElementById('search-results')
 
     const selectedCategories = []
-    for (const option of categoriesDropdown.options) {
-        if (option.selected) {
-            selectedCategories.push(option.value)
+    for (const option of categoriesDropdown.children) {
+        if (option.classList.contains('is-active')) {
+            selectedCategories.push(option.innerText)
         }
     }
+
+    console.log(selectedCategories);
 
     let filteredProducts = await getFilteredProducts(
         selectedCategories,
@@ -147,6 +161,6 @@ async function updateSearchResults() {
     if (filteredProducts.length === 0) {
         searchResultsList.innerHTML = '<p>No products found</p>'
     } else {
-        searchResultsList.innerHTML = filteredProducts.map(product => `<li>${product.name}</li>`).join('\n')
+        searchResultsList.innerHTML = filteredProducts.map(product => `<a class="panel-block">${product.name}</a>`).join('\n')
     }
 }

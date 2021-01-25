@@ -41,7 +41,7 @@
 
 </head>
 
-<body onload="populateForm()">
+<body onload="populateCategories()">
 
     <!--Begin Nav-Bar Here-->
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
@@ -212,27 +212,28 @@
         <div class="container">
             <h1 class="title">Products</h1>
 
-            <div class="is-flex is-flex-direction-row is-align-items-center">
-                <input class="input is-medium" type="text" id="search">
-                <button class="button mx-3" onclick="updateSearchResults()">
-                    <span class="icon is-medium">
-                        <i class="fas fa-search"></i>
-                    </span>
-                </button>
+            <div class="panel">
+                <p class="panel-heading">Search Results</p>
+                <div class="panel-block is-flex is-flex-direction-row is-align-items-center">
+                    <input class="input is-medium" type="text" id="search">
+                    <button class="button mx-3" onclick="updateSearchResults()">
+                        <span class="icon is-medium">
+                            <i class="fas fa-search"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <p id="category" class="panel-tabs"></p>
+
+                <b class="is-full">Price:</b>
+                <div class="panel-block columns is-2 pt-4">
+                    <label for="price-min">From</label>
+                    <input id="price-min" class="input is-small column is-2" type="number" value="0">
+                    <label for="price-min">To</label>
+                    <input id="price-max" class="input is-small column is-2" type="number" value="50">
+                </div>
+                <div id="search-results"></div>
             </div>
-
-            <h2>Category:</h2>
-            <div class="select is-multiple" id="category"></div>
-
-            <h2>Price</h2>
-            <div class="columns">
-                From
-                <input id="price-min" class="input is-small column is-2" type="number" value="0">
-                To
-                <input id="price-max" class="input is-small column is-2" type="number" value="50">
-            </div>
-
-            <ul id="search-results"></ul>
 
             <br>
 
@@ -297,8 +298,6 @@
                     </a>
                 </div>
             </div>
-
-
         </div>
     </section>
 </body>
