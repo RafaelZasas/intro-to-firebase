@@ -124,15 +124,41 @@ async function getAllCategories() {
     return productsSnap.docs.map(doc => doc.id)
 }
 
-async function getFilteredProducts(categories, minPrice, maxPrice) {
+var firstDoc = null
+var lastDoc = null
+
+async function getFilteredProducts(categories, minPrice, maxPrice, option) {
+    const resultsPerPage = 5
     const productPartsSnaps = await Promise.all(categories.map(category => {
-        return db.collection(`products/${category}/inventory`)
+        let query = db.collection(`products/${category}/inventory`)
             .where('price', '>=', minPrice)
             .where('price', '<=', maxPrice)
-            .get()
+            .orderBy('price')
+
+        if (option === 'before') {
+            query = query
+                .endBefore(firstDoc)
+                .limitToLast(resultsPerPage)
+        } else if (option === 'after') {
+            query = query
+                .startAfter(lastDoc)
+                .limit(resultsPerPage)
+        } else {
+            query = query
+                .limit(resultsPerPage)
+        }
+
+        return query.get()
     }))
-    console.log(productPartsSnaps.map(s => s.docs))
-    return productPartsSnaps.reduce((acc, partSnap) => {
-        return [...acc, ...partSnap.docs.map(doc => doc.data())]
+
+    const docs = productPartsSnaps.reduce((acc, partSnap) => {
+        return [...acc, ...partSnap.docs]
     }, [])
+
+    if (docs.length > 0) {
+        firstDoc = docs[0]
+        lastDoc = docs[docs.length - 1]
+    }
+
+    return docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }

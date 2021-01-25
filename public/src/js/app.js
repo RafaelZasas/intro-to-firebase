@@ -134,7 +134,7 @@ async function populateCategories() {
     updateSearchResults()
 }
 
-async function updateSearchResults() {
+async function updateSearchResults(option) {
     const searchValue = document.getElementById('search').value.toLowerCase()
     const categoriesDropdown = document.getElementById('category')
     const minPrice = document.getElementById('price-min').value
@@ -148,15 +148,15 @@ async function updateSearchResults() {
         }
     }
 
-    console.log(selectedCategories);
-
     let filteredProducts = await getFilteredProducts(
         selectedCategories,
         parseInt(minPrice),
-        parseInt(maxPrice)
+        parseInt(maxPrice),
+        option
     )
 
-    filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
+    // filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
+
 
     if (filteredProducts.length === 0) {
         searchResultsList.innerHTML = '<p>No products found</p>'
