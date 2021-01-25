@@ -144,5 +144,9 @@ async function updateSearchResults() {
 
     filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
 
-    searchResultsList.innerHTML = filteredProducts.map(product => `<li>${product.name}</li>`).join('\n')
+    if (filteredProducts.length === 0) {
+        searchResultsList.innerHTML = '<p>No products found</p>'
+    } else {
+        searchResultsList.innerHTML = filteredProducts.map(product => `<li>${product.name}</li>`).join('\n')
+    }
 }
