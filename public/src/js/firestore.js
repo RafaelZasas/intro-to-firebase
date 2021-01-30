@@ -132,6 +132,7 @@ var lastDoc = null
 
 async function getFilteredProducts(categories, minPrice, maxPrice, option) {
     const resultsPerPage = 5
+
     const productPartsSnaps = await Promise.all(categories.map(category => {
         let query = db.collection(`products/${category}/inventory`)
             .where('price', '>=', minPrice)
@@ -154,9 +155,7 @@ async function getFilteredProducts(categories, minPrice, maxPrice, option) {
         return query.get()
     }))
 
-    const docs = productPartsSnaps.reduce((acc, partSnap) => {
-        return [...acc, ...partSnap.docs]
-    }, [])
+    const docs = productPartsSnaps.map(snap => snap.docs).flat()
 
     if (docs.length > 0) {
         firstDoc = docs[0]
