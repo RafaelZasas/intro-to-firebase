@@ -3,8 +3,8 @@
  */
 
 
-/*
-  This function will be called in every html page other than index due to path's being different
+/**
+ * This function will be called in every html page other than index due to path's being different
  */
 function populateNavbar() {
     let headTag = document.querySelector('#navbar');
@@ -174,8 +174,10 @@ function populateNavbar() {
     `;
 }
 
-/*
-  This function will be called once an individual product is selected and firestore data is received
+/**
+ * This function will be called once an individual product is selected and firestore data is received
+ * @param {String} doc the document of the selected product
+ * @return {Promise<void>}
  */
 async function populateProductDetails(doc) {
     // this function will retrieve the details for the selected product
@@ -203,27 +205,35 @@ async function populateProductDetails(doc) {
 
 }
 
-let productsHTML = '';
-
-function populateProductCards(doc, index) {
-
-    let cardHTML = `
-                 <div class="column is-one-quarter"> <!-- specify exactly 4 cards per row-->
-                 <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html">
-                    <div class="card" id='card${index}' >
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src= ${doc.data().image} alt="item${index}">
-                            </figure>
+/**
+ * Called on load and on re-draw of a product category's page, this function builds the HTML string
+ * of cards which will populate the screen
+ * @param {String} docs The documents with each product's information, used to populate each card individually
+ * @param {String} product_type The product type of the page the user is viewing
+ */
+function populateProductCards(docs, product_type) {
+    let productsSection = document.querySelector(`#productsSection`);
+    let productsHTML = '';
+    
+    // add each card individually;
+    docs.forEach(doc => {
+        productsHTML += `
+                     <div class="column is-one-quarter"> <!-- specify exactly 4 cards per row-->
+                     <a onclick="sessionStorage.setItem('docID','${doc.id}');" href="../html/productPage.html?docID=${doc.id}&productType=${product_type}">
+                        <div class="card" id='${doc.id}' >
+                            <div class="card-image">
+                                <figure class="image is-4by3">
+                                    <img src= ${doc.data().image} alt="item_${doc.id}">
+                                </figure>
+                            </div>
+                            <div class="card-content">
+                                <p class="title is-4" >${doc.data().name}</p>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <p class="title is-4" >${doc.data().name}</p>
-                        </div>
-                    </div>
-                </a>
-            </div>
-    `;
+                    </a>
+                </div>
+        `;
+    })
 
-    productsHTML += cardHTML; // add the individual cards to the stack
-
+    productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
 }
