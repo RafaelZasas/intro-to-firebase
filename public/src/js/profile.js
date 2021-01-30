@@ -1,5 +1,10 @@
 firebase.auth().onAuthStateChanged(populateProfile)
 
+/**
+ * Populates the users profile page with their information and email verification status
+ * @param {firebase.auth.User} user The user object of the currently signed in user
+ * @return {Promise<void>}
+ */
 async function populateProfile(user) {
     let verifyEmailButton = document.getElementById('verify-email')
     let userPhoto = user.photoURL;

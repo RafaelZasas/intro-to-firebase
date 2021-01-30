@@ -3,8 +3,8 @@
  */
 
 
-/*
-  This function will be called in every html page other than index due to path's being different
+/**
+ * This function will be called in every html page other than index due to path's being different
  */
 function populateNavbar() {
     let headTag = document.querySelector('#navbar');
@@ -174,8 +174,10 @@ function populateNavbar() {
     `;
 }
 
-/*
-  This function will be called once an individual product is selected and firestore data is received
+/**
+ * This function will be called once an individual product is selected and firestore data is received
+ * @param {String} doc the document of the selected product
+ * @return {Promise<void>}
  */
 async function populateProductDetails(doc) {
     // this function will retrieve the details for the selected product
@@ -203,7 +205,12 @@ async function populateProductDetails(doc) {
 
 }
 
-
+/**
+ * Called on load and on re-draw of a product category's page, this function builds the HTML string
+ * of cards which will populate the screen
+ * @param {String} docs The documents with each product's information, used to populate each card individually
+ * @param {String} product_type The product type of the page the user is viewing
+ */
 function populateProductCards(docs, product_type) {
     let productsSection = document.querySelector(`#productsSection`);
     let productsHTML = '';

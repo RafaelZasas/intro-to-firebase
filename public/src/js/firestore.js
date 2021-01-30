@@ -5,6 +5,8 @@ This section deals with firestore calls related to product data
 
 /**
  * Queries the firestore database for all the product docs within the selected type
+ * @param {String} productType The product category which will be used to query the database for the selected products
+ * @return {Promise<Array>} A list of firestore documents with the product information
  */
 async function getProductsByType(productType) {
     const querySnapshot = await db.collection(`products/${productType}/inventory`).get()
@@ -13,7 +15,10 @@ async function getProductsByType(productType) {
 }
 
 /**
- * Queries firestore for the selected product document
+ *  Queries firestore for the selected product document
+ * @param {String} docID The document ID of the selected product
+ * @param {String} productType The category/ product type of the selected product
+ * @return {Promise<Firebase Document>} The product document retrieved from firestore
  */
 async function getProductInfo(docID, productType) {
     let docRef = db.collection(`products/${productType}/inventory`).doc(docID); // reference the product document
@@ -25,6 +30,11 @@ async function getProductInfo(docID, productType) {
     }
 }
 
+/**
+ * Deletes a selected product from the firestore database
+ * @param {String} docPath The path to the document which is to be deleted
+ * @return {Promise<void>}
+ */
 async function deleteProduct(docPath) {
     await db.doc(docPath).delete()
     window.history.back()
@@ -34,11 +44,18 @@ async function deleteProduct(docPath) {
 This section deals with firestore calls related to the user
  */
 
-
+/**
+ * Gets the information of the currently signed in user's document
+ * @return {Promise<*>}
+ */
 async function getUserData() {
-    return await db.doc(`users/${getCurrentUser().uid}`).get();;
+    return await db.doc(`users/${getCurrentUser().uid}`).get();
 }
 
+/**
+ * Retrieves all of the user documents form firestore
+ * @return {Promise<Array>} List of all the user documents
+ */
 async function getAllUsers() {
     const usersCollection = await firebase.firestore().collection('users').get()
     return usersCollection.docs

@@ -5,6 +5,11 @@ function getCurrentUser() {
     return firebase.auth().currentUser;
 }
 
+/**
+ * Called by signInWithProvider, this function returns a provider instance from firebase
+ * @param {String} providerName The name of the provider which will be mapped to its corresponding firebase auth provider
+ * @return {firebase.auth.GoogleAuthProvider|firebase.auth.GithubAuthProvider}
+ */
 function getProviderInstance(providerName) {
     switch (providerName) {
         case 'google':
@@ -16,6 +21,11 @@ function getProviderInstance(providerName) {
     }
 }
 
+/**
+ * Signs a user in using a provider and updates the firestore database with the user information
+ * @param {String} providerName The name of the provider that the user selected
+ * @return {Promise<void>}
+ */
 async function signInWithProvider(providerName) {
     const provider = getProviderInstance(providerName)
     let userCredential = await firebase.auth().signInWithPopup(provider);
@@ -27,6 +37,10 @@ async function signInWithProvider(providerName) {
     }
 }
 
+/**
+ * This will sign the user out and output the event to the console
+ * @return {Promise<void>}
+ */
 async function signOut() {
     try {
         await firebase.auth().signOut();
@@ -36,6 +50,10 @@ async function signOut() {
     }
 }
 
+/**
+ * Sends an email to the user, prompting them to verify their email
+ * @return {Promise<void>}
+ */
 async function verifyEmail() {
     try {
         const user = firebase.auth().currentUser
@@ -46,6 +64,11 @@ async function verifyEmail() {
     }
 }
 
+/**
+ * Sends an email to the user prompting them to reset their password
+ * @param {String} email
+ * @return {Promise<void>}
+ */
 async function resetPassword(email) {
     try {
         await firebase.auth().sendPasswordResetEmail(email)
@@ -55,10 +78,22 @@ async function resetPassword(email) {
     }
 }
 
+/**
+ * Handles authentication using email and password
+ * @param {String} email The users entered email
+ * @param {String} password The users entered password
+ * @return {Promise<void>}
+ */
 async function signIn(email, password) {
     await firebase.auth().signInWithEmailAndPassword(email, password)
 }
 
+/**
+ * Handles authentication using email and password and updates the database with the new users document information
+ * @param {String} email The users entered email
+ * @param {String} password The users entered password
+ * @return {Promise<void>}
+ */
 async function signUp(email, password) {
     let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
     await insertNewUser(userCredential.user);
