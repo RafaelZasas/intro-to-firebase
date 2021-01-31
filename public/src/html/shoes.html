@@ -51,24 +51,47 @@
         <h1 class="title center">Shoes</h1>
         <!--        Row for Sorting by value or alphabetically -->
         <div class="row">
-    <span
-            class="icon"
-            style="padding-right: 10px; cursor: pointer"
-            onclick="getProducts('shoes', 'value')"
-            id="valueSort">
+            <div class="columns">
+                <div class="column is-1">
+                    <span
+                            class="icon"
+                            style="padding-right: 10px; padding-left: 10px; cursor: pointer"
+                            onclick="getProducts('shoes', 'value')"
+                            id="valueSort">
         <!-- The opposite icon for sorting by value will replace the initial icon here-->
                 <i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-up"></i>
+                    </span>
 
-
-    </span>
-            <span
-                    onclick="getProducts('shoes', 'name')"
-                    style="padding-left: 10px;cursor: pointer"
-                    id="nameSort"
-                    class="icon">
+                    <span
+                            onclick="getProducts('shoes', 'name')"
+                            style="margin-left: 10px;cursor: pointer"
+                            id="nameSort"
+                            class="icon">
          <!-- The opposite icon for sorting by name will replace the initial icon here-->
                 <i class="fas fa-sort-alpha-up"></i>
-    </span>
+                </span>
+                </div>
+
+                <div class="column is-4 is-offset-7">
+                    <div class="is-right control">
+                        <div class="field is-grouped">
+                            <p class="control is-expanded">
+                                <label>
+                                    <input class="input" type="text" placeholder="Find for a product">
+                                </label>
+                            </p>
+                            <p class="control">
+                                <a class="button is-info">
+
+                                    <span class="icon is-medium">
+                            <i class="fas fa-search"></i>
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <br>
 
