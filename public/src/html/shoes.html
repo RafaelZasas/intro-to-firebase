@@ -42,18 +42,38 @@
 <body onload="populateNavbar();getProducts('shoes')">  <!-- call database for shoes collection  -->
 
 <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-<!--    Navbar information will be populated in here-->
+    <!--    Navbar information will be populated in here-->
 </nav>
 
 
 <section class="section is-desktop is-vcentered">
     <div class="container">
         <h1 class="title center">Shoes</h1>
+        <!--        Row for Sorting by value or alphabetically -->
+        <div class="row">
+    <span
+            class="icon"
+            style="padding-right: 10px; cursor: pointer"
+            onclick="getProducts('shoes', 'value')"
+            id="valueSort">
+        <!-- The opposite icon for sorting by value will replace the initial icon here-->
+                <i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-up"></i>
 
+
+    </span>
+            <span
+                    onclick="getProducts('shoes', 'name')"
+                    style="padding-left: 10px;cursor: pointer"
+                    id="nameSort"
+                    class="icon">
+         <!-- The opposite icon for sorting by name will replace the initial icon here-->
+                <i class="fas fa-sort-alpha-up"></i>
+    </span>
+        </div>
         <br>
 
         <div class="columns is-multiline" id="productsSection">
-<!--            cards will populate into here-->
+            <!--            cards will populate into here-->
         </div>
 
 

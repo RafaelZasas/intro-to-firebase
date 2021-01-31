@@ -203,12 +203,41 @@ async function populateCurrentProduct() {
     await populateProductDetails(product)
 }
 
+let valueSortAsc = true;
+let nameSortAsc = true;
 /**
+ *
  * Retrieves all the inventory of a given product category and populates the categories page with cards
  * @param productType The category to be requested from firestore and populated on the screen.
+ * @param {null | String} sort The metric by which we want to filter the data. defaults to null
  * @return {Promise<void>}
  */
-async function getProducts(productType) {
-    const products = await getProductsByType(productType)
-    populateProductCards(products, productType)
+async function getProducts(productType, sort = null) {
+    let products;
+
+    if (sort === 'value'){
+
+        valueSortAsc = !valueSortAsc;
+        document.getElementById('valueSort').innerHTML = valueSortAsc?
+            '<i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-up"></i>' :
+            '<i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-down"></i>'
+
+        // TODO: Create function which queries the database for the products and orders by price
+        // products = valueSortAsc?
+        //   await getSortedProducts(productType, sort) : await getProductsByType(productType, sort, 'desc');
+    } else if (sort === 'name'){
+
+        nameSortAsc = !nameSortAsc;
+        document.getElementById('nameSort').innerHTML = nameSortAsc?
+            '<i class="fas fa-sort-alpha-up"></i>' :
+            '<i class="fas fa-sort-alpha-down"></i>'
+
+        // TODO: Create function which queries the database for the products and orders by name
+        // products = valueSortAsc?
+        //   await getSortedProducts(productType, sort) : await getProductsByType(productType, sort, 'desc');
+    } else products = await getProductsByType(productType);
+
+
+    populateProductCards(products, productType);
+
 }
