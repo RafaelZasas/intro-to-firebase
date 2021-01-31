@@ -40,25 +40,45 @@
 </head>
 
 <body onload="populateNavbar();getProducts('bags')">
-    <!-- call database for bags collection  -->
+<!-- call database for bags collection  -->
 
-    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-        <!--    Navbar information will be populated in here-->
-    </nav>
+<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+    <!--    Navbar information will be populated in here-->
+</nav>
 
-    <section class="section is-desktop is-vcentered">
-        <div class="container">
-            <h1 class="title center">Bags</h1>
+<section class="section is-desktop is-vcentered">
+    <div class="container">
+        <h1 class="title center">Bags</h1>
+        <!--        Row for Sorting by value or alphabetically -->
+        <div class="row">
+    <span
+            class="icon"
+            style="padding-right: 10px; cursor: pointer"
+            onclick="getProducts('bags', 'value')"
+            id="valueSort">
+        <!-- The opposite icon for sorting by value will replace the initial icon here-->
+                <i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-up"></i>
 
-            <br>
 
-            <div class="columns is-multiline" id="productsSection">
+    </span>
+            <span
+                    onclick="getProducts('bags', 'name')"
+                    style="padding-left: 10px;cursor: pointer"
+                    id="nameSort"
+                    class="icon">
+         <!-- The opposite icon for sorting by name will replace the initial icon here-->
+                <i class="fas fa-sort-alpha-up"></i>
+    </span>
+        </div>
+        <br>
 
-            </div>
-
+        <div class="columns is-multiline" id="productsSection">
 
         </div>
-    </section>
+
+
+    </div>
+</section>
 
 
 </body>
