@@ -1,4 +1,3 @@
-
 /*
 This section deals with firestore calls related to product data
  */
@@ -6,13 +5,96 @@ This section deals with firestore calls related to product data
 /**
  * Queries the firestore database for all the product docs within the selected type
  * @param {String} productType The product category which will be used to query the database for the selected products
- * @return {Promise<Array>} A list of firestore documents with the product information
+ * @return {Promise<Array>} A list of firestore documents with the product information and doc ID
  */
 async function getProductsByType(productType) {
     const querySnapshot = await db.collection(`products/${productType}/inventory`).get()
 
-    return querySnapshot.docs
+    return querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
 }
+
+var firstDoc = null
+var lastDoc = null
+
+/**
+ * Gets a list of products that have been filtered by price, sorted by price or name or searched for
+ * @param {String} category The category of product being queried
+ * @param {Map} options The configuration for the query consisting of optional query params
+ * @return {Promise<(*&{id: *})[]>}
+ */
+async function getFilteredProducts(category, options) {
+    const resultsPerPage = 5
+    // base query
+    let query = db.collection(`products/${category}/inventory`);
+    console.log(options)
+
+    if (options.get('sortByPrice')) {
+        query = options.get('sortByPrice').desc ?
+            query.orderBy('price', 'desc') :
+            query.orderBy('price')
+    }
+
+    if (options.get('sortByName')) {
+        query = options.get('sortByName').desc ?
+            query.orderBy('name', 'desc') :
+            query.orderBy('name')
+    }
+
+    // TODO: Implement options to filter by the following
+    if (options.get('minPrice')) {
+        query = query.where('price', '>=', options.get('minPrice'))
+    }
+
+    if (options.get('maxPrice')) {
+        query = query.where('price', '<=', options.get('maxPrice'))
+    }
+
+    if (options.get('after')) {
+        query = query
+            .startAfter(lastDoc)
+            .limit(resultsPerPage)
+    }
+
+    if (options.get('before')) {
+        query = query
+            .endBefore(firstDoc)
+            .limitToLast(resultsPerPage)
+    }
+
+
+    // const productPartsSnaps = await Promise.all(categories.map(category => {
+    //     let query = db.collection(`products/${category}/inventory`)
+    //         // .where('price', '>=', minPrice)
+    //         // .where('price', '<=', maxPrice)
+    //         .orderBy('price')
+    //
+    //     if (option === 'before') {
+    //         query = query
+    //             .endBefore(firstDoc)
+    //             .limitToLast(resultsPerPage)
+    //     } else if (option === 'after') {
+    //         query = query
+    //             .startAfter(lastDoc)
+    //             .limit(resultsPerPage)
+    //     } else {
+    //         query = query
+    //             .limit(resultsPerPage)
+    //     }
+    //
+    //     return query.get()
+    // }))
+
+    // const docs = productPartsSnaps.map(snap => snap.docs).flat()
+    let snapshot = await query.get();
+
+    if (snapshot.docs.length > 0) {
+        firstDoc = snapshot.docs[0]
+        lastDoc = snapshot.docs[snapshot.docs.length - 1]
+    }
+
+    return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+}
+
 
 /**
  *  Queries firestore for the selected product document
@@ -86,7 +168,7 @@ async function insertNewUser(user) {
 }
 
 /**
- * Checks if the current user has the provided permission. 
+ * Checks if the current user has the provided permission.
  * Returns false if the user does not exist
  *
  * @returns {Promise<boolean>} Boolean promise which determines if user has the provided permission or not
@@ -106,7 +188,7 @@ async function hasPermission(permission) {
  * Enables a specific permission for the user with the provided ID
  * @param {string} uid The ID of the target user
  * @param {string} permission The name of the permission to enable
- * 
+ *
  * @returns {Promise<void>}
  */
 async function updatePermission(uid, permission) {
@@ -122,45 +204,3 @@ async function updatePermission(uid, permission) {
     )
 }
 
-async function getAllCategories() {
-    const productsSnap = await db.collection('products').get()
-    return productsSnap.docs.map(doc => doc.id)
-}
-
-var firstDoc = null
-var lastDoc = null
-
-async function getFilteredProducts(categories, minPrice, maxPrice, option) {
-    const resultsPerPage = 5
-
-    const productPartsSnaps = await Promise.all(categories.map(category => {
-        let query = db.collection(`products/${category}/inventory`)
-            .where('price', '>=', minPrice)
-            .where('price', '<=', maxPrice)
-            .orderBy('price')
-
-        if (option === 'before') {
-            query = query
-                .endBefore(firstDoc)
-                .limitToLast(resultsPerPage)
-        } else if (option === 'after') {
-            query = query
-                .startAfter(lastDoc)
-                .limit(resultsPerPage)
-        } else {
-            query = query
-                .limit(resultsPerPage)
-        }
-
-        return query.get()
-    }))
-
-    const docs = productPartsSnaps.map(snap => snap.docs).flat()
-
-    if (docs.length > 0) {
-        firstDoc = docs[0]
-        lastDoc = docs[docs.length - 1]
-    }
-
-    return docs.map(doc => ({ id: doc.id, ...doc.data() }))
-}
