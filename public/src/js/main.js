@@ -211,7 +211,7 @@ async function populateProductDetails(doc) {
  * @param {String} docs The documents with each product's information, used to populate each card individually
  * @param {String} product_type The product type of the page the user is viewing
  */
-function populateProductCards(docs, product_type) {
+function populateProductCards(docs, product_type, strategy='set') {
     let productsSection = document.querySelector(`#productsSection`);
     let productsHTML = '';
     
@@ -235,5 +235,10 @@ function populateProductCards(docs, product_type) {
         `;
     })
 
-    productsSection.innerHTML = productsHTML; // adds all of the cards html to the products grid
+    // adds all of the cards html to the products grid
+    if (strategy === 'set') {
+        productsSection.innerHTML = productsHTML; 
+    } else if (strategy === 'append') {
+        productsSection.innerHTML += productsHTML; 
+    }
 }

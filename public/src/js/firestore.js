@@ -2,8 +2,7 @@
 This section deals with firestore calls related to product data
  */
 
-var firstDoc = null
-var lastDoc = null
+let lastDoc = null
 
 /**
  * Gets a list of products that have been filtered by price, sorted by price or name or searched for
@@ -12,7 +11,7 @@ var lastDoc = null
  * @return {Promise<(*&{id: *})[]>}
  */
 async function getFilteredProducts(category, options) {
-    const resultsPerPage = 5
+    const resultsPerPage = 4
     console.log(options)
 
     // base query
@@ -39,49 +38,18 @@ async function getFilteredProducts(category, options) {
         query = query.where('price', '<=', options.maxPrice)
     }
 
-    if (options.after) {
-        query = query
-            .startAfter(lastDoc)
-            .limit(resultsPerPage)
+    if (!options.loadMore) {
+        lastDoc = null
     }
 
-    if (options.before) {
-        query = query
-            .endBefore(firstDoc)
-            .limitToLast(resultsPerPage)
+    if (lastDoc) {
+        query = query.startAfter(lastDoc)
     }
 
-
-    // const productPartsSnaps = await Promise.all(categories.map(category => {
-    //     let query = db.collection(`products/${category}/inventory`)
-    //         // .where('price', '>=', minPrice)
-    //         // .where('price', '<=', maxPrice)
-    //         .orderBy('price')
-    //
-    //     if (option === 'before') {
-    //         query = query
-    //             .endBefore(firstDoc)
-    //             .limitToLast(resultsPerPage)
-    //     } else if (option === 'after') {
-    //         query = query
-    //             .startAfter(lastDoc)
-    //             .limit(resultsPerPage)
-    //     } else {
-    //         query = query
-    //             .limit(resultsPerPage)
-    //     }
-    //
-    //     return query.get()
-    // }))
-
-    // const docs = productPartsSnaps.map(snap => snap.docs).flat()
-    let snapshot = await query.get();
-
-    if (snapshot.docs.length > 0) {
-        firstDoc = snapshot.docs[0]
-        lastDoc = snapshot.docs[snapshot.docs.length - 1]
-    }
-
+    let snapshot = await query.limit(resultsPerPage).get();
+    
+    lastDoc = snapshot.docs[snapshot.docs.length - 1]
+    
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
