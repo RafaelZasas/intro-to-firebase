@@ -223,11 +223,11 @@ function populateProductCards(docs, product_type) {
                         <div class="card" id='${doc.id}' >
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src= ${doc.data().image} alt="item_${doc.id}">
+                                    <img src= ${doc.image} alt="item_${doc.id}">
                                 </figure>
                             </div>
                             <div class="card-content">
-                                <p class="title is-4" >${doc.data().name}</p>
+                                <p class="title is-4" >${doc.name}</p>
                             </div>
                         </div>
                     </a>
@@ -235,5 +235,5 @@ function populateProductCards(docs, product_type) {
         `;
     })
 
-    productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
+    productsSection.innerHTML = productsHTML; // adds all of the cards html to the products grid
 }

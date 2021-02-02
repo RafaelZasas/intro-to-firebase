@@ -1,4 +1,3 @@
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -130,32 +129,6 @@ async function handleResetPassword() {
     await resetPassword(emailInput.value)
 }
 
-function handleCategorySelected(category) {
-    const categoriesSelect = document.getElementById('category')
-
-    for (child of categoriesSelect.children) {
-        if (child.classList.contains('is-active')) {
-            child.classList.remove('is-active')
-        }
-    }
-
-    category.classList.add('is-active')
-
-    updateSearchResults()
-}
-
-async function populateCategories() {
-    const categories = await getAllCategories()
-    const categoriesSelect = document.getElementById('category')
-
-    categoriesSelect.innerHTML = categories
-        .map((category, i) => {
-            return `<a onclick="handleCategorySelected(this)" class="${i === 0 ? 'is-active' : ''}">${category}</a>`
-        })
-        .join('\n')
-
-    updateSearchResults()
-}
 
 async function updateSearchResults(option) {
     const searchValue = document.getElementById('search').value.toLowerCase()
@@ -187,6 +160,7 @@ async function updateSearchResults(option) {
         searchResultsList.innerHTML = filteredProducts.map(product => `<a class="panel-block">${product.name}</a>`).join('\n')
     }
 }
+
 /**
  * Populates the page with the selected product information.
  * Triggered when user selects a product on either of the category pages
@@ -203,41 +177,50 @@ async function populateCurrentProduct() {
     await populateProductDetails(product)
 }
 
-let valueSortAsc = true;
+let priceSortAsc = true;
 let nameSortAsc = true;
+let optionsMap = {
+    sortByName: { desc: false },
+    sortByPrice: { desc: false },
+    filter: {}
+}
+
 /**
  *
  * Retrieves all the inventory of a given product category and populates the categories page with cards
  * @param productType The category to be requested from firestore and populated on the screen.
- * @param {null | String} sort The metric by which we want to filter the data. defaults to null
+ * @param {null | String | {any: any} } options The metric by which we want to filter the data. defaults to null
  * @return {Promise<void>}
  */
-async function getProducts(productType, sort = null) {
-    let products;
+async function getProducts(productType, options = null) {
+    optionsMap.sortByName = {}
+    optionsMap.sortByPrice = {}
 
-    if (sort === 'value'){
+    if (options === 'sortByPrice') {
+        console.log('sorting by price')
 
-        valueSortAsc = !valueSortAsc;
-        document.getElementById('valueSort').innerHTML = valueSortAsc?
-            '<i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-up"></i>' :
-            '<i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-down"></i>'
+        priceSortAsc = !priceSortAsc
 
-        // TODO: Create function which queries the database for the products and orders by price
-        // products = valueSortAsc?
-        //   await getSortedProducts(productType, sort) : await getProductsByType(productType, sort, 'desc');
-    } else if (sort === 'name'){
+        // change the icon's direction
+        document.getElementById('valueSort').innerHTML = `
+            <i class="fas fa-funnel-dollar"></i>
+            <i class="fas fa-sort-${priceSortAsc ? 'up' : 'down'}"></i>`
 
-        nameSortAsc = !nameSortAsc;
-        document.getElementById('nameSort').innerHTML = nameSortAsc?
-            '<i class="fas fa-sort-alpha-up"></i>' :
-            '<i class="fas fa-sort-alpha-down"></i>'
+        // configure query options
+        optionsMap.sortByPrice = { desc: !priceSortAsc };
 
-        // TODO: Create function which queries the database for the products and orders by name
-        // products = valueSortAsc?
-        //   await getSortedProducts(productType, sort) : await getProductsByType(productType, sort, 'desc');
-    } else products = await getProductsByType(productType);
+    } else if (options === 'sortByName') {
+        console.log('sorting by name')
 
+        nameSortAsc = !nameSortAsc
+
+        document.getElementById('nameSort').innerHTML = `<i class="fas fa-sort-alpha-${nameSortAsc ? 'up' : 'down'}"></i>`
+
+        optionsMap.sortByName = { desc: !nameSortAsc };
+
+    }
+
+    const products = await getFilteredProducts(productType, optionsMap);
 
     populateProductCards(products, productType);
-
 }
