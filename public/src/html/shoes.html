@@ -39,7 +39,7 @@
 
 </head>
 
-<body onload="populateNavbar();getProducts('shoes')">  <!-- call database for shoes collection  -->
+<body onload="populateNavbar();getProducts('shoes', 'sortByName')">  <!-- call database for shoes collection  -->
 
 <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
     <!--    Navbar information will be populated in here-->
@@ -98,8 +98,7 @@
         <div class="columns is-multiline" id="productsSection">
             <!--            cards will populate into here-->
         </div>
-
-
+        <button class="button" onclick="loadMoreProducts('shoes')">Load More</button>
     </div>
 </section>
 

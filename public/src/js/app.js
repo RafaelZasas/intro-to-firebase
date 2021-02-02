@@ -224,3 +224,9 @@ async function getProducts(productType, options = null) {
 
     populateProductCards(products, productType);
 }
+
+async function loadMoreProducts(productType) {
+    const products = await getFilteredProducts(productType, { loadMore: true, ...optionsMap });
+
+    populateProductCards(products, productType, 'append');
+}
