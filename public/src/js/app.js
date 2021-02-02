@@ -177,9 +177,13 @@ async function populateCurrentProduct() {
     await populateProductDetails(product)
 }
 
-let valueSortAsc = true;
+let priceSortAsc = true;
 let nameSortAsc = true;
-let optionsMap = new Map();
+let optionsMap = {
+    sortByName: { desc: false },
+    sortByPrice: { desc: false },
+    filter: {}
+}
 
 /**
  *
@@ -189,43 +193,34 @@ let optionsMap = new Map();
  * @return {Promise<void>}
  */
 async function getProducts(productType, options = null) {
-
-    // init products variable to accept filtered products list
-    let products;
-
-    // initialize new or existing option params
-    optionsMap.set('sortByName', options === 'sortByName' ? {} : optionsMap.get('sortByName'));
-    optionsMap.set('sortByPrice', options === 'sortByPrice' ? {} : optionsMap.get('sortByPrice'));
-    optionsMap.set('filter', options === 'filter' ? options : optionsMap.get('filter'));
-    optionsMap.set('search', options === 'search' ? options : optionsMap.get('search'));
+    optionsMap.sortByName = {}
+    optionsMap.sortByPrice = {}
 
     if (options === 'sortByPrice') {
         console.log('sorting by price')
+
+        priceSortAsc = !priceSortAsc
+
         // change the icon's direction
-        valueSortAsc = !valueSortAsc;
-        document.getElementById('valueSort').innerHTML = valueSortAsc ?
-            '<i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-up"></i>' :
-            '<i class="fas fa-funnel-dollar"></i><i class="fas fa-sort-down"></i>'
+        document.getElementById('valueSort').innerHTML = `
+            <i class="fas fa-funnel-dollar"></i>
+            <i class="fas fa-sort-${priceSortAsc ? 'up' : 'down'}"></i>`
 
         // configure query options
-        optionsMap.get('sortByPrice').desc = !valueSortAsc;
-
-        products = await getFilteredProducts(productType, optionsMap);
+        optionsMap.sortByPrice = { desc: !priceSortAsc };
 
     } else if (options === 'sortByName') {
         console.log('sorting by name')
 
-        nameSortAsc = !nameSortAsc;
-        document.getElementById('nameSort').innerHTML = nameSortAsc ?
-            '<i class="fas fa-sort-alpha-up"></i>' :
-            '<i class="fas fa-sort-alpha-down"></i>'
+        nameSortAsc = !nameSortAsc
 
-        optionsMap.get('sortByName').desc = !nameSortAsc;
+        document.getElementById('nameSort').innerHTML = `<i class="fas fa-sort-alpha-${nameSortAsc ? 'up' : 'down'}"></i>`
 
-        products = await getFilteredProducts(productType, optionsMap);
+        optionsMap.sortByName = { desc: !nameSortAsc };
 
-    } else products = await getProductsByType(productType);
+    }
+
+    const products = await getFilteredProducts(productType, optionsMap);
 
     populateProductCards(products, productType);
-
 }

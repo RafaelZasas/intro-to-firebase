@@ -2,17 +2,6 @@
 This section deals with firestore calls related to product data
  */
 
-/**
- * Queries the firestore database for all the product docs within the selected type
- * @param {String} productType The product category which will be used to query the database for the selected products
- * @return {Promise<Array>} A list of firestore documents with the product information and doc ID
- */
-async function getProductsByType(productType) {
-    const querySnapshot = await db.collection(`products/${productType}/inventory`).get()
-
-    return querySnapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
-}
-
 var firstDoc = null
 var lastDoc = null
 
@@ -24,38 +13,39 @@ var lastDoc = null
  */
 async function getFilteredProducts(category, options) {
     const resultsPerPage = 5
-    // base query
-    let query = db.collection(`products/${category}/inventory`);
     console.log(options)
 
-    if (options.get('sortByPrice')) {
-        query = options.get('sortByPrice').desc ?
-            query.orderBy('price', 'desc') :
-            query.orderBy('price')
+    // base query
+    let query = db.collection(`products/${category}/inventory`);
+
+    if (options.sortByPrice?.desc === true) {
+        query = query.orderBy('price', 'desc')
+    } else if (options.sortByPrice?.desc === false) {
+        query = query.orderBy('price')
     }
 
-    if (options.get('sortByName')) {
-        query = options.get('sortByName').desc ?
-            query.orderBy('name', 'desc') :
-            query.orderBy('name')
+    if (options.sortByName?.desc === true) {
+        query = query.orderBy('name', 'desc')
+    } else if (options.sortByName?.desc === false) {
+        query = query.orderBy('name')
     }
 
     // TODO: Implement options to filter by the following
-    if (options.get('minPrice')) {
-        query = query.where('price', '>=', options.get('minPrice'))
+    if (options.minPrice) {
+        query = query.where('price', '>=', options.minPrice)
     }
 
-    if (options.get('maxPrice')) {
-        query = query.where('price', '<=', options.get('maxPrice'))
+    if (options.maxPrice) {
+        query = query.where('price', '<=', options.maxPrice)
     }
 
-    if (options.get('after')) {
+    if (options.after) {
         query = query
             .startAfter(lastDoc)
             .limit(resultsPerPage)
     }
 
-    if (options.get('before')) {
+    if (options.before) {
         query = query
             .endBefore(firstDoc)
             .limitToLast(resultsPerPage)
@@ -92,7 +82,7 @@ async function getFilteredProducts(category, options) {
         lastDoc = snapshot.docs[snapshot.docs.length - 1]
     }
 
-    return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
 
