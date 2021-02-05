@@ -210,6 +210,7 @@ async function populateProductDetails(doc) {
  * of cards which will populate the screen
  * @param {String} docs The documents with each product's information, used to populate each card individually
  * @param {String} product_type The product type of the page the user is viewing
+ * @param {String <"set" | "append">} strategy Determines if documents are being loaded for the first time or appended
  */
 function populateProductCards(docs, product_type, strategy='set') {
     let productsSection = document.querySelector(`#productsSection`);
@@ -241,4 +242,22 @@ function populateProductCards(docs, product_type, strategy='set') {
     } else if (strategy === 'append') {
         productsSection.innerHTML += productsHTML; 
     }
+}
+
+
+/**
+ * Loads more products when user scrolls to the end of the screen
+ * @param type
+ * @return {Promise<(function(*): Promise<void>)|*>}
+ */
+async function loadProductsOnScroll(type){
+     return window.onscroll = async function (ev) {
+
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            // you're at the bottom of the page
+            console.log('bottom');
+            await loadMoreProducts(type)
+
+        }
+    };
 }

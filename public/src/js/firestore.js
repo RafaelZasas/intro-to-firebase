@@ -11,7 +11,7 @@ let lastDoc = null
  * @return {Promise<(*&{id: *})[]>}
  */
 async function getFilteredProducts(category, options) {
-    const resultsPerPage = 4
+    const resultsPerPage = 6
     console.log(options)
 
     // base query
