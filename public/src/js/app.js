@@ -193,8 +193,7 @@ let optionsMap = {
  * @return {Promise<void>}
  */
 async function getProducts(productType, options = null) {
-    optionsMap.sortByName = {}
-    optionsMap.sortByPrice = {}
+
 
     if (options === 'sortByPrice') {
         console.log('sorting by price')
@@ -221,10 +220,16 @@ async function getProducts(productType, options = null) {
     }
 
     const products = await getFilteredProducts(productType, optionsMap);
-
+    productsRetrieved = 0;
+    maxDocumentsReached = false;
     populateProductCards(products, productType);
 }
 
+/**
+ * Loads the next x products where x = 2 on mobile && 4 on tablet or higher and appends to screen
+ * @param {String <"shoes"|"shirts"|"bags"|"hats">} productType
+ * @return {Promise<void>}
+ */
 async function loadMoreProducts(productType) {
     const products = await getFilteredProducts(productType, { loadMore: true, ...optionsMap });
 

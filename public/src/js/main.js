@@ -245,18 +245,18 @@ function populateProductCards(docs, product_type, strategy='set') {
 }
 
 
+let maxDocumentsReached = false // stops the scroll function from loading more documents when true
 /**
  * Loads more products when user scrolls to the end of the screen
- * @param type
+ * @param {String <"shoes"|"shirts"|"bags"|"hats">} type
  * @return {Promise<(function(*): Promise<void>)|*>}
  */
 async function loadProductsOnScroll(type){
      return window.onscroll = async function (ev) {
 
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            // you're at the bottom of the page
-            console.log('bottom');
-            await loadMoreProducts(type)
+            // at the bottom of the page
+            maxDocumentsReached? console.log('max documents loaded') : await loadMoreProducts(type)
 
         }
     };

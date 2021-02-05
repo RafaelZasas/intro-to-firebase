@@ -3,52 +3,70 @@ This section deals with firestore calls related to product data
  */
 
 let lastDoc = null
-
+let productsRetrieved = 0;
 /**
  * Gets a list of products that have been filtered by price, sorted by price or name or searched for
  * @param {String} category The category of product being queried
- * @param {Map} options The configuration for the query consisting of optional query params
+ * @param {Object} options The configuration for the query consisting of optional query params
  * @return {Promise<(*&{id: *})[]>}
  */
 async function getFilteredProducts(category, options) {
-    const resultsPerPage = 6
+    let resultsPerPage;
+    let width = window.innerWidth
+    if (width <= 1024) {
+        resultsPerPage = 2;
+    } else resultsPerPage = 8;
+
+
+    const categoryInfo = await db.doc(`products/${category}`).get();
+    const maxProducts = categoryInfo.data().inventorySize;
+    console.log(maxProducts)
+
+
     console.log(options)
 
-    // base query
-    let query = db.collection(`products/${category}/inventory`);
+    async function buildQuery(){
 
-    if (options.sortByPrice?.desc === true) {
-        query = query.orderBy('price', 'desc')
-    } else if (options.sortByPrice?.desc === false) {
-        query = query.orderBy('price')
-    }
+        // base query
+        let query = db.collection(`products/${category}/inventory`);
 
-    if (options.sortByName?.desc === true) {
-        query = query.orderBy('name', 'desc')
-    } else if (options.sortByName?.desc === false) {
-        query = query.orderBy('name')
-    }
+        options.sortByPrice?.desc ?  query = query.orderBy('price', 'desc'): query = query.orderBy('price')
 
-    // TODO: Implement options to filter by the following
-    if (options.minPrice) {
-        query = query.where('price', '>=', options.minPrice)
-    }
+        options.sortByName?.desc === true ? query = query.orderBy('name', 'desc') : query = query.orderBy('name')
 
-    if (options.maxPrice) {
-        query = query.where('price', '<=', options.maxPrice)
+        // TODO: Implement options to filter by the following
+        if (options.priceFilter){
+            query = options.priceFilter.minPrice ?
+                query.where('price', '>=', options.priceFilter.minPrice) :
+                query = query.where('price', '<=', options.priceFilter.maxPrice);
+        }
+
+
+        if (lastDoc) {
+            query = query.startAfter(lastDoc)
+        }
+
+        let snapshot = await query.limit(resultsPerPage).get();
+        productsRetrieved += resultsPerPage
+        if (productsRetrieved >= maxProducts) {
+            maxDocumentsReached = true;
+        }
+
+        return snapshot
     }
 
     if (!options.loadMore) {
         lastDoc = null
     }
 
-    if (lastDoc) {
-        query = query.startAfter(lastDoc)
-    }
 
-    let snapshot = await query.limit(resultsPerPage).get();
-    
+    let snapshot = await buildQuery();
+    console.log(productsRetrieved)
+
     lastDoc = snapshot.docs[snapshot.docs.length - 1]
+
+
+
     
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
