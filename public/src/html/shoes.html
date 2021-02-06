@@ -60,7 +60,7 @@ loadProductsOnScroll('shoes')">  <!-- listen for end of scroll on window -->
                     <span
                             class="icon tooltip"
                             style="margin-right: 10px; padding-left: 10px; cursor: pointer"
-                            onclick="getProducts('shoes', 'sortByPrice')"
+                            onclick="getProducts('shoes', {sortByPrice : {}})"
                             id="valueSort"> <!-- Section for sort by price Icons and tool tip-->
 
         <!-- The opposite icon for sorting by value will replace the initial icon here-->
@@ -70,7 +70,7 @@ loadProductsOnScroll('shoes')">  <!-- listen for end of scroll on window -->
                     </span>
 
                     <span
-                            onclick="getProducts('shoes', 'sortByName')"
+                            onclick="getProducts('shoes', {sortByName: {}})"
                             style="cursor: pointer;margin-right: 10px;"
                             id="nameSort"
                             class="icon tooltip"> <!-- Section for sort by name Icons and tool tip-->
@@ -85,12 +85,28 @@ loadProductsOnScroll('shoes')">  <!-- listen for end of scroll on window -->
                 <div class="column  is-2-desktop" style="margin-right: 10px; margin-left: 10px;">
                     <div class="slidecontainer tooltip">
                         <span class="tooltiptext" id="minPriceSliderOutput">min price: 0</span>
-                        <input type="range" min="1" max="1000" value="0" id="minPriceRangeSlider">
+                        <input
+                                type="range"
+                                min="1"
+                                max="1000"
+                                value="10"
+                                onmouseup = "FilterByMinPrice('shoes', this.value)"
+                                id="minPriceRangeSlider">
+                        <label for="minPriceRangeSlider" class="has-text-weight-semibold" id="minPriceLabel">$10</label>
                     </div>
 
                     <div class="slidecontainer tooltip">
-                        <span class="tooltiptext" id="maxPriceSliderOutput">min price: 0</span>
-                        <input type="range" min="1" max="1000" value="0" id="maxPriceRangeSlider">
+                        <span class="tooltiptext" id="maxPriceSliderOutput">max price: 0</span>
+                        <input
+                                type="range"
+                                min="1"
+                                max="1000"
+                                value="999"
+                                id="maxPriceRangeSlider"
+                                onmouseup = "FilterByMaxPrice('shoes', this.value)"
+                        >
+                        <label for="maxPriceRangeSlider" class="has-text-weight-semibold" id="maxPriceLabel">$999</label>
+
                     </div>
                 </div>
 

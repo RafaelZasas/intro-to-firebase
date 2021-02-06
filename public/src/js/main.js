@@ -208,12 +208,11 @@ async function populateProductDetails(doc) {
 /**
  * Called on load and on re-draw of a product category's page, this function builds the HTML string
  * of cards which will populate the screen
- * @param {String} docs The documents with each product's information, used to populate each card individually
+ * @param {Array<{}>} docs The documents with each product's information, used to populate each card individually
  * @param {String} product_type The product type of the page the user is viewing
  * @param {String <"set" | "append">} strategy Determines if documents are being loaded for the first time or appended
  */
 function populateProductCards(docs, product_type, strategy='set') {
-    //TODO: Show Price on Cards
     let productsSection = document.querySelector(`#productsSection`);
     let productsHTML = '';
     
@@ -230,6 +229,7 @@ function populateProductCards(docs, product_type, strategy='set') {
                             </div>
                             <div class="card-content">
                                 <p class="title is-4" >${doc.name}</p>
+                                <p>$${doc.price}</p>
                             </div>
                         </div>
                     </a>

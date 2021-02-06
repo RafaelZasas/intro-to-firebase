@@ -182,7 +182,7 @@ let nameSortAsc = true;
 let optionsMap = {
     sortByName: { desc: false },
     sortByPrice: { desc: false },
-    filter: {}
+    priceFilter: { minPrice: null, maxPrice: null}
 }
 
 /**
@@ -193,9 +193,10 @@ let optionsMap = {
  * @return {Promise<void>}
  */
 async function getProducts(productType, options = null) {
+    optionsMap.priceFilter = options.priceFilter;
+    console.log(`filters: ${optionsMap.priceFilter}`)
 
-
-    if (options === 'sortByPrice') {
+    if (options.sortByPrice) {
         console.log('sorting by price')
         priceSortAsc = !priceSortAsc
 
@@ -209,7 +210,7 @@ async function getProducts(productType, options = null) {
         optionsMap.sortByName = null
         optionsMap.sortByPrice = { desc: !priceSortAsc };
 
-    } else if (options === 'sortByName') {
+    } else if (options.sortByName) {
         console.log('sorting by name')
 
         nameSortAsc = !nameSortAsc
