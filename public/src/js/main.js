@@ -208,10 +208,11 @@ async function populateProductDetails(doc) {
 /**
  * Called on load and on re-draw of a product category's page, this function builds the HTML string
  * of cards which will populate the screen
- * @param {String} docs The documents with each product's information, used to populate each card individually
+ * @param {Array<{}>} docs The documents with each product's information, used to populate each card individually
  * @param {String} product_type The product type of the page the user is viewing
+ * @param {String <"set" | "append">} strategy Determines if documents are being loaded for the first time or appended
  */
-function populateProductCards(docs, product_type) {
+function populateProductCards(docs, product_type, strategy='set') {
     let productsSection = document.querySelector(`#productsSection`);
     let productsHTML = '';
     
@@ -223,11 +224,12 @@ function populateProductCards(docs, product_type) {
                         <div class="card" id='${doc.id}' >
                             <div class="card-image">
                                 <figure class="image is-4by3">
-                                    <img src= ${doc.data().image} alt="item_${doc.id}">
+                                    <img src= ${doc.image} alt="item_${doc.id}">
                                 </figure>
                             </div>
                             <div class="card-content">
-                                <p class="title is-4" >${doc.data().name}</p>
+                                <p class="title is-4" >${doc.name}</p>
+                                <p>$${doc.price}</p>
                             </div>
                         </div>
                     </a>
@@ -235,5 +237,28 @@ function populateProductCards(docs, product_type) {
         `;
     })
 
-    productsSection.innerHTML += productsHTML; // adds all of the cards html to the products grid
+    // adds all of the cards html to the products grid
+    if (strategy === 'set') {
+        productsSection.innerHTML = productsHTML; 
+    } else if (strategy === 'append') {
+        productsSection.innerHTML += productsHTML; 
+    }
+}
+
+
+let maxDocumentsReached = false // stops the scroll function from loading more documents when true
+/**
+ * Loads more products when user scrolls to the end of the screen
+ * @param {String <"shoes"|"shirts"|"bags"|"hats">} type
+ * @return {Promise<(function(*): Promise<void>)|*>}
+ */
+async function loadProductsOnScroll(type){
+     return window.onscroll = async function (ev) {
+
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            // at the bottom of the page
+            maxDocumentsReached? console.log('max documents loaded') : await loadMoreProducts(type)
+
+        }
+    };
 }

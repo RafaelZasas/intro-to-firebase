@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // Get all "navbar-burger" elements
@@ -8,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if ($navbarBurgers.length > 0) {
 
         // Add a click event on each of them
-        $navbarBurgers.forEach( el => {
+        $navbarBurgers.forEach(el => {
             el.addEventListener('click', () => {
 
                 // Get the target from the "data-target" attribute
@@ -23,4 +22,61 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // DOM elements for the sliders
+
+    const minPriceSlider = document.getElementById("minPriceRangeSlider");
+    const minSliderOutput = document.getElementById("minPriceSliderOutput");
+    const minPriceLabel = document.getElementById("minPriceLabel");
+    minSliderOutput.innerHTML = `min price: $${minPriceSlider.value}`; // Display the default slider value
+
+    const maxPriceSlider = document.getElementById("maxPriceRangeSlider");
+    const maxSliderOutput = document.getElementById("maxPriceSliderOutput");
+    const maxPriceLabel =document.getElementById("maxPriceLabel");
+    maxSliderOutput.innerHTML = `max price: $${maxPriceSlider.value}`; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+    minPriceSlider.oninput = function() {
+        let minPrice = this.value
+        maxPriceSlider.value =  Math.max(maxPriceSlider.value, minPrice);
+        minPriceLabel.innerHTML = '$'+minPrice;
+        minSliderOutput.innerHTML = `min price: $${minPrice}`;
+    }
+
+    maxPriceSlider.oninput = function() {
+        let maxPrice = this.value
+        maxPriceLabel.innerHTML = '$'+maxPrice
+        minPriceSlider.value =  Math.min(minPriceSlider.value, maxPrice);
+        maxSliderOutput.innerHTML = `max price: $${this.value}`;
+    }
+
 });
+
+/**
+ * Triggers the function to repopulate the screen with products filtered by max price
+ * @param {String} productType
+ * @param {String} value The sliders current value
+ * @return {Promise<void>}
+ */
+ async function filterByMaxPrice (productType, value) { // when user stops slider
+     let maxPrice = parseInt(value);
+    await getProducts(productType, {
+        priceFilter: {maxPrice: maxPrice},
+        sortByPrice: {desc: false},
+        sortByName: null
+    })
+}
+
+/**
+ * Triggers the function to repopulate the screen with products filtered by max price
+ * @param {String} productType
+ * @param {String} value The sliders current value
+ * @return {Promise<void>}
+ */
+async function filterByMinPrice (productType, value){ // when user stops slider
+    let minPrice = parseInt(value);
+    await getProducts(productType, {
+        priceFilter: {minPrice: minPrice},
+        sortByPrice: {desc: false},
+        sortByName: null
+    })
+}

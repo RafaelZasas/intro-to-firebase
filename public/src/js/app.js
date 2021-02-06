@@ -1,4 +1,3 @@
-
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -130,6 +129,38 @@ async function handleResetPassword() {
     await resetPassword(emailInput.value)
 }
 
+
+async function updateSearchResults(option) {
+    const searchValue = document.getElementById('search').value.toLowerCase()
+    const categoriesDropdown = document.getElementById('category')
+    const minPrice = document.getElementById('price-min').value
+    const maxPrice = document.getElementById('price-max').value
+    const searchResultsList = document.getElementById('search-results')
+
+    const selectedCategories = []
+    for (const option of categoriesDropdown.children) {
+        if (option.classList.contains('is-active')) {
+            selectedCategories.push(option.innerText)
+        }
+    }
+
+    let filteredProducts = await getFilteredProducts(
+        selectedCategories,
+        parseInt(minPrice),
+        parseInt(maxPrice),
+        option
+    )
+
+    // filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
+
+
+    if (filteredProducts.length === 0) {
+        searchResultsList.innerHTML = '<p>No products found</p>'
+    } else {
+        searchResultsList.innerHTML = filteredProducts.map(product => `<a class="panel-block">${product.name}</a>`).join('\n')
+    }
+}
+
 /**
  * Populates the page with the selected product information.
  * Triggered when user selects a product on either of the category pages
@@ -139,19 +170,72 @@ async function populateCurrentProduct() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     let docID = urlParams.get("docID"); // retrieve selected doc ID from query params
-    let productType = urlParams.get("productType")    
+    let productType = urlParams.get("productType")
 
     const product = await getProductInfo(docID, productType)
 
     await populateProductDetails(product)
 }
 
+let priceSortAsc = true;
+let nameSortAsc = true;
+let optionsMap = {
+    sortByName: { desc: false },
+    sortByPrice: { desc: false },
+    priceFilter: { minPrice: null, maxPrice: null}
+}
+
 /**
+ *
  * Retrieves all the inventory of a given product category and populates the categories page with cards
  * @param productType The category to be requested from firestore and populated on the screen.
+ * @param {null | String | {any: any} } options The metric by which we want to filter the data. defaults to null
  * @return {Promise<void>}
  */
-async function getProducts(productType) {
-    const products = await getProductsByType(productType)
-    populateProductCards(products, productType)
+async function getProducts(productType, options = null) {
+    optionsMap.priceFilter = options?.priceFilter;
+    console.log(`filters: ${optionsMap.priceFilter}`)
+
+    if (options?.sortByPrice) {
+        console.log('sorting by price')
+        priceSortAsc = !priceSortAsc
+
+        // change the icon's direction
+        document.getElementById('valueSort').innerHTML = `
+            <span class="tooltiptext">Sort by price</span>
+            <i class="fas fa-funnel-dollar"></i>
+            <i class="fas fa-sort-${priceSortAsc ? 'up' : 'down'}"></i>`
+
+        // configure query options
+        optionsMap.sortByName = null
+        optionsMap.sortByPrice = { desc: !priceSortAsc };
+
+    } else if (options?.sortByName) {
+        console.log('sorting by name')
+
+        nameSortAsc = !nameSortAsc
+
+        document.getElementById('nameSort').innerHTML =
+            `<span class="tooltiptext">Sort by name</span>
+            <i class="fas fa-sort-alpha-${nameSortAsc ? 'up' : 'down'}"></i>`
+        optionsMap.sortByPrice = null
+        optionsMap.sortByName = { desc: !nameSortAsc };
+
+    }
+
+    const products = await getFilteredProducts(productType, optionsMap);
+    productsRetrieved = 0;
+    maxDocumentsReached = false;
+    populateProductCards(products, productType);
+}
+
+/**
+ * Loads the next x products where x = 2 on mobile && 4 on tablet or higher and appends to screen
+ * @param {String <"shoes"|"shirts"|"bags"|"hats">} productType
+ * @return {Promise<void>}
+ */
+async function loadMoreProducts(productType) {
+    const products = await getFilteredProducts(productType, { loadMore: true, ...optionsMap });
+
+    populateProductCards(products, productType, 'append');
 }

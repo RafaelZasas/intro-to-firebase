@@ -1,18 +1,82 @@
-
 /*
 This section deals with firestore calls related to product data
  */
 
+let lastDoc = null
+let productsRetrieved = 0;
 /**
- * Queries the firestore database for all the product docs within the selected type
- * @param {String} productType The product category which will be used to query the database for the selected products
- * @return {Promise<Array>} A list of firestore documents with the product information
+ * Gets a list of products that have been filtered by price, sorted by price or name or searched for
+ * @param {String} category The category of product being queried
+ * @param {Object} options The configuration for the query consisting of optional query params
+ * @return {Promise<(*&{id: *})[]>}
  */
-async function getProductsByType(productType) {
-    const querySnapshot = await db.collection(`products/${productType}/inventory`).get()
+async function getFilteredProducts(category, options) {
+    let resultsPerPage;
+    let width = window.innerWidth
+    if (width <= 1024) {
+        resultsPerPage = 2;
+    } else resultsPerPage = 8;
 
-    return querySnapshot.docs
+
+    const categoryInfo = await db.doc(`products/${category}`).get();
+    const maxProducts = categoryInfo.data().inventorySize;
+    console.log(`Inventory Size for ${category} is ${maxProducts}`);
+
+
+    console.log(options)
+
+    async function buildQuery(){
+
+        // base query
+        let query = db.collection(`products/${category}/inventory`);
+
+        if (options.sortByPrice){ // if sort by price is not null or undefined
+            query = options.sortByPrice.desc ?  query.orderBy('price', 'desc'): query.orderBy('price');
+        }
+
+        if (options.sortByName){ // if sort by name is not null or undefined
+            query =  options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
+        }
+
+        if (options.priceFilter){ // if sort by price filter is not null or undefined
+            if (options.priceFilter.minPrice){
+                query =  query.where('price', '>=', options.priceFilter.minPrice);
+            }
+
+            if (options.priceFilter.maxPrice){
+                query = query.where('price', '<=', options.priceFilter.maxPrice);
+            }
+        }
+
+        if (lastDoc) {
+            query = query.startAfter(lastDoc)
+        }
+
+        let snapshot = await query.limit(resultsPerPage).get();
+        productsRetrieved += resultsPerPage
+        if (productsRetrieved >= maxProducts) {
+            maxDocumentsReached = true;
+        }
+
+        return snapshot
+    }
+
+    if (!options.loadMore) {
+        lastDoc = null
+    }
+
+
+    let snapshot = await buildQuery();
+    console.log(`${productsRetrieved} productsRetrieved`)
+
+    lastDoc = snapshot.docs[snapshot.docs.length - 1]
+
+
+
+    
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
+
 
 /**
  *  Queries firestore for the selected product document
@@ -86,7 +150,7 @@ async function insertNewUser(user) {
 }
 
 /**
- * Checks if the current user has the provided permission. 
+ * Checks if the current user has the provided permission.
  * Returns false if the user does not exist
  *
  * @returns {Promise<boolean>} Boolean promise which determines if user has the provided permission or not
@@ -106,7 +170,7 @@ async function hasPermission(permission) {
  * Enables a specific permission for the user with the provided ID
  * @param {string} uid The ID of the target user
  * @param {string} permission The name of the permission to enable
- * 
+ *
  * @returns {Promise<void>}
  */
 async function updatePermission(uid, permission) {
@@ -121,3 +185,4 @@ async function updatePermission(uid, permission) {
         }
     )
 }
+
