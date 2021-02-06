@@ -10,69 +10,49 @@ let productsRetrieved = 0;
  * @param {Object} options The configuration for the query consisting of optional query params
  * @return {Promise<(*&{id: *})[]>}
  */
-async function getFilteredProducts(category, options) {
-    let resultsPerPage;
-    let width = window.innerWidth
-    if (width <= 1024) {
-        resultsPerPage = 2;
-    } else resultsPerPage = 8;
-
-
+async function getFilteredProducts(category, options, resultsPerPage) {
     const categoryInfo = await db.doc(`products/${category}`).get();
     const maxProducts = categoryInfo.data().inventorySize;
-    console.log(`Inventory Size for ${category} is ${maxProducts}`);
-
 
     console.log(options)
 
-    async function buildQuery(){
-
-        // base query
-        let query = db.collection(`products/${category}/inventory`);
-
-        if (options.sortByPrice){ // if sort by price is not null or undefined
-            query = options.sortByPrice.desc ?  query.orderBy('price', 'desc'): query.orderBy('price');
-        }
-
-        if (options.sortByName){ // if sort by name is not null or undefined
-            query =  options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
-        }
-
-        if (options.priceFilter){ // if sort by price filter is not null or undefined
-            if (options.priceFilter.minPrice){
-                query =  query.where('price', '>=', options.priceFilter.minPrice);
-            }
-
-            if (options.priceFilter.maxPrice){
-                query = query.where('price', '<=', options.priceFilter.maxPrice);
-            }
-        }
-
-        if (lastDoc) {
-            query = query.startAfter(lastDoc)
-        }
-
-        let snapshot = await query.limit(resultsPerPage).get();
-        productsRetrieved += resultsPerPage
-        if (productsRetrieved >= maxProducts) {
-            maxDocumentsReached = true;
-        }
-
-        return snapshot
+    // base query
+    let query = db.collection(`products/${category}/inventory`);
+    if (options.sortByPrice){ // if sort by price is not null or undefined
+        query = options.sortByPrice.desc ?  query.orderBy('price', 'desc'): query.orderBy('price');
     }
 
+    if (options.sortByName){ // if sort by name is not null or undefined
+        query =  options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
+    }
+
+    if (options.priceFilter){ // if sort by price filter is not null or undefined
+        if (options.priceFilter.minPrice){
+            query =  query.where('price', '>=', options.priceFilter.minPrice);
+        }
+
+        if (options.priceFilter.maxPrice){
+            query = query.where('price', '<=', options.priceFilter.maxPrice);
+        }
+    }
+
+    if (lastDoc) {
+        query = query.startAfter(lastDoc)
+    }
+
+    const snapshot = await query.limit(resultsPerPage).get();
+
+    // update the number of retrieved products
+    productsRetrieved += resultsPerPage
+    if (productsRetrieved >= maxProducts) {
+        maxDocumentsReached = true;
+    }
+
+    // update the last document reference
     if (!options.loadMore) {
         lastDoc = null
     }
-
-
-    let snapshot = await buildQuery();
-    console.log(`${productsRetrieved} productsRetrieved`)
-
     lastDoc = snapshot.docs[snapshot.docs.length - 1]
-
-
-
     
     return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
