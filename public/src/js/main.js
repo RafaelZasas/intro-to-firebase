@@ -213,6 +213,7 @@ async function populateProductDetails(doc) {
  * @param {String <"set" | "append">} strategy Determines if documents are being loaded for the first time or appended
  */
 function populateProductCards(docs, product_type, strategy='set') {
+    //TODO: Show Price on Cards
     let productsSection = document.querySelector(`#productsSection`);
     let productsHTML = '';
     

@@ -30,17 +30,16 @@ async function getFilteredProducts(category, options) {
         // base query
         let query = db.collection(`products/${category}/inventory`);
 
-        options.sortByPrice?.desc ?  query = query.orderBy('price', 'desc'): query = query.orderBy('price')
+        query = options.sortByPrice?.desc ?  query.orderBy('price', 'desc'): query.orderBy('price')
 
-        options.sortByName?.desc === true ? query = query.orderBy('name', 'desc') : query = query.orderBy('name')
+        query =  options.sortByName?.desc === true ? query.orderBy('name', 'desc') : query.orderBy('name')
 
-        // TODO: Implement options to filter by the following
+        // TODO: Implement filtering
         if (options.priceFilter){
             query = options.priceFilter.minPrice ?
                 query.where('price', '>=', options.priceFilter.minPrice) :
                 query = query.where('price', '<=', options.priceFilter.maxPrice);
         }
-
 
         if (lastDoc) {
             query = query.startAfter(lastDoc)

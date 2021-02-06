@@ -197,15 +197,16 @@ async function getProducts(productType, options = null) {
 
     if (options === 'sortByPrice') {
         console.log('sorting by price')
-
         priceSortAsc = !priceSortAsc
 
         // change the icon's direction
         document.getElementById('valueSort').innerHTML = `
+            <span class="tooltiptext">Sort by price</span>
             <i class="fas fa-funnel-dollar"></i>
             <i class="fas fa-sort-${priceSortAsc ? 'up' : 'down'}"></i>`
 
         // configure query options
+        optionsMap.sortByName = null
         optionsMap.sortByPrice = { desc: !priceSortAsc };
 
     } else if (options === 'sortByName') {
@@ -213,8 +214,10 @@ async function getProducts(productType, options = null) {
 
         nameSortAsc = !nameSortAsc
 
-        document.getElementById('nameSort').innerHTML = `<i class="fas fa-sort-alpha-${nameSortAsc ? 'up' : 'down'}"></i>`
-
+        document.getElementById('nameSort').innerHTML =
+            `<span class="tooltiptext">Sort by name</span>
+            <i class="fas fa-sort-alpha-${nameSortAsc ? 'up' : 'down'}"></i>`
+        optionsMap.sortByPrice = null
         optionsMap.sortByName = { desc: !nameSortAsc };
 
     }

@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
 
     // Get all "navbar-burger" elements
@@ -8,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if ($navbarBurgers.length > 0) {
 
         // Add a click event on each of them
-        $navbarBurgers.forEach( el => {
+        $navbarBurgers.forEach(el => {
             el.addEventListener('click', () => {
 
                 // Get the target from the "data-target" attribute
@@ -23,4 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    var minPriceSlider = document.getElementById("minPriceRangeSlider");
+    var minSliderOutput = document.getElementById("minPriceSliderOutput");
+    minSliderOutput.innerHTML = `min price: $${minPriceSlider.value}`; // Display the default slider value
+
+    var maxPriceSlider = document.getElementById("maxPriceRangeSlider");
+    var maxSliderOutput = document.getElementById("maxPriceSliderOutput");
+    maxSliderOutput.innerHTML = `max price: $${minPriceSlider.value}`; // Display the default slider value
+
+// Update the current slider value (each time you drag the slider handle)
+    // TODO: Add functions to listen for mouse up -> trigger filter
+    minPriceSlider.oninput = function() {
+        minSliderOutput.innerHTML = `min price: $${this.value}`;
+    }
+
+    maxPriceSlider.oninput = function() {
+        maxSliderOutput.innerHTML = `max price: $${this.value}`;
+    }
+
 });
+
