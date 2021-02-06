@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // DOM elements for the sliders
+
     const minPriceSlider = document.getElementById("minPriceRangeSlider");
     const minSliderOutput = document.getElementById("minPriceSliderOutput");
     const minPriceLabel = document.getElementById("minPriceLabel");
@@ -49,7 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
- async function FilterByMaxPrice (productType, value) { // when user stops slider
+/**
+ * Triggers the function to repopulate the screen with products filtered by max price
+ * @param {String} productType
+ * @param {String} value The sliders current value
+ * @return {Promise<void>}
+ */
+ async function filterByMaxPrice (productType, value) { // when user stops slider
      let maxPrice = parseInt(value);
     await getProducts(productType, {
         priceFilter: {maxPrice: maxPrice},
@@ -58,7 +66,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 }
 
-async function FilterByMinPrice (productType, value){ // when user stops slider
+/**
+ * Triggers the function to repopulate the screen with products filtered by max price
+ * @param {String} productType
+ * @param {String} value The sliders current value
+ * @return {Promise<void>}
+ */
+async function filterByMinPrice (productType, value){ // when user stops slider
     let minPrice = parseInt(value);
     await getProducts(productType, {
         priceFilter: {minPrice: minPrice},
