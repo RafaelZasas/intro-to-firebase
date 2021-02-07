@@ -18,14 +18,12 @@ const db = firebase.firestore(); // object of our firestore database to be used 
 
 document.addEventListener('DOMContentLoaded', () => {
     // call method to update UI according to users log in state
-    firebase.auth().onAuthStateChanged(displayProfileUI);
+    firebase.auth().onAuthStateChanged( async user => {
+        await displayProfileUI(user);
+        user && analytics.setUserId(user.uid);
+    })
 });
 
-
-firebase.auth().onAuthStateChanged( async user => {
-    await populateUsers();
-    user && analytics.setUserId(user.uid);
-})
 
 /**
  * Checks if the user exists and changes the UI appropriately
@@ -199,7 +197,6 @@ let optionsMap = {
  */
 async function getProducts(productType, options = null) {
     optionsMap.priceFilter = options?.priceFilter;
-    console.log(`filters: ${optionsMap.priceFilter}`)
 
     if (options?.sortByPrice) {
         console.log('sorting by price')

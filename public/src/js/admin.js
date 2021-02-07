@@ -1,4 +1,4 @@
-
+firebase.auth().onAuthStateChanged(populateUsers)
 
 /**
  * Used in the Admin dashboard to populate a table with all of the site's users and their permissions

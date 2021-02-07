@@ -4,6 +4,7 @@ This section deals with firestore calls related to product data
 
 let lastDoc = null
 let productsRetrieved = 0;
+
 /**
  * Gets a list of products that have been filtered by price, sorted by price or name or searched for
  * @param {String} category The category of product being queried
@@ -25,25 +26,25 @@ async function getFilteredProducts(category, options) {
 
     console.log(options)
 
-    async function buildQuery(){
+    async function buildQuery() {
 
         // base query
         let query = db.collection(`products/${category}/inventory`);
 
-        if (options.sortByPrice){ // if sort by price is not null or undefined
-            query = options.sortByPrice.desc ?  query.orderBy('price', 'desc'): query.orderBy('price');
+        if (options.sortByPrice) { // if sort by price is not null or undefined
+            query = options.sortByPrice.desc ? query.orderBy('price', 'desc') : query.orderBy('price');
         }
 
-        if (options.sortByName){ // if sort by name is not null or undefined
-            query =  options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
+        if (options.sortByName) { // if sort by name is not null or undefined
+            query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
         }
 
-        if (options.priceFilter){ // if sort by price filter is not null or undefined
-            if (options.priceFilter.minPrice){
-                query =  query.where('price', '>=', options.priceFilter.minPrice);
+        if (options.priceFilter) { // if sort by price filter is not null or undefined
+            if (options.priceFilter.minPrice) {
+                query = query.where('price', '>=', options.priceFilter.minPrice);
             }
 
-            if (options.priceFilter.maxPrice){
+            if (options.priceFilter.maxPrice) {
                 query = query.where('price', '<=', options.priceFilter.maxPrice);
             }
         }
@@ -72,9 +73,7 @@ async function getFilteredProducts(category, options) {
     lastDoc = snapshot.docs[snapshot.docs.length - 1]
 
 
-
-    
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
 }
 
 
@@ -102,6 +101,16 @@ async function getProductInfo(docID, productType) {
 async function deleteProduct(docPath) {
     await db.doc(docPath).delete()
     window.history.back()
+}
+
+/**
+ * Adds a given product to the users shopping cart sub-collection
+ * @param {Object} product The product ID & it's information that is being added to the cart.
+ * @return {Promise<void>}
+ */
+async function addToCart(product) {
+    console.log(`Added product to cart: ${JSON.parse(JSON.stringify(product))}`);
+    analytics.logEvent('add_to_cart', {currency: 'USD', items: product.id, value : product.price})
 }
 
 /*
