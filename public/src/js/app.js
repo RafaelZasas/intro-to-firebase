@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics(); // initialize firebase analytics
+const analytics = firebase.analytics(); // initialize firebase analytics
 const db = firebase.firestore(); // object of our firestore database to be used throughout the site
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,6 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     firebase.auth().onAuthStateChanged(displayProfileUI);
 });
 
+
+firebase.auth().onAuthStateChanged( async user => {
+    await populateUsers();
+    user && analytics.setUserId(user.uid);
+})
 
 /**
  * Checks if the user exists and changes the UI appropriately

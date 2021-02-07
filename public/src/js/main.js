@@ -203,6 +203,9 @@ async function populateProductDetails(doc) {
             </div>
     `;
 
+    // log event for user viewing a product
+    analytics.logEvent('ProductViewed', {name: doc.data().name});
+
 }
 
 /**
@@ -243,6 +246,8 @@ function populateProductCards(docs, product_type, strategy='set') {
     } else if (strategy === 'append') {
         productsSection.innerHTML += productsHTML; 
     }
+
+    analytics.logEvent('category_viewed', {category: product_type})
 }
 
 
