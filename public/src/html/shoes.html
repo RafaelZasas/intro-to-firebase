@@ -39,10 +39,8 @@
 
 </head>
 
-<body onload="
-populateNavbar();
-getProducts('shoes', 'sortByName'); <!-- call database for shoes collection  -->
-loadProductsOnScroll('shoes')">  <!-- listen for end of scroll on window -->
+<body onload="populateNavbar();  getProducts('shoes', 'sortByName');  loadProductsOnScroll('shoes')">  
+<!--          render the navbar  call database for shoes collection   listen for end of scroll on window -->
 
 <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
     <!--    Navbar information will be populated in here-->

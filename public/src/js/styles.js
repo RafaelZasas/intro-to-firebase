@@ -27,28 +27,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const minPriceSlider = document.getElementById("minPriceRangeSlider");
     const minSliderOutput = document.getElementById("minPriceSliderOutput");
     const minPriceLabel = document.getElementById("minPriceLabel");
-    minSliderOutput.innerHTML = `min price: $${minPriceSlider.value}`; // Display the default slider value
+    if (minSliderOutput) {
+        minSliderOutput.innerHTML = `min price: $${minPriceSlider.value}`; // Display the default slider value
+    }
 
     const maxPriceSlider = document.getElementById("maxPriceRangeSlider");
     const maxSliderOutput = document.getElementById("maxPriceSliderOutput");
     const maxPriceLabel =document.getElementById("maxPriceLabel");
-    maxSliderOutput.innerHTML = `max price: $${maxPriceSlider.value}`; // Display the default slider value
-
-// Update the current slider value (each time you drag the slider handle)
-    minPriceSlider.oninput = function() {
-        let minPrice = this.value
-        maxPriceSlider.value =  Math.max(maxPriceSlider.value, minPrice);
-        minPriceLabel.innerHTML = '$'+minPrice;
-        minSliderOutput.innerHTML = `min price: $${minPrice}`;
+    if (maxSliderOutput) {
+        maxSliderOutput.innerHTML = `max price: $${maxPriceSlider.value}`; // Display the default slider value
     }
 
-    maxPriceSlider.oninput = function() {
-        let maxPrice = this.value
-        maxPriceLabel.innerHTML = '$'+maxPrice
-        minPriceSlider.value =  Math.min(minPriceSlider.value, maxPrice);
-        maxSliderOutput.innerHTML = `max price: $${this.value}`;
+    // Update the current slider value (each time you drag the slider handle)
+    if (minPriceSlider) {
+        minPriceSlider.oninput = function() {
+            let minPrice = this.value
+            maxPriceSlider.value =  Math.max(maxPriceSlider.value, minPrice);
+            minPriceLabel.innerHTML = '$'+minPrice;
+            minSliderOutput.innerHTML = `min price: $${minPrice}`;
+        }
     }
 
+    if (maxPriceSlider) {
+        maxPriceSlider.oninput = function() {
+            let maxPrice = this.value
+            maxPriceLabel.innerHTML = '$'+maxPrice
+            minPriceSlider.value =  Math.min(minPriceSlider.value, maxPrice);
+            maxSliderOutput.innerHTML = `max price: $${this.value}`;
+        }
+    }
 });
 
 /**
