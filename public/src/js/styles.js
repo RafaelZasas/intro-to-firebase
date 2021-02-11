@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const maxPriceSlider = document.getElementById("maxPriceRangeSlider");
     const maxSliderOutput = document.getElementById("maxPriceSliderOutput");
-    const maxPriceLabel =document.getElementById("maxPriceLabel");
+    const maxPriceLabel = document.getElementById("maxPriceLabel");
     if (maxSliderOutput) {
         maxSliderOutput.innerHTML = `max price: $${maxPriceSlider.value}`; // Display the default slider value
     }
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let minPrice = this.value
             maxPriceSlider.value =  Math.max(maxPriceSlider.value, minPrice);
             minPriceLabel.innerHTML = '$'+minPrice;
+            maxPriceLabel.innerHTML = '$'+maxPriceSlider.value;
             minSliderOutput.innerHTML = `min price: $${minPrice}`;
         }
     }
@@ -51,8 +52,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (maxPriceSlider) {
         maxPriceSlider.oninput = function() {
             let maxPrice = this.value
-            maxPriceLabel.innerHTML = '$'+maxPrice
             minPriceSlider.value =  Math.min(minPriceSlider.value, maxPrice);
+            maxPriceLabel.innerHTML = '$'+maxPrice
+            minPriceLabel.innerHTML = '$'+minPriceSlider.value
             maxSliderOutput.innerHTML = `max price: $${this.value}`;
         }
     }
