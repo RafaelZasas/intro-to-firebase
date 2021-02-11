@@ -193,7 +193,11 @@ async function populateProductDetails(doc) {
 
     let productDetails = document.querySelector(`#product`);
     let product = {id: doc.id, ...doc.data()};
-    const cart = await addToCart(product)
+
+    window.addCart = () => {
+        addToCart(product);
+    };
+
     let deleteButton = `
         <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">
             <span>Delete</span>
@@ -203,7 +207,7 @@ async function populateProductDetails(doc) {
         </button>
     `
     let addToCartButton = `
-        <button class="button is-primary" onclick="${cart}">
+        <button class="button is-primary" onclick="addCart()">
             <span>Add to Cart</span>
             <span class="icon is-small">
                 <i class="fas fa-shopping-cart"></i>

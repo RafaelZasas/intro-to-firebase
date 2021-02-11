@@ -109,8 +109,8 @@ async function deleteProduct(docPath) {
  * @return {Promise<void>}
  */
 async function addToCart(product) {
-    console.log(`Added product to cart: ${JSON.parse(JSON.stringify(product))}`);
-    analytics.logEvent('add_to_cart', {currency: 'USD', items: product.id, value : product.price})
+    console.log(`Added product to cart: ${product.name}`);
+    analytics.logEvent('add_to_cart', {currency: 'USD', item: product.id, value : product.price, name: product.name});
 }
 
 /*
