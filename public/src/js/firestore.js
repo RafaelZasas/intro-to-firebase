@@ -18,15 +18,22 @@ async function getFilteredProducts(category, options, resultsPerPage) {
 
     // base query
     let query = db.collection(`products/${category}/inventory`);
+    if (options.sortByPrice){ // if sort by price is not null or undefined
+        query = options.sortByPrice.desc ?  query.orderBy('price', 'desc'): query.orderBy('price');
+    }
 
-    query = options.sortByPrice?.desc ?  query.orderBy('price', 'desc'): query.orderBy('price')
+    if (options.sortByName){ // if sort by name is not null or undefined
+        query =  options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
+    }
 
-    query =  options.sortByName?.desc === true ? query.orderBy('name', 'desc') : query.orderBy('name')
+    if (options.priceFilter){ // if sort by price filter is not null or undefined
+        if (options.priceFilter.minPrice){
+            query =  query.where('price', '>=', options.priceFilter.minPrice);
+        }
 
-    if (options.priceFilter){
-        query = options.priceFilter.minPrice ?
-            query.where('price', '>=', options.priceFilter.minPrice) :
+        if (options.priceFilter.maxPrice){
             query = query.where('price', '<=', options.priceFilter.maxPrice);
+        }
     }
 
     if (lastDoc) {
