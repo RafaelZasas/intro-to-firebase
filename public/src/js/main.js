@@ -82,6 +82,15 @@ function populateNavbar() {
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
+                        <a class="button is-light" href="../html/cart.html">
+                            <span class="icon is-medium">
+                                <i class="fas fa-shopping-cart"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-item">
+                    <div class="buttons">
                         <div id="log-in">
                             <a class="button is-light" onclick="toggleAuthModal()">
                                 <strong>Log in</strong>
