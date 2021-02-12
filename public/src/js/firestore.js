@@ -82,7 +82,7 @@ async function getProductInfo(docID, productType) {
     let docRef = db.collection(`products/${productType}/inventory`).doc(docID); // reference the product document
 
     try {
-        return await docRef.get()
+        return await docRef.get();
     } catch (error) {
         console.log("Error getting document:", error);
     }
@@ -94,8 +94,8 @@ async function getProductInfo(docID, productType) {
  * @return {Promise<void>}
  */
 async function deleteProduct(docPath) {
-    await db.doc(docPath).delete()
-    window.history.back()
+    await db.doc(docPath).delete();
+    window.history.back();
 }
 
 /**
@@ -106,6 +106,11 @@ async function deleteProduct(docPath) {
 async function addToCart(product) {
     console.log(`Added product to cart: ${product.name}`);
     analytics.logEvent('add_to_cart', {currency: 'USD', item: product.id, value : product.price, name: product.name});
+    return await db.collection(`users/${getCurrentUser().uid}/cart`).add(product);
+}
+
+async function getCart(){
+    return await db.collection(`users/vZAIwKFXTAXhUMJNcdMGnLWxll23/cart`).get();
 }
 
 /*
@@ -125,8 +130,8 @@ async function getUserData() {
  * @return {Promise<Array>} List of all the user documents
  */
 async function getAllUsers() {
-    const usersCollection = await firebase.firestore().collection('users').get()
-    return usersCollection.docs
+    const usersCollection = await firebase.firestore().collection('users').get();
+    return usersCollection.docs;
 }
 
 /**

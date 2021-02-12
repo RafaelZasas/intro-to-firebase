@@ -38,7 +38,7 @@
 
 </head>
 
-<body onload="populateNavbar();">
+<body onload="populateNavbar(); populateCart()">
     <!-- call database for shoes collection  -->
 
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
@@ -48,6 +48,12 @@
     <section class="section is-desktop is-vcentered">
         <div id="usersSection" class="container">
             <h1 class="title center">Your Cart</h1>
+
+            <div class="container" id="cartItems">
+                <!--            cards will populate into here-->
+            </div>
+
+
         </div>
     </section>
 </body>

@@ -301,3 +301,67 @@ async function loadProductsOnScroll(type) {
         }
     };
 }
+
+
+async function populateCart(){
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    let cartTotal = 0;
+    let cartSection = document.getElementById('cartItems');
+
+    const renderItems = () => {
+        cartItems.forEach(item => {
+            cartTotal += item.price;
+            cartSection.innerHTML += `
+            <div class="level columns-mobile">
+                <div class="level-left my-4 column-mobile">
+                    <div class="level-item">
+                            <img class="image is-128x128" src= ${item.image} alt="item_${item.id}">
+                    </div>
+                         
+                    <div class="has-text-centered-mobile">
+                        <div class="row my-1"><p class="title is-5">${item.name}</p></div>
+                        <div class="row my-2"><p class="title is-6">$${item.price}</p></div>        
+                    </div>
+                </div>
+                <div class="level-right column-mobile">
+                    <div class="level-item">
+                        <a class="button is-light">
+                            <span class="icon is-medium has-text-danger">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </a>
+                    </div>
+</div>
+            </div>
+                     
+        `;
+        })
+    }
+
+    const renderTotal = () => {
+        cartSection.innerHTML += `
+    <br>
+     <div class="row has-text-centered-mobile">
+        <p class="title is-3">Total: $${cartTotal}</p>
+     </div>
+     <div class="row my-3 has-text-centered-mobile">
+        <a class="button is-primary">
+            <p>Checkout </p>
+             <span class="icon"><i class="fas fa-credit-card"></i></span>
+        </a>
+     </div>
+    `
+    }
+
+    const noItems = `
+                <div class="column is-half is-offset-one-quarter"> <!-- specify exactly 4 cards per row-->
+                    <div class="has-text-centered">
+                        <h1 class="center">Cart is empty</h1>
+                    </div>
+                </div>
+    `
+
+    cartItems.length === 0 ? cartSection.innerHTML = noItems : renderItems();renderTotal()
+
+}
