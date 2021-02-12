@@ -122,7 +122,7 @@ async function addToCart(product) {
  * @return {Promise<*>} Items in the users cart
  */
 async function getCart(){
-    return await db.collection(`users/vZAIwKFXTAXhUMJNcdMGnLWxll23/cart`).get();
+    return await db.collection(`users/${getCurrentUser().uid}/cart`).get();
 }
 
 /**

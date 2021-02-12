@@ -16,6 +16,7 @@
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+    <script type="text/javascript" src="../js/cart.js" defer></script> <!-- use cart js for on auth state changed to load cart items-->
 
     <!--    STYLING     -->
     <!--    bulma css framework   -->
@@ -38,7 +39,7 @@
 
 </head>
 
-<body onload="populateNavbar(); populateCart()">
+<body onload="populateNavbar();">
     <!-- call database for shoes collection  -->
 
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">

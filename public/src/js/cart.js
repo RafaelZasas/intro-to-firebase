@@ -1,0 +1,1 @@
+firebase.auth().onAuthStateChanged(populateCart)
