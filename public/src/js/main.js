@@ -358,7 +358,7 @@ async function populateCart(redraw=false){
                             </span>
                         </a>
                     </div>
-</div>
+                </div>
             </div>
                      
         `;
@@ -372,7 +372,7 @@ async function populateCart(redraw=false){
         <p class="title is-3">Total: $${cartTotal}</p>
      </div>
      <div class="row my-3 has-text-centered-mobile">
-        <a class="button is-primary">
+        <a class="button is-primary" onclick="checkout()">
             <p>Checkout </p>
              <span class="icon"><i class="fas fa-credit-card"></i></span>
         </a>

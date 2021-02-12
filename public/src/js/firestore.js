@@ -114,9 +114,16 @@ async function getCart(){
 }
 
 async function removeFromCart(productID){
-    console.log(productID)
+    console.log(`Removed ${productID} from cart`);
     await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
     await populateCart(true);
+}
+
+async function checkout(){
+    const cartItems = await getCart();
+    cartItems.forEach(doc => {
+        removeFromCart(doc.id);
+    });
 }
 
 /*
