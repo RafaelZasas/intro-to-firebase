@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
-    <title>Product</title>
+    <title>Intro To Firebase</title>
 
 
     <!--    CUSTOM CSS & JS    -->
@@ -16,7 +16,6 @@
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
-
 
     <!--    STYLING     -->
     <!--    bulma css framework   -->
@@ -39,22 +38,18 @@
 
 </head>
 
-<body onload="populateNavbar(); populateCurrentProduct()">
+<body onload="populateNavbar();">
+    <!-- call database for shoes collection  -->
 
-<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-    <!--    Navbar information will be populated in here-->
-</nav>
+    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+        <!--    Navbar information will be populated in here-->
+    </nav>
 
-<section class="section is-desktop is-vcentered">
-    <div class="container">
-
-        <div class="columns" id="product">
-<!--            selected product details will go in here-->
+    <section class="section is-desktop is-vcentered">
+        <div id="usersSection" class="container">
+            <h1 class="title center">Your Cart</h1>
         </div>
-
-    </div>
-</section>
-
-
+    </section>
 </body>
+
 </html>

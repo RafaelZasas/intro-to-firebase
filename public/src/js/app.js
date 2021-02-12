@@ -13,12 +13,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-firebase.analytics(); // initialize firebase analytics
+const analytics = firebase.analytics(); // initialize firebase analytics
 const db = firebase.firestore(); // object of our firestore database to be used throughout the site
 
 document.addEventListener('DOMContentLoaded', () => {
     // call method to update UI according to users log in state
-    firebase.auth().onAuthStateChanged(displayProfileUI);
+    firebase.auth().onAuthStateChanged( async user => {
+        await displayProfileUI(user);
+        user && analytics.setUserId(user.uid);
+    })
 });
 
 
@@ -186,7 +189,7 @@ let nameSortAsc = true;
 let optionsMap = {
     sortByName: { desc: false },
     sortByPrice: { desc: false },
-    filter: {}
+    priceFilter: { minPrice: null, maxPrice: null}
 }
 
 /**
@@ -197,9 +200,9 @@ let optionsMap = {
  * @return {Promise<void>}
  */
 async function getProducts(productType, options = null) {
+    optionsMap.priceFilter = options?.priceFilter;
 
-
-    if (options === 'sortByPrice') {
+    if (options?.sortByPrice) {
         console.log('sorting by price')
         priceSortAsc = !priceSortAsc
 
@@ -213,7 +216,7 @@ async function getProducts(productType, options = null) {
         optionsMap.sortByName = null
         optionsMap.sortByPrice = { desc: !priceSortAsc };
 
-    } else if (options === 'sortByName') {
+    } else if (options?.sortByName) {
         console.log('sorting by name')
 
         nameSortAsc = !nameSortAsc

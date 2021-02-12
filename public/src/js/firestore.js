@@ -4,6 +4,7 @@ This section deals with firestore calls related to product data
 
 let lastDoc = null
 let productsRetrieved = 0;
+
 /**
  * Gets a list of products that have been filtered by price, sorted by price or name or searched for
  * @param {String} category The category of product being queried
@@ -13,41 +14,51 @@ let productsRetrieved = 0;
 async function getFilteredProducts(category, options, resultsPerPage) {
     const categoryInfo = await db.doc(`products/${category}`).get();
     const maxProducts = categoryInfo.data().inventorySize;
-
+    
+    console.log(`Inventory Size for ${category} is ${maxProducts}`);
     console.log(options)
 
-    // base query
-    let query = db.collection(`products/${category}/inventory`);
+    async function buildQuery() {
+        let query = db.collection(`products/${category}/inventory`)
 
-    query = options.sortByPrice?.desc ?  query.orderBy('price', 'desc'): query.orderBy('price')
+        if (options.sortByPrice) { // if sort by price is not null or undefined
+            query = options.sortByPrice.desc ? query.orderBy('price', 'desc') : query.orderBy('price');
+        }
 
-    query =  options.sortByName?.desc === true ? query.orderBy('name', 'desc') : query.orderBy('name')
+        if (options.sortByName) { // if sort by name is not null or undefined
+            query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
+        }
 
-    if (options.priceFilter){
-        query = options.priceFilter.minPrice ?
-            query.where('price', '>=', options.priceFilter.minPrice) :
-            query = query.where('price', '<=', options.priceFilter.maxPrice);
+        if (options.priceFilter) { // if sort by price filter is not null or undefined
+            if (options.priceFilter.minPrice) {
+                query = query.where('price', '>=', options.priceFilter.minPrice);
+            }
+
+            if (options.priceFilter.maxPrice) {
+                query = query.where('price', '<=', options.priceFilter.maxPrice);
+            }
+        }
+
+        return await query.limit(resultsPerPage).get();
     }
-
-    if (lastDoc) {
-        query = query.startAfter(lastDoc)
-    }
-
-    const snapshot = await query.limit(resultsPerPage).get();
 
     // update the number of retrieved products
     productsRetrieved += resultsPerPage
     if (productsRetrieved >= maxProducts) {
         maxDocumentsReached = true;
     }
+    console.log(`${productsRetrieved} productsRetrieved`)
 
     // update the last document reference
     if (!options.loadMore) {
         lastDoc = null
     }
+
+    const snapshot = await buildQuery();
+
     lastDoc = snapshot.docs[snapshot.docs.length - 1]
-    
-    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+
+    return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
 }
 
 
@@ -75,6 +86,16 @@ async function getProductInfo(docID, productType) {
 async function deleteProduct(docPath) {
     await db.doc(docPath).delete()
     window.history.back()
+}
+
+/**
+ * Adds a given product to the users shopping cart sub-collection
+ * @param {Object} product The product ID & it's information that is being added to the cart.
+ * @return {Promise<void>}
+ */
+async function addToCart(product) {
+    console.log(`Added product to cart: ${product.name}`);
+    analytics.logEvent('add_to_cart', {currency: 'USD', item: product.id, value : product.price, name: product.name});
 }
 
 /*

@@ -82,6 +82,15 @@ function populateNavbar() {
             <div class="navbar-end">
                 <div class="navbar-item">
                     <div class="buttons">
+                        <a class="button is-light" href="../html/cart.html">
+                            <span class="icon is-medium">
+                                <i class="fas fa-shopping-cart"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-item">
+                    <div class="buttons">
                         <div id="log-in">
                             <a class="button is-light" onclick="toggleAuthModal()">
                                 <strong>Log in</strong>
@@ -183,40 +192,62 @@ async function populateProductDetails(doc) {
     // this function will retrieve the details for the selected product
 
     let productDetails = document.querySelector(`#product`);
+    let product = {id: doc.id, ...doc.data()};
+
+    window.addCart = () => {
+        addToCart(product);
+    };
 
     let deleteButton = `
-        <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">Delete</button>
+        <button class="button is-danger" onclick="deleteProduct('${doc.ref.path}')">
+            <span>Delete</span>
+            <span class="icon is-small">
+                <i class="fas fa-times"></i>
+            </span>
+        </button>
     `
+    let addToCartButton = `
+        <button class="button is-primary" onclick="addCart()">
+            <span>Add to Cart</span>
+            <span class="icon is-small">
+                <i class="fas fa-shopping-cart"></i>
+            </span>
+         </button>`
 
     productDetails.innerHTML = `
             <div class="column is-two-thirds is-offset-one-fifth"> 
-                <p class="title is-1 is-spaced">Name: ${doc.data().name}</p>
-                <p class="subtitle is-3">Brand: ${doc.data().brand}</p>
+                <p class="title is-1 is-spaced">Name: ${product.name}</p>
+                <p class="subtitle is-3">Brand: ${product.brand}</p>
                     <div class="card-image">
                         <figure class="image is-5by4">
-                            <img src= ${doc.data().image} alt=${doc.data().name}>
+                            <img src= ${product.image} alt=${product.name}>
                         </figure>
                     </div>
                     <br>
-                <p class="title is-3" >Price: $${doc.data().price}</p>
-                ${await hasPermission('admin') ? deleteButton : ''}
+                <p class="title is-3" >Price: $${product.price}</p>
+                <div class="buttons">
+                    ${await hasPermission('admin') ? deleteButton : ''}
+                    ${addToCartButton}
+                </div>
             </div>
     `;
+
+    // log event for user viewing a product
+    analytics.logEvent('product_viewed', {name: doc.data().name});
 
 }
 
 /**
  * Called on load and on re-draw of a product category's page, this function builds the HTML string
  * of cards which will populate the screen
- * @param {String} docs The documents with each product's information, used to populate each card individually
+ * @param {Array<{}>} docs The documents with each product's information, used to populate each card individually
  * @param {String} product_type The product type of the page the user is viewing
  * @param {String <"set" | "append">} strategy Determines if documents are being loaded for the first time or appended
  */
-function populateProductCards(docs, product_type, strategy='set') {
-    //TODO: Show Price on Cards
+function populateProductCards(docs, product_type, strategy = 'set') {
     let productsSection = document.querySelector(`#productsSection`);
     let productsHTML = '';
-    
+
     // add each card individually;
     docs.forEach(doc => {
         productsHTML += `
@@ -230,6 +261,7 @@ function populateProductCards(docs, product_type, strategy='set') {
                             </div>
                             <div class="card-content">
                                 <p class="title is-4" >${doc.name}</p>
+                                <p>$${doc.price}</p>
                             </div>
                         </div>
                     </a>
@@ -239,10 +271,13 @@ function populateProductCards(docs, product_type, strategy='set') {
 
     // adds all of the cards html to the products grid
     if (strategy === 'set') {
-        productsSection.innerHTML = productsHTML; 
+        productsSection.innerHTML = productsHTML;
     } else if (strategy === 'append') {
-        productsSection.innerHTML += productsHTML; 
+        productsSection.innerHTML += productsHTML;
     }
+
+    // log that a user has viewed a category of products
+    analytics.logEvent('category_viewed', {category: product_type})
 }
 
 
@@ -252,12 +287,12 @@ let maxDocumentsReached = false // stops the scroll function from loading more d
  * @param {String <"shoes"|"shirts"|"bags"|"hats">} type
  * @return {Promise<(function(*): Promise<void>)|*>}
  */
-async function loadProductsOnScroll(type){
-     return window.onscroll = async function (ev) {
+async function loadProductsOnScroll(type) {
+    return window.onscroll = async function (ev) {
 
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             // at the bottom of the page
-            maxDocumentsReached? console.log('max documents loaded') : await loadMoreProducts(type)
+            maxDocumentsReached ? console.log('max documents loaded') : await loadMoreProducts(type)
 
         }
     };

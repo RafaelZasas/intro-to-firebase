@@ -29,6 +29,8 @@ function getProviderInstance(providerName) {
 async function signInWithProvider(providerName) {
     const provider = getProviderInstance(providerName)
     let userCredential = await firebase.auth().signInWithPopup(provider);
+    // track user login event with login method
+    analytics.logEvent('login', {method: providerName});
 
     // determine if user data has already saved to firestore. Insert data otherwise.
     let userDetails = await getUserData();
@@ -44,6 +46,8 @@ async function signInWithProvider(providerName) {
 async function signOut() {
     try {
         await firebase.auth().signOut();
+        // track user login event with login method
+        analytics.logEvent('logout');
         console.log('User signed out successfully.')
     } catch (error) {
         console.log(`Error Code:${error.code}\nError Message:${error.message}`)
@@ -86,6 +90,8 @@ async function resetPassword(email) {
  */
 async function signIn(email, password) {
     await firebase.auth().signInWithEmailAndPassword(email, password)
+    // track user login event with login method
+    analytics.logEvent('login', {method: 'Email & Password'});
 }
 
 /**
@@ -96,5 +102,7 @@ async function signIn(email, password) {
  */
 async function signUp(email, password) {
     let userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    // track user login event with login method
+    analytics.logEvent('sign_up', {method: 'Email & Password'});
     await insertNewUser(userCredential.user);
 }
