@@ -41,7 +41,7 @@
 
 </head>
 
-<body onload="populateCategories()">
+<body>
 
     <!--Begin Nav-Bar Here-->
     <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
@@ -115,12 +115,14 @@
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-light" href="./src/html/cart.html">
+                    <div id="shoppingCartBtn">
+                        <div class="buttons">
+                            <a class="button is-light" href="./src/html/cart.html">
                             <span class="icon is-medium">
                                 <i class="fas fa-shopping-cart"></i>
                             </span>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <div class="navbar-item">
@@ -156,15 +158,20 @@
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control">
+                                <label for="auth-signin-email"></label>
                                 <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
                             </div>
                         </div>
-                        <div class="field">
-                            <label class="label">Password</label>
+                        <form class="field">
+                            <label class="label" for="auth-signin-password">Password</label>
                             <div class="control">
-                                <input id="auth-signin-password" class="input" type="password">
+                                <input
+                                        id="auth-signin-password"
+                                        class="input"
+                                        autocomplete="password"
+                                        type="password">
                             </div>
-                        </div>
+                        </form>
                         <a onclick="handleResetPassword()">Forgot your password?</a>
                         <p id="auth-signin-errors" class="help is-danger"></p>
                         <div class="control">
@@ -174,23 +181,30 @@
                     <div class="column">
                         <h1 class="is-size-4">Create one</h1>
                         <div class="field">
-                            <label class="label">Email</label>
+                            <label class="label" for="auth-signup-email">Email</label>
                             <div class="control">
                                 <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
                             </div>
                         </div>
-                        <div class="field">
-                            <label class="label">Password</label>
+                        <form class="field">
+                            <label class="label" for="auth-signup-password">Password</label>
                             <div class="control">
-                                <input id="auth-signup-password" class="input" type="password">
+                                <input
+                                        id="auth-signup-password"
+                                        autocomplete="password"
+                                        class="input" type="password">
                             </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Confirm Password</label>
+                        </form>
+                        <form class="field">
+                            <label class="label" for="auth-signup-password-confirm">Confirm Password</label>
                             <div class="control">
-                                <input id="auth-signup-password-confirm" class="input" type="password">
+                                <input
+                                        id="auth-signup-password-confirm"
+                                        class="input"
+                                        autocomplete="password"
+                                        type="password">
                             </div>
-                        </div>
+                        </form>
                         <p id="auth-signup-errors" class="help is-danger"></p>
                         <div class="control">
                             <button class="button" onclick="handleSignUp()">Sign Up</button>

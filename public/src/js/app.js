@@ -32,8 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
 async function displayProfileUI(user) {
     let logInButton = document.getElementById('log-in');
     let logOutButton = document.getElementById('log-out');
-    let adminPanelButton = document.getElementById('admin-panel')
+    let adminPanelButton = document.getElementById('admin-panel');
     let profileButton = document.getElementById('profile');
+    let cartBtn = document.getElementById('shoppingCartBtn');
 
     const userSignedIn = !!user
     // hide the login and sign up buttons when user signs in
@@ -52,6 +53,10 @@ async function displayProfileUI(user) {
     if (adminPanelButton) {
         const isAdminUser = await hasPermission('admin')
         adminPanelButton.hidden = !userSignedIn || !isAdminUser
+    }
+
+    if (cartBtn){
+        cartBtn.hidden = !userSignedIn;
     }
 }
 

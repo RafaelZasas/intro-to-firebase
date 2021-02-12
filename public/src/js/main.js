@@ -81,14 +81,17 @@ function populateNavbar() {
         <div id='loginSection'>
             <div class="navbar-end">
                 <div class="navbar-item">
-                    <div class="buttons">
-                        <a class="button is-light" href="../html/cart.html">
-                            <span class="icon is-medium">
-                                <i class="fas fa-shopping-cart"></i>
-                            </span>
-                        </a>
+                    <div id="shoppingCartBtn">
+                        <div class="buttons">
+                            <a class="button is-light" href="../html/cart.html">
+                                <span class="icon is-medium">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </span>
+                            </a>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="navbar-item">
                     <div class="buttons">
                         <div id="log-in">
@@ -121,14 +124,23 @@ function populateNavbar() {
                         <div class="field">
                             <label class="label">Email</label>
                             <div class="control">
-                                <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
+                                <input
+                                 id="auth-signin-email"
+                                 class="input"
+                                 type="email"
+                                 autocomplete="email"
+                                 placeholder="Text input">
                             </div>
                         </div>
                         <div class="field">
                             <label class="label">Password</label>
-                            <div class="control">
-                                <input id="auth-signin-password" class="input" type="password">
-                            </div>
+                            <form class="control">
+                                <input
+                                id="auth-signin-password"
+                                class="input"
+                                autocomplete="password"
+                                type="password">
+                            </form>
                         </div>
                         <p id="auth-signin-errors" class="help is-danger"></p>
                         <div class="control">
@@ -137,24 +149,37 @@ function populateNavbar() {
                     </div>
                     <div class="column">
                         <h1>Create one</h1>
-                        <div class="field">
+                        <form class="field">
                             <label class="label">Email</label>
                             <div class="control">
-                                <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
+                                <input
+                                 id="auth-signup-email"
+                                 class="input"
+                                 type="email"
+                                 autocomplete="email"
+                                 placeholder="Text input">
                             </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Password</label>
+                        </form>
+                        <form class="field" action="">
+                            <label class="label" for="auth-signup-password">Password</label>
                             <div class="control">
-                                <input id="auth-signup-password" class="input" type="password">
+                                <input
+                                 id="auth-signup-password"
+                                 class="input"
+                                 autocomplete="new-password"
+                                 type="password">
                             </div>
-                        </div>
-                        <div class="field">
-                            <label class="label">Confirm Password</label>
+                        </form>
+                        <form class="field">
+                            <label class="label" for="auth-signup-password-confirm">Confirm Password</label>
                             <div class="control">
-                                <input id="auth-signup-password-confirm" class="input" type="password">
+                                <input
+                                 id="auth-signup-password-confirm"
+                                  class="input"
+                                  autocomplete="new-password"
+                                  type="password">
                             </div>
-                        </div>
+                        </form>
                         <p id="auth-signup-errors" class="help is-danger"></p>
                         <div class="control">
                             <button class="button" onclick="handleSignUp()">Sign Up</button>
