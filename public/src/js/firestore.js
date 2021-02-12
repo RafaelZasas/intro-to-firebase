@@ -105,7 +105,15 @@ async function deleteProduct(docPath) {
  */
 async function addToCart(product) {
     console.log(`Added product to cart: ${product.name}`);
-    analytics.logEvent('add_to_cart', {currency: 'USD', item: product.id, value : product.price, name: product.name});
+    const analyticsParams = {
+        id: product.id,
+        name: product.name,
+        currency: 'USD',
+        value: product.price,
+        items: [{quantity: 1, ...product}]
+    }
+    // Log event when a product is added to the cart
+    analytics.logEvent('add_to_cart', analyticsParams);
     return await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).set(product);
 }
 
@@ -126,14 +134,27 @@ async function removeFromCart(productID){
     console.log(`Removed ${productID} from cart`);
     await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
     await populateCart(true);
+
+    // Log event
+    analytics.logEvent('remove_from_cart', {id: productID});
 }
 
 /**
  * Checkout users cart by removing each product in the users cart collection
+ * @param {Number} cartTotal The sum of cart item prices
  * @return {Promise<void>}
  */
-async function checkout(){
-    const cartItems = await getCart();
+async function checkout(cartTotal){
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    const analyticsParams = {
+        currency: 'USD',
+        value: cartTotal, // Total Revenue
+        coupon: 'None',
+        items: [cartItems]
+    }
+    // Log event
+    analytics.logEvent('begin_checkout', analyticsParams);
     cartItems.forEach(doc => {
         removeFromCart(doc.id);
     });
