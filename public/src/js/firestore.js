@@ -106,11 +106,17 @@ async function deleteProduct(docPath) {
 async function addToCart(product) {
     console.log(`Added product to cart: ${product.name}`);
     analytics.logEvent('add_to_cart', {currency: 'USD', item: product.id, value : product.price, name: product.name});
-    return await db.collection(`users/${getCurrentUser().uid}/cart`).add(product);
+    return await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).set(product);
 }
 
 async function getCart(){
     return await db.collection(`users/vZAIwKFXTAXhUMJNcdMGnLWxll23/cart`).get();
+}
+
+async function removeFromCart(productID){
+    console.log(productID)
+    await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
+    await populateCart(true);
 }
 
 /*

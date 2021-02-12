@@ -303,12 +303,13 @@ async function loadProductsOnScroll(type) {
 }
 
 
-async function populateCart(){
+async function populateCart(redraw=false){
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
     let cartTotal = 0;
     let cartSection = document.getElementById('cartItems');
 
+    if (redraw) cartSection.innerHTML = '';
     const renderItems = () => {
         cartItems.forEach(item => {
             cartTotal += item.price;
@@ -326,7 +327,7 @@ async function populateCart(){
                 </div>
                 <div class="level-right column-mobile">
                     <div class="level-item">
-                        <a class="button is-light">
+                        <a class="button is-light" onclick="removeFromCart('${item.id}')">
                             <span class="icon is-medium has-text-danger">
                                 <i class="fas fa-trash-alt"></i>
                             </span>
@@ -362,6 +363,11 @@ async function populateCart(){
                 </div>
     `
 
-    cartItems.length === 0 ? cartSection.innerHTML = noItems : renderItems();renderTotal()
+    const hasItems = () => {
+        renderItems();
+        renderTotal();
+    }
+
+    cartItems.length === 0 ? cartSection.innerHTML = noItems : hasItems()
 
 }
