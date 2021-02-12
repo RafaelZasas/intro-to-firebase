@@ -27,6 +27,10 @@ async function getFilteredProducts(category, options, resultsPerPage) {
         query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
     }
 
+    if (!options.sortByName && !options.sortByPrice) { // sort by price by default
+        query = query.orderBy('price')
+    }
+
     if (options.priceFilter) { // if sort by price filter is not null or undefined
         if (options.priceFilter.minPrice) {
             query = query.where('price', '>=', options.priceFilter.minPrice);
@@ -43,7 +47,7 @@ async function getFilteredProducts(category, options, resultsPerPage) {
 
     const snapshot = await query.limit(resultsPerPage).get()
 
-    lastDoc = snapshot.docs[snapshot.docs.length - 1]
+    lastDoc = snapshot.docs[snapshot.docs.length - 1] || null
 
     // update the number of retrieved products
     productsRetrieved += snapshot.docs.length
