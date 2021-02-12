@@ -327,7 +327,11 @@ async function loadProductsOnScroll(type) {
     };
 }
 
-
+/**
+ * Renders the HTML for the Shopping Cart Screen
+ * @param {Boolean} [redraw=false] Flag to determine if items are added on page load or when items are deleted
+ * @return {Promise<void>}
+ */
 async function populateCart(redraw=false){
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -335,6 +339,10 @@ async function populateCart(redraw=false){
     let cartSection = document.getElementById('cartItems');
 
     if (redraw) cartSection.innerHTML = '';
+
+    /**
+     * Renders the HTML for the products in the users cart colleciton
+     */
     const renderItems = () => {
         cartItems.forEach(item => {
             cartTotal += item.price;
@@ -365,6 +373,9 @@ async function populateCart(redraw=false){
         })
     }
 
+    /**
+     * Adds the total and checkout button to the end of the shopping cart screen
+     */
     const renderTotal = () => {
         cartSection.innerHTML += `
     <br>
@@ -380,6 +391,9 @@ async function populateCart(redraw=false){
     `
     }
 
+    /**
+     * Renders HTML for the cart screen when user has no items in their shopping cart
+     */
     const noItems = `
                 <div class="column is-half is-offset-one-quarter"> <!-- specify exactly 4 cards per row-->
                     <div class="has-text-centered">

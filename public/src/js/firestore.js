@@ -109,16 +109,29 @@ async function addToCart(product) {
     return await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).set(product);
 }
 
+/**
+ *
+ * @return {Promise<*>} Items in the users cart
+ */
 async function getCart(){
     return await db.collection(`users/vZAIwKFXTAXhUMJNcdMGnLWxll23/cart`).get();
 }
 
+/**
+ * Removes an item from the users cart sub-collection
+ * @param {String} productID The document ID of the product to be deleted
+ * @return {Promise<void>}
+ */
 async function removeFromCart(productID){
     console.log(`Removed ${productID} from cart`);
     await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
     await populateCart(true);
 }
 
+/**
+ * Checkout users cart by removing each product in the users cart collection
+ * @return {Promise<void>}
+ */
 async function checkout(){
     const cartItems = await getCart();
     cartItems.forEach(doc => {
