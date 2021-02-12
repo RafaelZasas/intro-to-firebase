@@ -14,47 +14,44 @@ let productsRetrieved = 0;
 async function getFilteredProducts(category, options, resultsPerPage) {
     const categoryInfo = await db.doc(`products/${category}`).get();
     const maxProducts = categoryInfo.data().inventorySize;
-    
+
     console.log(`Inventory Size for ${category} is ${maxProducts}`);
     console.log(options)
-
-    async function buildQuery() {
-        let query = db.collection(`products/${category}/inventory`)
-
-        if (options.sortByPrice) { // if sort by price is not null or undefined
-            query = options.sortByPrice.desc ? query.orderBy('price', 'desc') : query.orderBy('price');
-        }
-
-        if (options.sortByName) { // if sort by name is not null or undefined
-            query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
-        }
-
-        if (options.priceFilter) { // if sort by price filter is not null or undefined
-            if (options.priceFilter.minPrice) {
-                query = query.where('price', '>=', options.priceFilter.minPrice);
-            }
-
-            if (options.priceFilter.maxPrice) {
-                query = query.where('price', '<=', options.priceFilter.maxPrice);
-            }
-        }
-
-        return await query.limit(resultsPerPage).get();
-    }
 
     // update the number of retrieved products
     productsRetrieved += resultsPerPage
     if (productsRetrieved >= maxProducts) {
         maxDocumentsReached = true;
+        return [];
     }
     console.log(`${productsRetrieved} productsRetrieved`)
 
-    // update the last document reference
-    if (!options.loadMore) {
-        lastDoc = null
+    let query = db.collection(`products/${category}/inventory`)
+
+    if (options.sortByPrice) { // if sort by price is not null or undefined
+        query = options.sortByPrice.desc ? query.orderBy('price', 'desc') : query.orderBy('price');
     }
 
-    const snapshot = await buildQuery();
+    if (options.sortByName) { // if sort by name is not null or undefined
+        query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
+    }
+
+    if (options.priceFilter) { // if sort by price filter is not null or undefined
+        if (options.priceFilter.minPrice) {
+            query = query.where('price', '>=', options.priceFilter.minPrice);
+        }
+
+        if (options.priceFilter.maxPrice) {
+            query = query.where('price', '<=', options.priceFilter.maxPrice);
+        }
+    }
+
+    // update the last document reference
+    if (options.loadMore) {
+        query = query.startAfter(lastDoc)
+    }
+
+    const snapshot = await query.limit(resultsPerPage).get()
 
     lastDoc = snapshot.docs[snapshot.docs.length - 1]
 

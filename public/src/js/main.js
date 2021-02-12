@@ -285,15 +285,19 @@ let maxDocumentsReached = false // stops the scroll function from loading more d
 /**
  * Loads more products when user scrolls to the end of the screen
  * @param {String <"shoes"|"shirts"|"bags"|"hats">} type
- * @return {Promise<(function(*): Promise<void>)|*>}
  */
 async function loadProductsOnScroll(type) {
-    return window.onscroll = async function (ev) {
-
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    const BOTTOM_OFFSET = 20;
+    let loading = false
+    
+    window.onscroll = async e => {
+        if (loading || maxDocumentsReached) return;
+        
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - BOTTOM_OFFSET) {
             // at the bottom of the page
-            maxDocumentsReached ? console.log('max documents loaded') : await loadMoreProducts(type)
-
+            loading = true
+            await loadMoreProducts(type)
+            loading = false
         }
     };
 }
