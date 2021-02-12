@@ -133,7 +133,6 @@ async function getCart(){
 async function removeFromCart(productID){
     console.log(`Removed ${productID} from cart`);
     await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
-    await populateCart(true);
 
     // Log event
     analytics.logEvent('remove_from_cart', {id: productID});
@@ -155,9 +154,9 @@ async function checkout(cartTotal){
     }
     // Log event
     analytics.logEvent('begin_checkout', analyticsParams);
-    cartItems.forEach(doc => {
-        removeFromCart(doc.id);
-    });
+    await Promise.all(cartItems.map(doc => {
+        return removeFromCart(doc.id);
+    }));
 }
 
 /*
