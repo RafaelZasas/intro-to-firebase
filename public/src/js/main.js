@@ -327,13 +327,14 @@ async function loadProductsOnScroll(type) {
     };
 }
 
-let cartTotal = 0;
+
 /**
  * Renders the HTML for the Shopping Cart Screen
  * @param {Boolean} [redraw=false] Flag to determine if items are added on page load or when items are deleted
  * @return {Promise<void>}
  */
 async function populateCart(redraw=false){
+    let cartTotal = 0;
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
     let cartSection = document.getElementById('cartItems');
@@ -383,7 +384,7 @@ async function populateCart(redraw=false){
         <p class="title is-3">Total: $${cartTotal}</p>
      </div>
      <div class="row my-3 has-text-centered-mobile">
-        <a class="button is-primary" onclick="checkout(cartTotal)">
+        <a class="button is-primary" onclick="checkout(${cartTotal})">
             <p>Checkout </p>
              <span class="icon"><i class="fas fa-credit-card"></i></span>
         </a>
