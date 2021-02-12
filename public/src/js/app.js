@@ -132,6 +132,9 @@ async function handleResetPassword() {
     await resetPassword(emailInput.value)
 }
 
+function getResultsPerPage() {
+    return window.innerWidth <= 1024 ? 2 : 8
+}
 
 async function updateSearchResults(option) {
     const searchValue = document.getElementById('search').value.toLowerCase()
@@ -151,7 +154,8 @@ async function updateSearchResults(option) {
         selectedCategories,
         parseInt(minPrice),
         parseInt(maxPrice),
-        option
+        option,
+        getResultsPerPage()
     )
 
     // filteredProducts = filteredProducts.filter(product => product.name.toLowerCase().includes(searchValue))
@@ -225,9 +229,11 @@ async function getProducts(productType, options = null) {
 
     }
 
-    const products = await getFilteredProducts(productType, optionsMap);
     productsRetrieved = 0;
     maxDocumentsReached = false;
+
+    const products = await getFilteredProducts(productType, optionsMap, getResultsPerPage());
+    
     populateProductCards(products, productType);
 }
 
@@ -237,7 +243,7 @@ async function getProducts(productType, options = null) {
  * @return {Promise<void>}
  */
 async function loadMoreProducts(productType) {
-    const products = await getFilteredProducts(productType, { loadMore: true, ...optionsMap });
+    const products = await getFilteredProducts(productType, { loadMore: true, ...optionsMap }, getResultsPerPage());
 
     populateProductCards(products, productType, 'append');
 }

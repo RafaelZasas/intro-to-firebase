@@ -11,69 +11,64 @@ let productsRetrieved = 0;
  * @param {Object} options The configuration for the query consisting of optional query params
  * @return {Promise<(*&{id: *})[]>}
  */
-async function getFilteredProducts(category, options) {
-    let resultsPerPage;
-    let width = window.innerWidth
-    if (width <= 1024) {
-        resultsPerPage = 2;
-    } else resultsPerPage = 8;
+async function getFilteredProducts(category, options, resultsPerPage) {
+    console.log('Filter options:', options)
+
+    const maxProducts = await getInventorySizeForCategory(category)
 
 
-    const categoryInfo = await db.doc(`products/${category}`).get();
-    const maxProducts = categoryInfo.data().inventorySize;
-    console.log(`Inventory Size for ${category} is ${maxProducts}`);
+    let query = db.collection(`products/${category}/inventory`)
 
-
-    console.log(options)
-
-    async function buildQuery() {
-
-        // base query
-        let query = db.collection(`products/${category}/inventory`);
-
-        if (options.sortByPrice) { // if sort by price is not null or undefined
-            query = options.sortByPrice.desc ? query.orderBy('price', 'desc') : query.orderBy('price');
-        }
-
-        if (options.sortByName) { // if sort by name is not null or undefined
-            query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
-        }
-
-        if (options.priceFilter) { // if sort by price filter is not null or undefined
-            if (options.priceFilter.minPrice) {
-                query = query.where('price', '>=', options.priceFilter.minPrice);
-            }
-
-            if (options.priceFilter.maxPrice) {
-                query = query.where('price', '<=', options.priceFilter.maxPrice);
-            }
-        }
-
-        if (lastDoc) {
-            query = query.startAfter(lastDoc)
-        }
-
-        let snapshot = await query.limit(resultsPerPage).get();
-        productsRetrieved += resultsPerPage
-        if (productsRetrieved >= maxProducts) {
-            maxDocumentsReached = true;
-        }
-
-        return snapshot
+    if (options.sortByPrice) { // if sort by price is not null or undefined
+        query = options.sortByPrice.desc ? query.orderBy('price', 'desc') : query.orderBy('price');
     }
 
-    if (!options.loadMore) {
-        lastDoc = null
+    if (options.sortByName) { // if sort by name is not null or undefined
+        query = options.sortByName.desc ? query.orderBy('name', 'desc') : query.orderBy('name');
     }
 
+    if (!options.sortByName && !options.sortByPrice) { // sort by price by default
+        query = query.orderBy('price')
+    }
 
-    let snapshot = await buildQuery();
-    console.log(`${productsRetrieved} productsRetrieved`)
+    if (options.priceFilter) { // if sort by price filter is not null or undefined
+        if (options.priceFilter.minPrice) {
+            query = query.where('price', '>=', options.priceFilter.minPrice);
+        }
 
-    lastDoc = snapshot.docs[snapshot.docs.length - 1]
+        if (options.priceFilter.maxPrice) {
+            query = query.where('price', '<=', options.priceFilter.maxPrice);
+        }
+    }
 
+    if (options.loadMore) { // update the last document reference
+        query = query.startAfter(lastDoc)
+    }
+
+    const snapshot = await query.limit(resultsPerPage).get()
+
+    lastDoc = snapshot.docs[snapshot.docs.length - 1] || null
+
+    // update the number of retrieved products
+    productsRetrieved += snapshot.docs.length
+    if (productsRetrieved >= maxProducts) {
+        maxDocumentsReached = true;
+    }
 
     return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+}
+
+/**
+ * Retrieves the number of products in the given category's inventory
+ * @param {string} category The target category
+ */
+async function getInventorySizeForCategory(category) {
+    const categoryInfo = await db.doc(`products/${category}`).get();
+    const maxProducts = categoryInfo.data().inventorySize;
+
+    console.log(`Inventory Size for ${category} is ${maxProducts}`);
+
+    return maxProducts;
 }
 
 
