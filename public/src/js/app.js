@@ -229,9 +229,11 @@ async function getProducts(productType, options = null) {
 
     }
 
-    const products = await getFilteredProducts(productType, optionsMap, getResultsPerPage());
     productsRetrieved = 0;
     maxDocumentsReached = false;
+
+    const products = await getFilteredProducts(productType, optionsMap, getResultsPerPage());
+    
     populateProductCards(products, productType);
 }
 

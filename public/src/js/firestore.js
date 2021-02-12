@@ -12,19 +12,10 @@ let productsRetrieved = 0;
  * @return {Promise<(*&{id: *})[]>}
  */
 async function getFilteredProducts(category, options, resultsPerPage) {
-    const categoryInfo = await db.doc(`products/${category}`).get();
-    const maxProducts = categoryInfo.data().inventorySize;
+    console.log('Filter options:', options)
 
-    console.log(`Inventory Size for ${category} is ${maxProducts}`);
-    console.log(options)
+    const maxProducts = await getInventorySizeForCategory(category)
 
-    // update the number of retrieved products
-    productsRetrieved += resultsPerPage
-    if (productsRetrieved >= maxProducts) {
-        maxDocumentsReached = true;
-        return [];
-    }
-    console.log(`${productsRetrieved} productsRetrieved`)
 
     let query = db.collection(`products/${category}/inventory`)
 
@@ -46,8 +37,7 @@ async function getFilteredProducts(category, options, resultsPerPage) {
         }
     }
 
-    // update the last document reference
-    if (options.loadMore) {
+    if (options.loadMore) { // update the last document reference
         query = query.startAfter(lastDoc)
     }
 
@@ -55,7 +45,26 @@ async function getFilteredProducts(category, options, resultsPerPage) {
 
     lastDoc = snapshot.docs[snapshot.docs.length - 1]
 
+    // update the number of retrieved products
+    productsRetrieved += snapshot.docs.length
+    if (productsRetrieved >= maxProducts) {
+        maxDocumentsReached = true;
+    }
+
     return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+}
+
+/**
+ * Retrieves the number of products in the given category's inventory
+ * @param {string} category The target category
+ */
+async function getInventorySizeForCategory(category) {
+    const categoryInfo = await db.doc(`products/${category}`).get();
+    const maxProducts = categoryInfo.data().inventorySize;
+
+    console.log(`Inventory Size for ${category} is ${maxProducts}`);
+
+    return maxProducts;
 }
 
 
