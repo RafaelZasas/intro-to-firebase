@@ -93,3 +93,8 @@ h2{
     background: #4CAF50; /* Green background */
     cursor: pointer; /* Cursor on hover */
 }
+
+/* Solid border */
+hr.solid {
+    border-top: 3px solid #bbb;
+}

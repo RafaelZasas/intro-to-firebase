@@ -16,6 +16,8 @@
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+    <script type="text/javascript" src="../js/checkout.js" defer></script> <!-- use checkout js for checkout logic-->
+
 
     <!--    STYLING     -->
     <!--    bulma css framework   -->
@@ -51,7 +53,7 @@
 
         <div class="container" id="shippingInfo">
             <h2 class="title is-3 has-text-left">Shipping Info</h2>
-            <form action=""> <!-- Form for shipping info -->
+            <form> <!-- Form for shipping info -->
                 <div class="field-group">
                     <div class="field is-inline-block-desktop">
                         <label class="label" for="firstName">First Name</label>
@@ -162,7 +164,7 @@
                     </div>
                 </div>
 
-                <button class="button is-primary is-outlined my-2">
+                <button type="button" class="button is-primary is-outlined my-2" onclick="addShippingInfo()">
                     <span class="icon is-small">
                       <i class="fas fa-shipping-fast"></i>
                     </span>
@@ -174,9 +176,9 @@
 
         <br>
 
-        <div class="container" id="billingInfo">
+        <div class="container" id="billingInfo" hidden>
             <h2 class="title is-3 has-text-left">Billing Info</h2>
-            <form action=""> <!-- Form for billing info -->
+            <form> <!-- Form for billing info -->
                 <div class="field-group">
                     <div class="field is-inline-block-desktop">
                         <label class="label" for="firstName-billing">First Name</label>
@@ -254,7 +256,7 @@
                     </div>
                 </div>
 
-                <button class="button is-primary is-outlined my-2">
+                <button class="button is-primary is-outlined my-2" onclick="addBillingInfo()" type="button">
                     <span class="icon is-small">
                         <i class="fas fa-credit-card"></i>
                     </span>
@@ -262,6 +264,19 @@
                 </button>
 
             </form>
+        </div>
+
+        <br>
+
+        <div class="container" id="purchaseSection" hidden>
+            <h3 class="title is-4 has-text-left">Item(s):</h3>
+            <div class="div" id="cartInformation"></div>
+            <button class="button is-primary is-outlined my-2">
+                    <span class="icon is-small">
+                        <i class="fas fa-tag"></i>
+                    </span>
+                <span>Purchase</span>
+            </button>
         </div>
 
 
