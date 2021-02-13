@@ -49,7 +49,7 @@
     <div id="usersSection" class="container">
         <h1 class="title is-1 center">Checkout</h1>
 
-        <div class="container" id="checkout">
+        <div class="container" id="shippingInfo">
             <h2 class="title is-3 has-text-left">Shipping Info</h2>
             <form action=""> <!-- Form for shipping info -->
                 <div class="field-group">
@@ -119,7 +119,7 @@
                         <p class="control has-icons-left">
                             <span class="select">
                                 <select id="country">
-                                    <option value= "USA">USA</option>
+                                    <option value="USA">USA</option>
                                     <option value="CAN">Canada</option>
                                     <option value="UKR">Ukraine</option>
                                     <option value="RSA" selected>South Africa</option>
@@ -167,6 +167,98 @@
                       <i class="fas fa-shipping-fast"></i>
                     </span>
                     <span>Save Shipping Info</span>
+                </button>
+
+            </form>
+        </div>
+
+        <br>
+
+        <div class="container" id="billingInfo">
+            <h2 class="title is-3 has-text-left">Billing Info</h2>
+            <form action=""> <!-- Form for billing info -->
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="firstName-billing">First Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Joe" id="firstName-billing">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="lastName-billing">Last Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Soap" id="lastName-billing">
+                        </div>
+                    </div>
+                </div>
+
+                <fieldset disabled class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="creditCardNumber">Credit Card Number</label>
+                        <div class="control">
+                            <input
+                                    class="input"
+                                    type="text"
+                                    id="creditCardNumber"
+                                    placeholder="We will not be collecting your card info">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="securityCode">Security Code</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="For obvious reasons" id="securityCode">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="expirationMonth">Expiration Month</label>
+                        <p class="control">
+                            <span class="select">
+                                <select id="expirationMonth">
+                                    <option value="January" selected>January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="expirationYear">Expiration Year</label>
+                        <p class="control">
+                            <span class="select">
+                                <select id="expirationYear">
+                                    <option value="2021" selected>2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                </select>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <button class="button is-primary is-outlined my-2">
+                    <span class="icon is-small">
+                        <i class="fas fa-credit-card"></i>
+                    </span>
+                    <span>Save Billing Info</span>
                 </button>
 
             </form>
