@@ -11,6 +11,7 @@ async function addShippingInfo(){
 }
 
 async function addBillingInfo(){
+    let cartTotal = 0;
     billingSection.innerHTML += `
     <hr class="solid">
     `
@@ -18,7 +19,7 @@ async function addBillingInfo(){
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
 
     cartItems.forEach(item => {
-
+        cartTotal += item.price;
         cartInformationSection.innerHTML += `
             <div class="level columns-mobile">
                 <div class="level-left my-1 column-mobile">        
@@ -31,7 +32,7 @@ async function addBillingInfo(){
 
     cartInformationSection.innerHTML += `
     <div class="column is-3 pl-0 pt-0"><hr class="solid"></div>
-    <h2 class="title is-3 has-text-left">Total: $150</h2>
+    <h2 class="title is-3 has-text-left">Total: $${cartTotal}</h2>
     <br>
     `
 
