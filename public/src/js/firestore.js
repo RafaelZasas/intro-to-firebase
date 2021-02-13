@@ -155,7 +155,6 @@ async function removeFromCart(product, checkout=false){
 async function checkout(cartTotal){
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-    console.log(cartItems)
     const analyticsParams = {
         currency: 'USD',
         value: cartTotal, // Total Revenue
@@ -164,9 +163,32 @@ async function checkout(cartTotal){
     }
     // Log event
     analytics.logEvent('begin_checkout', analyticsParams);
+    window.location.href = 'checkout.html';
+
+}
+
+async function completePurchase(){
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    await db.collection(`users/${getCurrentUser().uid}/purchases`).add({items: cartItems});
+
+    //TODO: Create function to get cart details and populate here
+    const analyticsParams = {
+        transaction_id: 'T12345',
+        affiliation: 'Intro To Firebase',
+        currency: 'USD',
+        value: 14.98, // Total Revenue
+        tax: 2.85,
+        shipping: 5.34,
+        coupon: 'None',
+        items: cartItems
+    }
+    // Log event
+    analytics.logEvent('purchase', analyticsParams);
     await Promise.all(cartItems.map(doc => {
         return removeFromCart(doc, true);
     }));
+    document.getElementById('checkoutSection').innerHTML = `<h3 class="title is-1 has-text-centered">Thank You :)</h3>`
 }
 
 /*
