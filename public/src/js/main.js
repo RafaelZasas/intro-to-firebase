@@ -414,12 +414,12 @@ async function populateCart() {
         renderTotal();
     }
 
-    cartItems.length === 0 ? cartSection.innerHTML = noItems : hasItems()
+    items.length === 0 ? cartSection.innerHTML = noItems : hasItems()
 
     const analyticsParams = {
         currency: 'USD',
         value: cartTotal,
-        items: [cartItems]
+        items
     }
 
     // Log event when the cart is viewed
