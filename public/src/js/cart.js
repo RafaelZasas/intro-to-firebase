@@ -1,11 +1,15 @@
+/**
+ * Functionality related to specifically the cart page
+ */
 firebase.auth().onAuthStateChanged(populateCart)
 
-async function remove(id) {
-    await removeFromCart(id);
-    await populateCart();
-}
-
+/**
+ * Calls checkout function which removes all the items from the cart then re renders the Cart HTML
+ * @param {Number} total The total of the cart at the time of checkout
+ * @return {Promise<void>}
+ */
 async function handleCheckout(total) {
+
     try {
         await checkout(total);
         await populateCart();
@@ -15,3 +19,4 @@ async function handleCheckout(total) {
         console.error(e);
     }
 }
+

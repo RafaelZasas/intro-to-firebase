@@ -127,15 +127,24 @@ async function getCart(){
 
 /**
  * Removes an item from the users cart sub-collection
- * @param {String} productID The document ID of the product to be deleted
+ * @param {String} product The document of the product to be deleted
+ * @param {Boolean} [checkout=false] Optional param to specify if cart removal event should be logged
  * @return {Promise<void>}
  */
-async function removeFromCart(productID){
-    console.log(`Removed ${productID} from cart`);
-    await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
+async function removeFromCart(product, checkout=false){
 
-    // Log event
-    analytics.logEvent('remove_from_cart', {id: productID});
+    console.log(`Removed ${product.name} from cart`);
+    await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).delete();
+
+    const analyticsParams = {
+        currency: 'USD',
+        value: product.price,
+        items: [product]
+    }
+
+    // Log remove from cart event if user isn't checking out
+    !checkout ? analytics.logEvent('remove_from_cart', analyticsParams): '';
+
 }
 
 /**
@@ -150,13 +159,36 @@ async function checkout(cartTotal){
         currency: 'USD',
         value: cartTotal, // Total Revenue
         coupon: 'None',
-        items: [cartItems]
+        items: cartItems
     }
     // Log event
     analytics.logEvent('begin_checkout', analyticsParams);
+    window.location.href = 'checkout.html';
+
+}
+
+async function completePurchase(){
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    await db.collection(`users/${getCurrentUser().uid}/purchases`).add({items: cartItems});
+
+    //TODO: Create function to get cart details and populate here
+    const analyticsParams = {
+        transaction_id: 'T12345',
+        affiliation: 'Intro To Firebase',
+        currency: 'USD',
+        value: 14.98, // Total Revenue
+        tax: 2.85,
+        shipping: 5.34,
+        coupon: 'None',
+        items: cartItems
+    }
+    // Log event
+    analytics.logEvent('purchase', analyticsParams);
     await Promise.all(cartItems.map(doc => {
-        return removeFromCart(doc.id);
+        return removeFromCart(doc, true);
     }));
+    document.getElementById('checkoutSection').innerHTML = `<h3 class="title is-1 has-text-centered">Thank You :)</h3>`
 }
 
 /*

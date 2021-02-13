@@ -315,10 +315,10 @@ let maxDocumentsReached = false // stops the scroll function from loading more d
 async function loadProductsOnScroll(type) {
     const BOTTOM_OFFSET = 20;
     let loading = false
-    
+
     window.onscroll = async e => {
         if (loading || maxDocumentsReached) return;
-        
+
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - BOTTOM_OFFSET) {
             // at the bottom of the page
             loading = true
@@ -333,7 +333,7 @@ async function loadProductsOnScroll(type) {
  * Renders the HTML for the Shopping Cart Screen
  * @return {Promise<void>}
  */
-async function populateCart(){
+async function populateCart() {
     let cartTotal = 0;
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -342,10 +342,22 @@ async function populateCart(){
     cartSection.innerHTML = '';
 
     /**
+     * Global function to remove a  product from user's cart collection and then re renders the cart HTML
+     * @param {int} index The index of the document to be removed from users cart
+     */
+    window.removeItemFromCart = (index) => {
+        removeFromCart(cartItems[index]);
+        populateCart();
+    }
+
+    /**
      * Renders the HTML for the products in the users cart colleciton
      */
     const renderItems = () => {
+        let itemIndex = -1; // counter to keep track of the index of each item in cart for the delete function
+
         cartItems.forEach(item => {
+            itemIndex += 1;
             cartTotal += item.price;
             cartSection.innerHTML += `
             <div class="level columns-mobile">
@@ -361,7 +373,7 @@ async function populateCart(){
                 </div>
                 <div class="level-right column-mobile">
                     <div class="level-item">
-                        <a class="button is-light" onclick="remove('${item.id}')">
+                        <a class="button is-light" onclick="removeItemFromCart(${itemIndex})">
                             <span class="icon is-medium has-text-danger">
                                 <i class="fas fa-trash-alt"></i>
                             </span>
@@ -419,4 +431,85 @@ async function populateCart(){
     // Log event when the cart is viewed
     analytics.logEvent('view_cart', analyticsParams);
 
+}
+
+
+async function addShippingInfo(){
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    let billingSection = document.getElementById('billingInfo');
+    let shippingInfoSection = document.getElementById('shippingInfo');
+    let cartTotal = 0;
+
+    shippingInfoSection.innerHTML += `
+    <hr class="solid">
+    `
+    document.getElementById('addShippingBtn').disabled = true;
+    billingSection.removeAttribute('hidden');
+
+    cartItems.forEach(item => {
+        cartTotal += item.price;
+    })
+
+    // Prepare ecommerce params
+    const shippingParams = {
+        currency: 'USD',
+        value: (cartTotal*0.05).toFixed(2), // Total Revenue
+        coupon: 'None',
+        shipping_tier: 'Ground',
+        items: cartItems
+    };
+
+    // Log add shipping info event
+    analytics.logEvent('add_shipping_info', shippingParams);
+
+}
+
+async function addBillingInfo(){
+    let billingSection = document.getElementById('billingInfo');
+    let cartInformationSection = document.getElementById('cartInformation');
+    let paymentSection = document.getElementById('purchaseSection');
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    let cartTotal = 0;
+
+
+    billingSection.innerHTML += `
+    <hr class="solid">
+    `
+
+    cartItems.forEach(item => {
+        cartTotal += item.price;
+        cartInformationSection.innerHTML += `
+            <div class="level columns-mobile">
+                <div class="level-left my-1 column-mobile">        
+                        <div class="mx-1"><p class="title is-5">${item.name}</p></div>  
+                        <div class="mx-2"><p class="title is-5">$${item.price}</p></div>   
+                </div>
+            </div>          
+        `;
+    })
+    const shippingCost = (cartTotal*0.05).toFixed(2)
+    cartInformationSection.innerHTML += `
+    <div class="level-left my-1 column-mobile">        
+            <div class="mx-2"><p class="title is-5">Shipping $${shippingCost}</p></div>   
+    </div>
+    <div class="column is-3 pl-0 pt-0"><hr class="solid"></div>
+    <h2 class="title is-3 has-text-left">Total: $${cartTotal + parseFloat(shippingCost)}</h2>
+    <br>
+    `
+    document.getElementById('addBillingInfoBtn').disabled = true;
+    paymentSection.removeAttribute('hidden');
+
+    // Prepare ecommerce params
+    const paymentParams = {
+        currency: 'USD',
+        value: cartTotal, // Total Revenue
+        coupon: 'None',
+        payment_type: 'Visa',
+        items: cartItems
+    };
+
+    // Log add payment info event
+    analytics.logEvent('add_payment_info', paymentParams);
 }
