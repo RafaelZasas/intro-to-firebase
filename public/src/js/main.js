@@ -427,7 +427,9 @@ async function populateCart() {
 
 }
 
-
+/**
+ * Add shipping info and show the billing section
+ */
 async function addShippingInfo(){
     const { items, shipping } = await getCart();
     let billingSection = document.getElementById('billingInfo');
@@ -455,6 +457,9 @@ async function addShippingInfo(){
 
 }
 
+/**
+ * Add billing info and show the purchase totals
+ */
 async function addBillingInfo(){
     let billingSection = document.getElementById('billingInfo');
     let cartInformationSection = document.getElementById('cartInformation');

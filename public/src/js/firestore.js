@@ -174,6 +174,9 @@ async function checkout(cartTotal){
 
 }
 
+/**
+ * Complete the purchase with the current cart
+ */
 async function completePurchase(){
     const { items, tax, shipping, cartTotal } = await getCart();
     await db.collection(`users/${getCurrentUser().uid}/purchases`).add({ items, cartTotal });
