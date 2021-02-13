@@ -463,6 +463,8 @@ async function addShippingInfo(){
     // Log add shipping info event
     analytics.logEvent('add_shipping_info', shippingParams);
 
+    showToast(`Shipping Info Added`, 'success');
+
 }
 
 async function addBillingInfo(){
@@ -512,4 +514,6 @@ async function addBillingInfo(){
 
     // Log add payment info event
     analytics.logEvent('add_payment_info', paymentParams);
+
+    showToast(`Billing Info Added`, 'success');
 }

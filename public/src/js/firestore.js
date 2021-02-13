@@ -189,6 +189,7 @@ async function completePurchase(){
         return removeFromCart(doc, true);
     }));
     document.getElementById('checkoutSection').innerHTML = `<h3 class="title is-1 has-text-centered">Thank You :)</h3>`
+    showToast(`Purchase successful- Thank You!`, 'success');
 }
 
 /*
