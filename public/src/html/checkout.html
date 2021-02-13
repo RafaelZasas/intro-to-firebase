@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+    <title>Checkout</title>
+
+
+    <!--    CUSTOM CSS & JS    -->
+    <link type="text/css" href="../css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
+    <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
+    <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
+    <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+    <script type="text/javascript" src="../js/toast.js" defer></script>
+
+
+    <!--    STYLING     -->
+    <!--    bulma css framework   -->
+    <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+
+
+    <!--   FIREBASE    -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+    <!--Firebase Authentication-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
+    <!--Cloud Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
+    <!--Google Analytics-->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+
+
+</head>
+
+<body onload="populateNavbar();">
+<!-- call database for shoes collection  -->
+
+<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+    <!--    Navbar information will be populated in here-->
+</nav>
+
+<section class="section is-desktop is-vcentered">
+    <div id="checkoutSection" class="container">
+        <h1 class="title is-1 center">Checkout</h1>
+
+        <div class="container" id="shippingInfo">
+            <h2 class="title is-3 has-text-left">Shipping Info</h2>
+            <form> <!-- Form for shipping info -->
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="firstName">First Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Joe" id="firstName">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="lastName">Last Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Soap" id="lastName">
+                        </div>
+                    </div>
+                </div>
+
+                <fieldset disabled>
+                    <div class="field">
+                        <label class="label">Address</label>
+                        <div class="control">
+                            <label>
+                                <input class="input" type="text" placeholder="We will not be collecting your address">
+                            </label>
+                        </div>
+                        <p class="help">Street Address</p>
+                    </div>
+
+                    <div class="field">
+                        <label class="label"></label>
+                        <div class="control">
+                            <label>
+                                <input class="input" type="text" placeholder="For obvious reasons">
+                            </label>
+                        </div>
+                        <p class="help">Street Address Line 2</p>
+                    </div>
+                </fieldset>
+
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="city">City</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Johannesburg" id="city">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="state">State/Province</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Gauteng" id="state">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="zipCode">Postal/Zip Code</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g 2146" id="zipCode">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="country">Country</label>
+                        <p class="control has-icons-left">
+                            <span class="select">
+                                <select id="country">
+                                    <option value="USA">USA</option>
+                                    <option value="CAN">Canada</option>
+                                    <option value="UKR">Ukraine</option>
+                                    <option value="RSA" selected>South Africa</option>
+                                </select>
+                            </span>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-globe"></i>
+                            </span>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="field">
+                    <label class="label" for="phoneNumber">Phone Number</label>
+
+                    <div class="field has-addons">
+                        <p class="control">
+                            <a class="button is-static">+27</a>
+                        </p>
+                        <p class="control">
+                            <input class="input" type="tel" placeholder="Your phone number" id="phoneNumber">
+                        </p>
+                    </div>
+                    <p class="help">Do not enter the first zero</p>
+                </div>
+
+
+                <div class="field column is-3 p-0">
+                    <label class="label" for="email">Email</label>
+                    <div class="control has-icons-left">
+                        <input
+                                class="input"
+                                type="email"
+                                id="email"
+                                placeholder="e.g. alexsmith@gmail.com">
+                        <span class="icon is-small is-left">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                    </div>
+                </div>
+
+                <button
+                        type="button"
+                        class="button is-primary is-outlined my-2"
+                        id="addShippingBtn"
+                        onclick="addShippingInfo()">
+                    <span class="icon is-small">
+                      <i class="fas fa-shipping-fast"></i>
+                    </span>
+                    <span>Save Shipping Info</span>
+                </button>
+
+            </form>
+        </div>
+
+        <br>
+
+        <div class="container" id="billingInfo" hidden>
+            <h2 class="title is-3 has-text-left">Billing Info</h2>
+            <form> <!-- Form for billing info -->
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="firstName-billing">First Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Joe" id="firstName-billing">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="lastName-billing">Last Name</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="e.g Soap" id="lastName-billing">
+                        </div>
+                    </div>
+                </div>
+
+                <fieldset disabled class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="creditCardNumber">Credit Card Number</label>
+                        <div class="control">
+                            <input
+                                    class="input"
+                                    type="text"
+                                    id="creditCardNumber"
+                                    placeholder="We will not be collecting your card info">
+                        </div>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="securityCode">Security Code</label>
+                        <div class="control">
+                            <input class="input" type="text" placeholder="For obvious reasons" id="securityCode">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="field-group">
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="expirationMonth">Expiration Month</label>
+                        <p class="control">
+                            <span class="select">
+                                <select id="expirationMonth">
+                                    <option value="January" selected>January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                    <option value="October">October</option>
+                                    <option value="November">November</option>
+                                    <option value="December">December</option>
+                                </select>
+                            </span>
+                        </p>
+                    </div>
+
+                    <div class="field is-inline-block-desktop">
+                        <label class="label" for="expirationYear">Expiration Year</label>
+                        <p class="control">
+                            <span class="select">
+                                <select id="expirationYear">
+                                    <option value="2021" selected>2021</option>
+                                    <option value="2022">2022</option>
+                                    <option value="2023">2023</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                </select>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                        class="button is-primary is-outlined my-2"
+                        onclick="addBillingInfo()"
+                        id="addBillingInfoBtn"
+                        type="button">
+                    <span class="icon is-small">
+                        <i class="fas fa-credit-card"></i>
+                    </span>
+                    <span>Save Billing Info</span>
+                </button>
+
+            </form>
+        </div>
+
+        <br>
+
+        <div class="container" id="purchaseSection" hidden>
+            <h3 class="title is-4 has-text-left">Item(s):</h3>
+            <div class="div" id="cartInformation"></div>
+            <button class="button is-primary is-outlined my-2" onclick="completePurchase()">
+                    <span class="icon is-small">
+                        <i class="fas fa-tag"></i>
+                    </span>
+                <span>Purchase</span>
+            </button>
+        </div>
+
+
+    </div>
+</section>
+</body>
+
+</html>
