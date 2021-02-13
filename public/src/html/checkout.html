@@ -16,7 +16,6 @@
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
-    <script type="text/javascript" src="../js/checkout.js" defer></script> <!-- use checkout js for checkout logic-->
 
 
     <!--    STYLING     -->
@@ -164,7 +163,11 @@
                     </div>
                 </div>
 
-                <button type="button" class="button is-primary is-outlined my-2" onclick="addShippingInfo()">
+                <button
+                        type="button"
+                        class="button is-primary is-outlined my-2"
+                        id="addShippingBtn"
+                        onclick="addShippingInfo()">
                     <span class="icon is-small">
                       <i class="fas fa-shipping-fast"></i>
                     </span>
@@ -256,7 +259,11 @@
                     </div>
                 </div>
 
-                <button class="button is-primary is-outlined my-2" onclick="addBillingInfo()" type="button">
+                <button
+                        class="button is-primary is-outlined my-2"
+                        onclick="addBillingInfo()"
+                        id="addBillingInfoBtn"
+                        type="button">
                     <span class="icon is-small">
                         <i class="fas fa-credit-card"></i>
                     </span>
