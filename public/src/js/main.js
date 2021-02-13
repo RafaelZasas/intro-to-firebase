@@ -434,13 +434,33 @@ async function populateCart() {
 
 
 async function addShippingInfo(){
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
     let billingSection = document.getElementById('billingInfo');
     let shippingInfoSection = document.getElementById('shippingInfo');
+    let cartTotal = 0;
+
     shippingInfoSection.innerHTML += `
     <hr class="solid">
     `
     document.getElementById('addShippingBtn').disabled = true;
     billingSection.removeAttribute('hidden');
+
+    cartItems.forEach(item => {
+        cartTotal += item.price;
+    })
+
+    // Prepare ecommerce params
+    const shippingParams = {
+        currency: 'USD',
+        value: (cartTotal*0.05).toFixed(2), // Total Revenue
+        coupon: 'None',
+        shipping_tier: 'Ground',
+        items: cartItems
+    };
+
+    // Log add shipping info event
+    analytics.logEvent('add_shipping_info', shippingParams);
 
 }
 
@@ -448,13 +468,14 @@ async function addBillingInfo(){
     let billingSection = document.getElementById('billingInfo');
     let cartInformationSection = document.getElementById('cartInformation');
     let paymentSection = document.getElementById('purchaseSection');
-
+    const snapshot = await getCart();
+    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
     let cartTotal = 0;
+
+
     billingSection.innerHTML += `
     <hr class="solid">
     `
-    const snapshot = await getCart();
-    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
 
     cartItems.forEach(item => {
         cartTotal += item.price;
@@ -467,12 +488,27 @@ async function addBillingInfo(){
             </div>          
         `;
     })
-
+    const shippingCost = (cartTotal*0.05).toFixed(2)
     cartInformationSection.innerHTML += `
+    <div class="level-left my-1 column-mobile">        
+            <div class="mx-2"><p class="title is-5">Shipping $${shippingCost}</p></div>   
+    </div>
     <div class="column is-3 pl-0 pt-0"><hr class="solid"></div>
-    <h2 class="title is-3 has-text-left">Total: $${cartTotal}</h2>
+    <h2 class="title is-3 has-text-left">Total: $${cartTotal + parseFloat(shippingCost)}</h2>
     <br>
     `
     document.getElementById('addBillingInfoBtn').disabled = true;
     paymentSection.removeAttribute('hidden');
+
+    // Prepare ecommerce params
+    const paymentParams = {
+        currency: 'USD',
+        value: cartTotal, // Total Revenue
+        coupon: 'None',
+        payment_type: 'Visa',
+        items: cartItems
+    };
+
+    // Log add payment info event
+    analytics.logEvent('add_payment_info', paymentParams);
 }
