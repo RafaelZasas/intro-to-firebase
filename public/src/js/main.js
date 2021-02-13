@@ -334,9 +334,7 @@ async function loadProductsOnScroll(type) {
  * @return {Promise<void>}
  */
 async function populateCart() {
-    let cartTotal = 0;
-    const snapshot = await getCart();
-    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    const { items, cartTotal } = await getCart();
     let cartSection = document.getElementById('cartItems');
 
     cartSection.innerHTML = '';
@@ -346,7 +344,7 @@ async function populateCart() {
      * @param {int} index The index of the document to be removed from users cart
      */
     window.removeItemFromCart = (index) => {
-        removeFromCart(cartItems[index]);
+        removeFromCart(items[index]);
         populateCart();
     }
 
@@ -354,11 +352,7 @@ async function populateCart() {
      * Renders the HTML for the products in the users cart colleciton
      */
     const renderItems = () => {
-        let itemIndex = -1; // counter to keep track of the index of each item in cart for the delete function
-
-        cartItems.forEach(item => {
-            itemIndex += 1;
-            cartTotal += item.price;
+        items.forEach((item, itemIndex) => {
             cartSection.innerHTML += `
             <div class="level columns-mobile">
                 <div class="level-left my-4 column-mobile">
@@ -435,11 +429,9 @@ async function populateCart() {
 
 
 async function addShippingInfo(){
-    const snapshot = await getCart();
-    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    const { items, shipping } = await getCart();
     let billingSection = document.getElementById('billingInfo');
     let shippingInfoSection = document.getElementById('shippingInfo');
-    let cartTotal = 0;
 
     shippingInfoSection.innerHTML += `
     <hr class="solid">
@@ -447,17 +439,13 @@ async function addShippingInfo(){
     document.getElementById('addShippingBtn').disabled = true;
     billingSection.removeAttribute('hidden');
 
-    cartItems.forEach(item => {
-        cartTotal += item.price;
-    })
-
     // Prepare ecommerce params
     const shippingParams = {
         currency: 'USD',
-        value: (cartTotal*0.05).toFixed(2), // Total Revenue
+        value: shipping.toFixed(2), // Total Revenue
         coupon: 'None',
         shipping_tier: 'Ground',
-        items: cartItems
+        items
     };
 
     // Log add shipping info event
@@ -471,17 +459,14 @@ async function addBillingInfo(){
     let billingSection = document.getElementById('billingInfo');
     let cartInformationSection = document.getElementById('cartInformation');
     let paymentSection = document.getElementById('purchaseSection');
-    const snapshot = await getCart();
-    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-    let cartTotal = 0;
+    const { items, cartTotal, shipping, tax } = await getCart();
 
 
     billingSection.innerHTML += `
     <hr class="solid">
     `
 
-    cartItems.forEach(item => {
-        cartTotal += item.price;
+    items.forEach(item => {
         cartInformationSection.innerHTML += `
             <div class="level columns-mobile">
                 <div class="level-left my-1 column-mobile">        
@@ -491,13 +476,13 @@ async function addBillingInfo(){
             </div>          
         `;
     })
-    const shippingCost = (cartTotal*0.05).toFixed(2)
     cartInformationSection.innerHTML += `
-    <div class="level-left my-1 column-mobile">        
-            <div class="mx-2"><p class="title is-5">Shipping $${shippingCost}</p></div>   
-    </div>
     <div class="column is-3 pl-0 pt-0"><hr class="solid"></div>
-    <h2 class="title is-3 has-text-left">Total: $${cartTotal + parseFloat(shippingCost)}</h2>
+    <h2 class="title is-3 has-text-left">Subtotal: $${cartTotal.toFixed(2)}</h2>
+    <h2 class="title is-5 has-text-left">Shipping: $${shipping.toFixed(2)}</h2>
+    <h2 class="title is-5 has-text-left">Tax: $${tax.toFixed(2)}</h2>
+    <div class="column is-3 pl-0 pt-0"><hr class="solid"></div>
+    <h2 class="title is-3 has-text-left">Total: $${(cartTotal + shipping + tax).toFixed(2)}</h2>
     <br>
     `
     document.getElementById('addBillingInfoBtn').disabled = true;
@@ -509,7 +494,7 @@ async function addBillingInfo(){
         value: cartTotal, // Total Revenue
         coupon: 'None',
         payment_type: 'Visa',
-        items: cartItems
+        items
     };
 
     // Log add payment info event

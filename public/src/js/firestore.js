@@ -119,10 +119,18 @@ async function addToCart(product) {
 
 /**
  *
- * @return {Promise<*>} Items in the users cart
+ * @return {Promise<Object[]>} Items in the users cart
  */
 async function getCart(){
-    return await db.collection(`users/${getCurrentUser().uid}/cart`).get();
+    const snapshot = await db.collection(`users/${getCurrentUser().uid}/cart`).get();
+    const cartTotal = snapshot.docs.reduce((acc, item) => acc + item.data().price, 0);
+    const items = snapshot.docs.map(doc => ({ id: doc.id,  ...doc.data() }))
+    return {
+        shipping: 0.05 * cartTotal,
+        tax: 0.14 * cartTotal,
+        cartTotal,
+        items
+    }
 }
 
 /**
@@ -153,13 +161,12 @@ async function removeFromCart(product, checkout=false){
  * @return {Promise<void>}
  */
 async function checkout(cartTotal){
-    const snapshot = await getCart();
-    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    const { items } = await getCart();
     const analyticsParams = {
         currency: 'USD',
         value: cartTotal, // Total Revenue
         coupon: 'None',
-        items: cartItems
+        items
     }
     // Log event
     analytics.logEvent('begin_checkout', analyticsParams);
@@ -168,28 +175,26 @@ async function checkout(cartTotal){
 }
 
 async function completePurchase(){
-    const snapshot = await getCart();
-    const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
-    await db.collection(`users/${getCurrentUser().uid}/purchases`).add({items: cartItems});
+    const { items, tax, shipping, cartTotal } = await getCart();
+    await db.collection(`users/${getCurrentUser().uid}/purchases`).add({ items, cartTotal });
 
-    //TODO: Create function to get cart details and populate here
     const analyticsParams = {
         transaction_id: 'T12345',
         affiliation: 'Intro To Firebase',
         currency: 'USD',
-        value: 14.98, // Total Revenue
-        tax: 2.85,
-        shipping: 5.34,
+        value: cartTotal, // Total Revenue
         coupon: 'None',
-        items: cartItems
+        tax,
+        shipping,
+        items
     }
     // Log event
     analytics.logEvent('purchase', analyticsParams);
-    await Promise.all(cartItems.map(doc => {
+    await Promise.all(items.map(doc => {
         return removeFromCart(doc, true);
     }));
     document.getElementById('checkoutSection').innerHTML = `<h3 class="title is-1 has-text-centered">Thank You :)</h3>`
-    showToast(`Purchase successful- Thank You!`, 'success');
+    showToast(`Purchase successful - Thank You!`, 'success');
 }
 
 /*
