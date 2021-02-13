@@ -82,7 +82,7 @@ async function getProductInfo(docID, productType) {
     let docRef = db.collection(`products/${productType}/inventory`).doc(docID); // reference the product document
 
     try {
-        return await docRef.get()
+        return await docRef.get();
     } catch (error) {
         console.log("Error getting document:", error);
     }
@@ -94,8 +94,8 @@ async function getProductInfo(docID, productType) {
  * @return {Promise<void>}
  */
 async function deleteProduct(docPath) {
-    await db.doc(docPath).delete()
-    window.history.back()
+    await db.doc(docPath).delete();
+    window.history.back();
 }
 
 /**
@@ -105,7 +105,99 @@ async function deleteProduct(docPath) {
  */
 async function addToCart(product) {
     console.log(`Added product to cart: ${product.name}`);
-    analytics.logEvent('add_to_cart', {currency: 'USD', item: product.id, value : product.price, name: product.name});
+    const analyticsParams = {
+        id: product.id,
+        name: product.name,
+        currency: 'USD',
+        value: product.price,
+        items: [{quantity: 1, ...product}]
+    }
+    // Log event when a product is added to the cart
+    analytics.logEvent('add_to_cart', analyticsParams);
+    return await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).set(product);
+}
+
+/**
+ *
+ * @return {Promise<Object[]>} Items in the users cart
+ */
+async function getCart(){
+    const snapshot = await db.collection(`users/${getCurrentUser().uid}/cart`).get();
+    const cartTotal = snapshot.docs.reduce((acc, item) => acc + item.data().price, 0);
+    const items = snapshot.docs.map(doc => ({ id: doc.id,  ...doc.data() }))
+    return {
+        shipping: 0.05 * cartTotal,
+        tax: 0.14 * cartTotal,
+        cartTotal,
+        items
+    }
+}
+
+/**
+ * Removes an item from the users cart sub-collection
+ * @param {String} product The document of the product to be deleted
+ * @param {Boolean} [checkout=false] Optional param to specify if cart removal event should be logged
+ * @return {Promise<void>}
+ */
+async function removeFromCart(product, checkout=false){
+
+    console.log(`Removed ${product.name} from cart`);
+    await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).delete();
+
+    const analyticsParams = {
+        currency: 'USD',
+        value: product.price,
+        items: [product]
+    }
+
+    // Log remove from cart event if user isn't checking out
+    !checkout ? analytics.logEvent('remove_from_cart', analyticsParams): '';
+
+}
+
+/**
+ * Checkout users cart by removing each product in the users cart collection
+ * @param {Number} cartTotal The sum of cart item prices
+ * @return {Promise<void>}
+ */
+async function checkout(cartTotal){
+    const { items } = await getCart();
+    const analyticsParams = {
+        currency: 'USD',
+        value: cartTotal, // Total Revenue
+        coupon: 'None',
+        items
+    }
+    // Log event
+    analytics.logEvent('begin_checkout', analyticsParams);
+    window.location.href = 'checkout.html';
+
+}
+
+/**
+ * Complete the purchase with the current cart
+ */
+async function completePurchase(){
+    const { items, tax, shipping, cartTotal } = await getCart();
+    await db.collection(`users/${getCurrentUser().uid}/purchases`).add({ items, cartTotal });
+
+    const analyticsParams = {
+        transaction_id: 'T12345',
+        affiliation: 'Intro To Firebase',
+        currency: 'USD',
+        value: cartTotal, // Total Revenue
+        coupon: 'None',
+        tax,
+        shipping,
+        items
+    }
+    // Log event
+    analytics.logEvent('purchase', analyticsParams);
+    await Promise.all(items.map(doc => {
+        return removeFromCart(doc, true);
+    }));
+    document.getElementById('checkoutSection').innerHTML = `<h3 class="title is-1 has-text-centered">Thank You :)</h3>`
+    showToast(`Purchase successful - Thank You!`, 'success');
 }
 
 /*
@@ -125,8 +217,8 @@ async function getUserData() {
  * @return {Promise<Array>} List of all the user documents
  */
 async function getAllUsers() {
-    const usersCollection = await firebase.firestore().collection('users').get()
-    return usersCollection.docs
+    const usersCollection = await firebase.firestore().collection('users').get();
+    return usersCollection.docs;
 }
 
 /**

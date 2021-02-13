@@ -6,16 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
-    <title>Intro To Firebase</title>
+    <title>Shopping Cart</title>
 
 
     <!--    CUSTOM CSS & JS    -->
     <link type="text/css" href="../css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/toast.js"></script> <!-- toast service -->
     <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
     <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
     <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
+    <script type="text/javascript" src="../js/cart.js" defer></script> <!-- use cart js for on auth state changed to load cart items-->
 
     <!--    STYLING     -->
     <!--    bulma css framework   -->
@@ -48,6 +50,12 @@
     <section class="section is-desktop is-vcentered">
         <div id="usersSection" class="container">
             <h1 class="title center">Your Cart</h1>
+
+            <div class="container" id="cartItems">
+                <!--            cards will populate into here-->
+            </div>
+
+
         </div>
     </section>
 </body>
