@@ -127,15 +127,24 @@ async function getCart(){
 
 /**
  * Removes an item from the users cart sub-collection
- * @param {String} productID The document ID of the product to be deleted
+ * @param {String} product The document of the product to be deleted
+ * @param {Boolean} [checkout=false] Optional param to specify if cart removal event should be logged
  * @return {Promise<void>}
  */
-async function removeFromCart(productID){
-    console.log(`Removed ${productID} from cart`);
-    await db.doc(`users/${getCurrentUser().uid}/cart/${productID}`).delete();
+async function removeFromCart(product, checkout=false){
 
-    // Log event
-    analytics.logEvent('remove_from_cart', {id: productID});
+    console.log(`Removed ${product.name} from cart`);
+    await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).delete();
+
+    const analyticsParams = {
+        currency: 'USD',
+        value: product.price,
+        items: [product]
+    }
+
+    // Log remove from cart event if user isn't checking out
+    !checkout ? analytics.logEvent('remove_from_cart', analyticsParams): '';
+
 }
 
 /**
@@ -146,16 +155,17 @@ async function removeFromCart(productID){
 async function checkout(cartTotal){
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
+    console.log(cartItems)
     const analyticsParams = {
         currency: 'USD',
         value: cartTotal, // Total Revenue
         coupon: 'None',
-        items: [cartItems]
+        items: cartItems
     }
     // Log event
     analytics.logEvent('begin_checkout', analyticsParams);
     await Promise.all(cartItems.map(doc => {
-        return removeFromCart(doc.id);
+        return removeFromCart(doc, true);
     }));
 }
 

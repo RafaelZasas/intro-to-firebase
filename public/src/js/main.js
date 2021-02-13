@@ -314,10 +314,10 @@ let maxDocumentsReached = false // stops the scroll function from loading more d
 async function loadProductsOnScroll(type) {
     const BOTTOM_OFFSET = 20;
     let loading = false
-    
+
     window.onscroll = async e => {
         if (loading || maxDocumentsReached) return;
-        
+
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - BOTTOM_OFFSET) {
             // at the bottom of the page
             loading = true
@@ -332,7 +332,7 @@ async function loadProductsOnScroll(type) {
  * Renders the HTML for the Shopping Cart Screen
  * @return {Promise<void>}
  */
-async function populateCart(){
+async function populateCart() {
     let cartTotal = 0;
     const snapshot = await getCart();
     const cartItems = snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}));
@@ -341,10 +341,22 @@ async function populateCart(){
     cartSection.innerHTML = '';
 
     /**
+     * Global function to remove a  product from user's cart collection and then re renders the cart HTML
+     * @param {int} index The index of the document to be removed from users cart
+     */
+    window.removeItemFromCart = (index) => {
+        removeFromCart(cartItems[index]);
+        populateCart();
+    }
+
+    /**
      * Renders the HTML for the products in the users cart colleciton
      */
     const renderItems = () => {
+        let itemIndex = -1; // counter to keep track of the index of each item in cart for the delete function
+
         cartItems.forEach(item => {
+            itemIndex += 1;
             cartTotal += item.price;
             cartSection.innerHTML += `
             <div class="level columns-mobile">
@@ -360,7 +372,7 @@ async function populateCart(){
                 </div>
                 <div class="level-right column-mobile">
                     <div class="level-item">
-                        <a class="button is-light" onclick="remove('${item.id}')">
+                        <a class="button is-light" onclick="removeItemFromCart(${itemIndex})">
                             <span class="icon is-medium has-text-danger">
                                 <i class="fas fa-trash-alt"></i>
                             </span>
