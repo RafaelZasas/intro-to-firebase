@@ -221,6 +221,7 @@ async function populateProductDetails(doc) {
 
     window.addCart = () => {
         addToCart(product);
+        showToast(`${product.name} was added to the cart`, 'info')
     };
 
     let deleteButton = `
