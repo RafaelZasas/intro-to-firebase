@@ -9,6 +9,14 @@ firebase.auth().onAuthStateChanged(populateCart)
  * @return {Promise<void>}
  */
 async function handleCheckout(total) {
-    await checkout(total);
-    await populateCart();
+
+    try {
+        await checkout(total);
+        await populateCart();
+        showToast(`Thanks for your purchace! You total was $${total}.`, 'success');
+    } catch (e) {
+        showToast('There was a problem with the checkout.', 'danger');
+        console.error(e);
+    }
 }
+
