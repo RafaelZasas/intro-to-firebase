@@ -52,7 +52,34 @@ exports.notifyOnPurchase = functions.firestore
             to: [userData.email],
             message: {
                 subject: 'Your Order Confirmation',
-                html: `Thanks for your order! Your total was $${purchaseData.cartTotal}`
+                html: buildEmailHTML(purchaseData)
             }
         })
     })
+
+function buildEmailHTML(purchaseData) {
+    if (!purchaseData.items) {
+        throw new Error('No items in the purchase data were provided')
+    }
+    const productRows = purchaseData.items.map(item => {
+        return `
+        <tr>
+            <td>${item.name}</td>
+            <td>$${item.price}</td>
+        </tr>
+        `
+    })
+    return `
+        <h1>Thank you for your purchase!</h1>
+
+        <h2>Here's your order:</h2>
+        <table>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
+          ${productRows.join('\n')}
+        </table>
+        <br/>
+        <b>Total: $${purchaseData.cartTotal}</b>`
+}
