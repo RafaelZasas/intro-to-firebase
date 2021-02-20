@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 });
 
+window.onunload = function() {
+    analytics.logEvent('user_exited');
+}
 
 /**
  * Checks if the user exists and changes the UI appropriately
