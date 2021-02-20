@@ -13,7 +13,7 @@ exports.updateInventorySize = functions.firestore
         const categoryDocumentReference = change.after.ref.parent.parent;
         const categoryDoc = await categoryDocumentReference.get();
 
-        const oldInventorySize = categoryDoc.data().inventorySize ?? 0;
+        const oldInventorySize = categoryDoc.data().inventorySize? categoryDoc.data().inventorySize: 0;
         const newInventorySize = change.before.exists ? oldInventorySize - 1 : oldInventorySize + 1;
 
         return categoryDocumentReference.update('inventorySize', newInventorySize);
@@ -74,7 +74,7 @@ exports.sendPromotion = functions
         const cartTotal = snapshot.docs.reduce((acc, item) => acc + item.data().price, 0);
 
         // For purchases above 500 USD, we send a coupon of 20% off the cart value.
-        if (userData.data()?.promotionSent && cartTotal > 500) {
+        if (userData.data().promotionSent && cartTotal > 500) {
             // update user doc to specify that a promotional email has been sent to the user
             await db.doc(`users/${uid}`).update({promotionSent: true});
 
