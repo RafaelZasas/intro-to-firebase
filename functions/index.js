@@ -1,10 +1,14 @@
 const functions = require("firebase-functions");
 const admin = require('firebase-admin');
-const {user} = require("firebase-functions/lib/providers/auth");
 
 admin.initializeApp();
 const db = admin.firestore();
 
+/**
+ * This function listens for documents being added or removed from a products inventory
+ * and updates the inventorySize accordingly
+ * @type {CloudFunction<Change<DocumentSnapshot>>}
+ */
 exports.updateInventorySize = functions.firestore
     .document('products/{categoryId}/inventory/{productId}')
     .onWrite(async (change, context) => {
@@ -20,9 +24,14 @@ exports.updateInventorySize = functions.firestore
     });
 
 
+/**
+ * This function listens for changes in a product document and updates the corresponding
+ * product in all users cart collections.
+ * @type {CloudFunction<Change<QueryDocumentSnapshot>>}
+ */
 exports.syncProductsAndCart = functions.firestore
-    .document('products/{categoryId}/inventory/{productId}')
-    .onUpdate(async (change, context) => {
+    .document('products/{categoryId}/inventory/{productId}') // specify to listen for changes on inventory
+    .onUpdate(async (change, context) => { // listen for doc update
         const newProductData = change.after.data();
 
         const cartProducts = await db
@@ -35,19 +44,49 @@ exports.syncProductsAndCart = functions.firestore
         }))
     });
 
+/**
+ * A generic function which will run every Saturday at 8AM. Can be used to send news letters.
+ * @type {CloudFunction<unknown>}
+ */
+exports.weeklyFunction = functions.pubsub
+    .schedule('0 8 * * 6')
+    .timeZone('America/Los_Angeles')
+    .onRun((context) => {
+        console.log('This will run every Saturday at 8AM!');
+        return null;
+            });
+
+/**
+ * A generic function which fires every minute. Used only for display purposes.
+ * @type {CloudFunction<unknown>}
+ */
+exports.minuteFunction = functions.pubsub
+    .schedule('* * * * *')
+    .onRun((context) => {
+        console.log('This will run every minute !');
+        return null;
+    });
+
+
+/**
+ * Sends user a confirmation email once they have purchased an item.
+ * @type {CloudFunction<QueryDocumentSnapshot>}
+ */
 exports.notifyOnPurchase = functions.firestore
-    .document('users/{uid}/purchases/{purchaseId}')
+    .document('users/{uid}/purchases/{purchaseId}') // listen for changes in the purchases collection
     .onCreate(async (snapshot, context) => {
         const userDoc = await snapshot.ref.parent.parent.get();
         const userData = userDoc.data();
         const purchaseData = snapshot.data();
 
-        console.log(userData);
+        // remove promotion sent flag to allow for new emails on cart creation
+        await db.doc(`users/${userDoc.id}`).update({promotionSent: false});
 
         if (!userData.email) {
             throw new Error(`No user email found for ${userDoc.id}`);
         }
 
+        // add the email to the mail collection which will trigger the extension and send the email
         return db.collection('mail').add({
             to: [userData.email],
             message: {
@@ -56,7 +95,6 @@ exports.notifyOnPurchase = functions.firestore
             }
         })
     })
-
 
 /**
  * After a user has added items to their cart, send a coupon if:
@@ -73,8 +111,15 @@ exports.sendPromotion = functions
         // calculate the total of the cart
         const cartTotal = snapshot.docs.reduce((acc, item) => acc + item.data().price, 0);
 
+        const debug = {
+            uid,
+            userData,
+            cartTotal,
+        }
+        console.log(debug)
+
         // For purchases above 500 USD, we send a coupon of 20% off the cart value.
-        if (userData.data().promotionSent && cartTotal > 500) {
+        if (!userData.data().promotionSent && cartTotal > 500) {
             // update user doc to specify that a promotional email has been sent to the user
             await db.doc(`users/${uid}`).update({promotionSent: true});
 
@@ -92,6 +137,10 @@ exports.sendPromotion = functions
 
     });
 
+/**
+ * Builds the HTML string for coupon code
+ * @return {string} The html string to be mailed.
+ */
 function buildCouponHTML() {
     return `
         <h1>We decided to offer you a coupon code for this purchase or the next</h1>
@@ -101,6 +150,12 @@ function buildCouponHTML() {
 }
 
 
+/**
+ * Builds the html string for confirmation of purchase.
+ * @param {object} purchaseData The data corresponding to the users purchase
+ * such as the items, value and cart value.
+ * @return {string}
+ */
 function buildPurchaseConfirmationHTML(purchaseData) {
     if (!purchaseData.items) {
         throw new Error('No items in the purchase data were provided')
