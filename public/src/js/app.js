@@ -16,16 +16,17 @@ firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics(); // initialize firebase analytics
 const db = firebase.firestore(); // object of our firestore database to be used throughout the site
 const remoteConfig = firebase.remoteConfig();
+remoteConfig.settings.minimumFetchIntervalMillis = 3600; // BEWARE: Only keep this low for development
 
 document.addEventListener('DOMContentLoaded', () => {
     // call method to update UI according to users log in state
-    firebase.auth().onAuthStateChanged( async user => {
+    firebase.auth().onAuthStateChanged(async user => {
         await displayProfileUI(user);
         user && analytics.setUserId(user.uid);
     })
 });
 
-window.onunload = function() {
+window.onunload = function () {
     analytics.logEvent('user_exited');
 }
 
@@ -39,6 +40,22 @@ async function displayProfileUI(user) {
     let adminPanelButton = document.getElementById('admin-panel');
     let profileButton = document.getElementById('profile');
     let cartBtn = document.getElementById('shoppingCartBtn');
+
+    let chromeUser = remoteConfig.getValue('chrome_users')._value;
+    let safariUser = remoteConfig.getValue('safari_users')._value;
+    let purchaser = remoteConfig.getValue('purchaser')._value;
+    let lucky_winner = remoteConfig.getValue('lucky_winner')._value;
+
+    console.table([{chromeUser, safariUser, purchaser, lucky_winner}]);
+
+    // remoteConfig.fetchAndActivate()
+    //     .then((val) => {
+    //         if(val){ console.log('Refreshed Remote Config') };
+    //     })
+    //     .catch((err) => {
+    //         console.log(`error: ${err}`);
+    //         // ...
+    //     });
 
     const userSignedIn = !!user
     // hide the login and sign up buttons when user signs in
@@ -59,8 +76,12 @@ async function displayProfileUI(user) {
         adminPanelButton.hidden = !userSignedIn || !isAdminUser
     }
 
-    if (cartBtn){
+    if (cartBtn) {
         cartBtn.hidden = !userSignedIn;
+        if (chromeUser) {
+            document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
+        }
+        console.log(`cart classes: ${cartBtn.className}`)
     }
 }
 
@@ -196,9 +217,9 @@ async function populateCurrentProduct() {
 let priceSortAsc = true;
 let nameSortAsc = true;
 let optionsMap = {
-    sortByName: { desc: false },
-    sortByPrice: { desc: false },
-    priceFilter: { minPrice: null, maxPrice: null}
+    sortByName: {desc: false},
+    sortByPrice: {desc: false},
+    priceFilter: {minPrice: null, maxPrice: null}
 }
 
 /**
@@ -223,7 +244,7 @@ async function getProducts(productType, options = null) {
 
         // configure query options
         optionsMap.sortByName = null
-        optionsMap.sortByPrice = { desc: !priceSortAsc };
+        optionsMap.sortByPrice = {desc: !priceSortAsc};
 
     } else if (options?.sortByName) {
         console.log('sorting by name')
@@ -234,7 +255,7 @@ async function getProducts(productType, options = null) {
             `<span class="tooltiptext">Sort by name</span>
             <i class="fas fa-sort-alpha-${nameSortAsc ? 'up' : 'down'}"></i>`
         optionsMap.sortByPrice = null
-        optionsMap.sortByName = { desc: !nameSortAsc };
+        optionsMap.sortByName = {desc: !nameSortAsc};
 
     }
 
@@ -242,7 +263,7 @@ async function getProducts(productType, options = null) {
     maxDocumentsReached = false;
 
     const products = await getFilteredProducts(productType, optionsMap, getResultsPerPage());
-    
+
     populateProductCards(products, productType);
 }
 
@@ -252,7 +273,7 @@ async function getProducts(productType, options = null) {
  * @return {Promise<void>}
  */
 async function loadMoreProducts(productType) {
-    const products = await getFilteredProducts(productType, { loadMore: true, ...optionsMap }, getResultsPerPage());
+    const products = await getFilteredProducts(productType, {loadMore: true, ...optionsMap}, getResultsPerPage());
 
     populateProductCards(products, productType, 'append');
 }

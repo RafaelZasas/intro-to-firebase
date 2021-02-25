@@ -83,7 +83,7 @@ function populateNavbar() {
                 <div class="navbar-item">
                     <div id="shoppingCartBtn">
                         <div class="buttons">
-                            <a class="button is-light" href="../html/cart.html">
+                            <a class="button is-light" href="../html/cart.html" id="cart-icon">
                                 <span class="icon is-medium">
                                     <i class="fas fa-shopping-cart"></i>
                                 </span>
