@@ -210,6 +210,10 @@ async function deleteQuestion(id) {
     await firebase.firestore().collection('questions').doc(id).delete();
 }
 
+async function listenToQuestionUpdates(callback) {
+    firebase.firestore().collection('questions').onSnapshot(callback);
+}
+
 /*
 This section deals with firestore calls related to the user
  */

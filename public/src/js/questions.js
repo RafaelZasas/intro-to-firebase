@@ -1,4 +1,5 @@
 firebase.auth().onAuthStateChanged(populateQuestions)
+listenToQuestionUpdates(populateQuestions)
 
 async function populateQuestions() {
     const questionList = document.getElementById('questions')
