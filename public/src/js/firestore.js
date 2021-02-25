@@ -206,6 +206,10 @@ async function getAllQuestions() {
     return usersCollection.docs;
 }
 
+async function deleteQuestion(id) {
+    await firebase.firestore().collection('questions').doc(id).delete();
+}
+
 /*
 This section deals with firestore calls related to the user
  */
