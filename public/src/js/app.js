@@ -15,6 +15,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const analytics = firebase.analytics(); // initialize firebase analytics
 const db = firebase.firestore(); // object of our firestore database to be used throughout the site
+const remoteConfig = firebase.remoteConfig();
 
 document.addEventListener('DOMContentLoaded', () => {
     // call method to update UI according to users log in state
