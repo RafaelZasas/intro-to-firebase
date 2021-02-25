@@ -31,3 +31,11 @@ async function getQuestionCard(question) {
     </div>
     `
 }
+
+async function handleQuestionSubmit() {
+    const questionInput = document.getElementById('questionInput');
+    const question = questionInput.value;
+    const userName = getCurrentUser().displayName;
+    await addQuestion(question, userName);
+    questionInput.value = '';
+}

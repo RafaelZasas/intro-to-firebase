@@ -55,7 +55,7 @@ async function getFilteredProducts(category, options, resultsPerPage) {
         maxDocumentsReached = true;
     }
 
-    return snapshot.docs.map(doc => ({id: doc.id, ...doc.data()}))
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
 }
 
 /**
@@ -110,7 +110,7 @@ async function addToCart(product) {
         name: product.name,
         currency: 'USD',
         value: product.price,
-        items: [{quantity: 1, ...product}]
+        items: [{ quantity: 1, ...product }]
     }
     // Log event when a product is added to the cart
     analytics.logEvent('add_to_cart', analyticsParams);
@@ -121,10 +121,10 @@ async function addToCart(product) {
  *
  * @return {Promise<Object[]>} Items in the users cart
  */
-async function getCart(){
+async function getCart() {
     const snapshot = await db.collection(`users/${getCurrentUser().uid}/cart`).get();
     const cartTotal = snapshot.docs.reduce((acc, item) => acc + item.data().price, 0);
-    const items = snapshot.docs.map(doc => ({ id: doc.id,  ...doc.data() }))
+    const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
     return {
         shipping: 0.05 * cartTotal,
         tax: 0.14 * cartTotal,
@@ -139,7 +139,7 @@ async function getCart(){
  * @param {Boolean} [checkout=false] Optional param to specify if cart removal event should be logged
  * @return {Promise<void>}
  */
-async function removeFromCart(product, checkout=false){
+async function removeFromCart(product, checkout = false) {
 
     console.log(`Removed ${product.name} from cart`);
     await db.doc(`users/${getCurrentUser().uid}/cart/${product.id}`).delete();
@@ -151,7 +151,7 @@ async function removeFromCart(product, checkout=false){
     }
 
     // Log remove from cart event if user isn't checking out
-    !checkout ? analytics.logEvent('remove_from_cart', analyticsParams): '';
+    !checkout ? analytics.logEvent('remove_from_cart', analyticsParams) : '';
 
 }
 
@@ -160,7 +160,7 @@ async function removeFromCart(product, checkout=false){
  * @param {Number} cartTotal The sum of cart item prices
  * @return {Promise<void>}
  */
-async function checkout(cartTotal){
+async function checkout(cartTotal) {
     const { items } = await getCart();
     const analyticsParams = {
         currency: 'USD',
@@ -177,7 +177,7 @@ async function checkout(cartTotal){
 /**
  * Complete the purchase with the current cart
  */
-async function completePurchase(){
+async function completePurchase() {
     const { items, tax, shipping, cartTotal } = await getCart();
     await db.collection(`users/${getCurrentUser().uid}/purchases`).add({ items, cartTotal });
 
@@ -204,6 +204,10 @@ async function completePurchase(){
 async function getAllQuestions() {
     const usersCollection = await firebase.firestore().collection('questions').get();
     return usersCollection.docs;
+}
+
+async function addQuestion(question, author) {
+    await firebase.firestore().collection('questions').add({ question, author });
 }
 
 async function deleteQuestion(id) {
