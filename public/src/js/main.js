@@ -76,7 +76,11 @@ function populateNavbar() {
                 </div>
             </div>
 
-
+            <div class="navbar-item">
+                <a href="../html/questions.html" class="button is-primary">
+                    Ask Alex Astrum
+                </a>
+            </div>
         </div>
         <div id='loginSection'>
             <div class="navbar-end">
