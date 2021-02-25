@@ -137,6 +137,13 @@ exports.sendPromotion = functions
 
     });
 
+exports.saveQuestionFromForm = functions.https.onRequest(async (req, resp) => {
+    await db.collection('questions').add({
+        question: req.query.question
+    }); 
+    resp.status(200).send();
+})
+
 /**
  * Builds the HTML string for coupon code
  * @return {string} The html string to be mailed.
