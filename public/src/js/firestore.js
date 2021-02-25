@@ -200,6 +200,12 @@ async function completePurchase(){
     showToast(`Purchase successful - Thank You!`, 'success');
 }
 
+
+async function getAllQuestions() {
+    const usersCollection = await firebase.firestore().collection('questions').get();
+    return usersCollection.docs;
+}
+
 /*
 This section deals with firestore calls related to the user
  */
