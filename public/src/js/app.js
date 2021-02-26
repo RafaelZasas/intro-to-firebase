@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     firebase.auth().onAuthStateChanged(async user => {
         await displayProfileUI(user);
         user && analytics.setUserId(user.uid);
+        await personalizeUi();
     })
 });
 
@@ -40,22 +41,6 @@ async function displayProfileUI(user) {
     let adminPanelButton = document.getElementById('admin-panel');
     let profileButton = document.getElementById('profile');
     let cartBtn = document.getElementById('shoppingCartBtn');
-
-    let chromeUser = remoteConfig.getValue('chrome_users')._value;
-    let safariUser = remoteConfig.getValue('safari_users')._value;
-    let purchaser = remoteConfig.getValue('purchaser')._value;
-    let lucky_winner = remoteConfig.getValue('lucky_winner')._value;
-
-    console.table([{chromeUser, safariUser, purchaser, lucky_winner}]);
-
-    // remoteConfig.fetchAndActivate()
-    //     .then((val) => {
-    //         if(val){ console.log('Refreshed Remote Config') };
-    //     })
-    //     .catch((err) => {
-    //         console.log(`error: ${err}`);
-    //         // ...
-    //     });
 
     const userSignedIn = !!user
     // hide the login and sign up buttons when user signs in
@@ -78,17 +63,41 @@ async function displayProfileUI(user) {
 
     if (cartBtn) {
         cartBtn.hidden = !userSignedIn;
+    }
+}
 
-        if (chromeUser) {
-            document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
-        } else if (safariUser) {
-            document.getElementById('cart-icon').setAttribute('class', 'button is-info');
-        }
+async function personalizeUi() {
+    remoteConfig.fetchAndActivate()
+        .then((val) => {
+            if(val){ console.log('Refreshed Remote Config') }
+        })
+        .catch((err) => {
+            console.log(`error: ${err}`);
+            // ...
+        });
+    let chromeUser = remoteConfig.getValue('chrome_users')._value;
+    let safariUser = remoteConfig.getValue('safari_users')._value;
+    let purchaser = remoteConfig.getValue('purchaser')._value;
+    let lucky_winner = remoteConfig.getValue('lucky_winner')._value;
+
+    console.table([{chromeUser, safariUser, purchaser, lucky_winner}]);
+
+    if (chromeUser) {
+        document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
+        document.getElementById('profileButton').setAttribute('class', 'button is-primary');
+        document.getElementById('searchButton').setAttribute('class', 'button is-primary');
+    } else if (safariUser) {
+        document.getElementById('cart-icon').setAttribute('class', 'button is-info');
+        document.getElementById('profileButton').setAttribute('class', 'button is-info');
+        document.getElementById('searchButton').setAttribute('class', 'button is-info');
 
         if (lucky_winner) {
             showToast('Congratulations - You\'re a Lucky Winner!', 'info');
         }
+
     }
+
+
 }
 
 /**

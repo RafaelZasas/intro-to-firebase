@@ -100,7 +100,7 @@ function populateNavbar() {
                             </a>
                         </div>
                         <div id="profile">
-                            <a class="button is-primary" href="../html/profile.html">
+                            <a class="button is-light" href="../html/profile.html" id="profileButton">
                                 <strong>Profile</strong>
                             </a>
                         </div>
