@@ -78,10 +78,16 @@ async function displayProfileUI(user) {
 
     if (cartBtn) {
         cartBtn.hidden = !userSignedIn;
+
         if (chromeUser) {
             document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
+        } else if (safariUser) {
+            document.getElementById('cart-icon').setAttribute('class', 'button is-info');
         }
-        console.log(`cart classes: ${cartBtn.className}`)
+
+        if (lucky_winner) {
+            showToast('Congratulations - You\'re a Lucky Winner!', 'info');
+        }
     }
 }
 
