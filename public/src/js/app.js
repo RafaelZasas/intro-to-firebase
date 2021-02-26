@@ -82,16 +82,16 @@ async function personalizeUi() {
 
     console.table([{chromeUser, safariUser, purchaser, lucky_winner}]);
 
-    if (chromeUser) {
+    if (chromeUser === 'true') {
         document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
         document.getElementById('profileButton').setAttribute('class', 'button is-primary');
         document.getElementById('searchButton').setAttribute('class', 'button is-primary');
-    } else if (safariUser) {
+    } else if (safariUser === 'true') {
         document.getElementById('cart-icon').setAttribute('class', 'button is-info');
         document.getElementById('profileButton').setAttribute('class', 'button is-info');
         document.getElementById('searchButton').setAttribute('class', 'button is-info');
 
-        if (lucky_winner) {
+        if (lucky_winner === 'true') {
             showToast('Congratulations - You\'re a Lucky Winner!', 'info');
         }
 
