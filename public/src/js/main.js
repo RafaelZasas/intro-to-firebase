@@ -8,6 +8,39 @@
  */
 function populateNavbar() {
     let headTag = document.querySelector('#navbar');
+
+    remoteConfig.fetchAndActivate()
+        .then((val) => {
+            if(val){ console.log('Refreshed Remote Config') }
+        })
+        .catch((err) => {
+            console.log(`error: ${err}`);
+            // ...
+        });
+
+    const googleButton = `
+        <button class="button" onclick="handleSignInWithProvider('google')">
+            <span class="icon">
+                <i class="fab fa-google"></i>
+            </span>
+            <span>Google</span>
+        </button>
+    `;
+
+    const gitHubButton = `
+        <button class="button" onclick="handleSignInWithProvider('github')">
+            <span class="icon">
+                <i class="fab fa-github"></i>
+            </span>
+            <span>GitHub</span>
+        </button>
+    `;
+
+    const authOption = remoteConfig.getValue('auth_method')._value;
+    console.log('Auth Option:', authOption);
+
+    const providerButton = authOption === 'github' ? gitHubButton : googleButton;
+
     headTag.innerHTML = `
     <div class="navbar-brand">
         <a class="navbar-item" href="../../index.html">
@@ -100,7 +133,7 @@ function populateNavbar() {
                             </a>
                         </div>
                         <div id="profile">
-                            <a class="button is-light" href="../html/profile.html" id="profileButton">
+                            <a class="button is-primary" href="../html/profile.html" id="profileButton">
                                 <strong>Profile</strong>
                             </a>
                         </div>
@@ -188,18 +221,7 @@ function populateNavbar() {
                 </div>
                 <hr>
                 <div class="control">
-                    <button class="button" onclick="handleSignInWithProvider('google')">
-                        <span class="icon">
-                            <i class="fab fa-google"></i>
-                        </span>
-                        <span>Google</span>
-                    </button>
-                    <button class="button" onclick="handleSignInWithProvider('github')">
-                        <span class="icon">
-                            <i class="fab fa-github"></i>
-                        </span>
-                        <span>GitHub</span>
-                    </button>
+                    ${providerButton}
                 </div>
                 <p id="auth-provider-errors" class="help is-danger"></p>
             </section>
