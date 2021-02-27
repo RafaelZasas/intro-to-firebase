@@ -10,11 +10,12 @@
 
 
     <!--    CUSTOM CSS & JS    -->
+    <script type="text/javascript" src="../js/toast.js"></script> <!-- toast service -->
+    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
     <script type="text/javascript" src="../js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="../js/styles.js"></script> <!-- styling related logic -->
-    <script type="text/javascript" src="../js/firestore.js" defer></script> <!-- database related logic-->
+    <script type="text/javascript" src="../js/firestore.js"></script> <!-- database related logic-->
     <script type="text/javascript" src="../js/auth.js"></script> <!-- authentication state logic -->
-    <script type="text/javascript" src="../js/app.js" defer></script> <!-- separating firebase configuration files-->
     <script type="text/javascript" src="../js/questions.js" defer></script> <!-- questions rendering logic -->
 
     <!--    STYLING     -->
@@ -34,8 +35,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
     <!--Google Analytics-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
-
-
+    <!-- Remote Config -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-remote-config.js"></script>
 </head>
 
 <body onload="populateNavbar();">

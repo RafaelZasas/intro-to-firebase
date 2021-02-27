@@ -1,5 +1,9 @@
-firebase.auth().onAuthStateChanged(populateQuestions)
-listenToQuestionUpdates(populateQuestions)
+document.addEventListener('DOMContentLoaded', () => {
+    firebase.auth().onAuthStateChanged(user => {
+        populateQuestions();
+        listenToQuestionUpdates(populateQuestions)
+    })
+})
 
 async function populateQuestions() {
     const questionList = document.getElementById('questions')

@@ -96,18 +96,20 @@ async function personalizeUi() {
 
     console.table([{chromeUser, safariUser, purchaser, lucky_winner, test_user}]);
 
+    const primaryButtonIds = ['cart-icon', 'profileButton', 'searchButton', 'questions-button']
+
     /**
      * Render a green cart, profile and search button if user is using a chrome browser
      */
     if (chromeUser === 'true') {
-        changeButtonStyles('is-primary', ['cart-icon', 'profileButton', 'searchButton']);
+        changeButtonStyles('is-primary', primaryButtonIds);
     }
 
     /**
      * Render a blue cart, profile and search button if user is using a chrome browser
      */
     if (safariUser === 'true') {
-        changeButtonStyles('is-info', ['cart-icon', 'profileButton', 'searchButton']);
+        changeButtonStyles('is-info', primaryButtonIds);
     }
 
     /**

@@ -110,7 +110,7 @@ function populateNavbar() {
             </div>
 
             <div class="navbar-item">
-                <a href="../html/questions.html" class="button is-primary">
+                <a href="../html/questions.html" id="questions-button" class="button is-primary">
                     Ask Alex Astrum
                 </a>
             </div>
