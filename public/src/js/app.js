@@ -66,9 +66,15 @@ async function displayProfileUI(user) {
     }
 }
 
+/**
+ * Renders styles depending on Remote Config Values.
+ * Note* This function only changes styles for dom elements which are loaded with the document and not
+ * elements which are injected into the document after the fact.
+ * @return {Promise<void>}
+ */
 async function personalizeUi() {
-    remoteConfig.fetchAndActivate()
-        .then((val) => {
+    remoteConfig.fetchAndActivate() // gets the latest updates from the remote config server
+        .then((val) => { // only returns a value if user needs a remote config update
             if(val){ console.log('Refreshed Remote Config') }
         })
         .catch((err) => {
@@ -83,6 +89,9 @@ async function personalizeUi() {
 
     console.table([{chromeUser, safariUser, purchaser, lucky_winner, test_user}]);
 
+    /**
+     * Render a green cart, profile and search button if user is using a chrome browser
+     */
     if (chromeUser === 'true') {
         document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
         document.getElementById('profileButton').setAttribute('class', 'button is-primary');
@@ -90,25 +99,20 @@ async function personalizeUi() {
         btnSearch ? btnSearch.setAttribute('class', 'button is-primary'): null;
     }
 
+    /**
+     * Render a blue cart, profile and search button if user is using a chrome browser
+     */
     if (safariUser === 'true') {
         document.getElementById('cart-icon').setAttribute('class', 'button is-info');
         document.getElementById('profileButton').setAttribute('class', 'button is-info');
         let btnSearch = document.getElementById('searchButton');
         btnSearch ? btnSearch.setAttribute('class', 'button is-info') : null;
-
     }
 
-    if (lucky_winner === 'true') {
-        showToast('Congratulations - You\'re a Lucky Winner!', 'info');
-    }
-
-
-    if (remoteConfig.getValue('purchasers')._value === 'true') {
-        showToast('Thanks for being a customer- Use promo code DSC to get 100%off!', 'success');
-    }
-
-    // add custom styles for cart / checkout process buttons for 50% of users
-    if (remoteConfig.getValue('test_group')._value === 'true') { 
+    /**
+     * Render outlined buttons for cart / checkout process buttons for 50% of randomly selected users
+     */
+    if (remoteConfig.getValue('test_group')._value === 'true') {
         document.getElementById('addShippingBtn').setAttribute(
             'class','button is-primary is-outlined my-2');
         document.getElementById('addBillingInfoBtn').setAttribute(
@@ -117,6 +121,19 @@ async function personalizeUi() {
             'class', 'button is-primary is-outlined my-2');
     }
 
+    /**
+     * Show a toast to a lucky few selected winners
+     */
+    if (lucky_winner === 'true') {
+        showToast('Congratulations - You\'re a Lucky Winner!', 'info');
+    }
+
+    /**
+     * Show a toast with a discount if the user is a recurring customer
+     */
+    if (purchaser === 'true') {
+        showToast('Thanks for being a customer- Use promo code DSC to get 100%off!', 'success');
+    }
 
 }
 
