@@ -77,24 +77,44 @@ async function personalizeUi() {
         });
     let chromeUser = remoteConfig.getValue('chrome_users')._value;
     let safariUser = remoteConfig.getValue('safari_users')._value;
-    let purchaser = remoteConfig.getValue('purchaser')._value;
+    let purchaser = remoteConfig.getValue('purchasers')._value;
     let lucky_winner = remoteConfig.getValue('lucky_winner')._value;
+    let test_user = remoteConfig.getValue('test_group')._value;
 
-    console.table([{chromeUser, safariUser, purchaser, lucky_winner}]);
+    console.table([{chromeUser, safariUser, purchaser, lucky_winner, test_user}]);
 
     if (chromeUser === 'true') {
         document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
         document.getElementById('profileButton').setAttribute('class', 'button is-primary');
-        document.getElementById('searchButton').setAttribute('class', 'button is-primary');
-    } else if (safariUser === 'true') {
+        let btnSearch = document.getElementById('searchButton');
+        btnSearch ? btnSearch.setAttribute('class', 'button is-primary'): null;
+    }
+
+    if (safariUser === 'true') {
         document.getElementById('cart-icon').setAttribute('class', 'button is-info');
         document.getElementById('profileButton').setAttribute('class', 'button is-info');
-        document.getElementById('searchButton').setAttribute('class', 'button is-info');
+        let btnSearch = document.getElementById('searchButton');
+        btnSearch ? btnSearch.setAttribute('class', 'button is-info') : null;
 
-        if (lucky_winner === 'true') {
-            showToast('Congratulations - You\'re a Lucky Winner!', 'info');
-        }
+    }
 
+    if (lucky_winner === 'true') {
+        showToast('Congratulations - You\'re a Lucky Winner!', 'info');
+    }
+
+
+    if (remoteConfig.getValue('purchasers')._value === 'true') {
+        showToast('Thanks for being a customer- Use promo code DSC to get 100%off!', 'success');
+    }
+
+    // add custom styles for cart / checkout process buttons for 50% of users
+    if (remoteConfig.getValue('test_group')._value === 'true') { 
+        document.getElementById('addShippingBtn').setAttribute(
+            'class','button is-primary is-outlined my-2');
+        document.getElementById('addBillingInfoBtn').setAttribute(
+            'class', 'button is-primary is-outlined my-2');
+        document.getElementById('purchaseButton').setAttribute(
+            'class', 'button is-primary is-outlined my-2');
     }
 
 

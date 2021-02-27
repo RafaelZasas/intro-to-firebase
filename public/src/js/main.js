@@ -233,7 +233,7 @@ async function populateProductDetails(doc) {
         </button>
     `
     let addToCartButton = `
-        <button class="button is-primary" onclick="addCart()">
+        <button class="button is-primary" onclick="addCart()" id="addToCartButton">
             <span>Add to Cart</span>
             <span class="icon is-small">
                 <i class="fas fa-shopping-cart"></i>
@@ -261,6 +261,11 @@ async function populateProductDetails(doc) {
     // log event for user viewing a product
     analytics.logEvent('product_viewed', {name: doc.data().name});
 
+    // add custom styles from remote config
+    if (remoteConfig.getValue('test_group')._value === 'true') {
+        document.getElementById('addToCartButton').setAttribute(
+            'class','button is-primary is-outlined')
+    }
 }
 
 /**
@@ -390,7 +395,7 @@ async function populateCart() {
         <p class="title is-3">Total: $${cartTotal}</p>
      </div>
      <div class="row my-3 has-text-centered-mobile">
-        <a class="button is-primary" onclick="handleCheckout(${cartTotal})">
+        <a class="button is-primary" onclick="handleCheckout(${cartTotal})" id="checkoutButton">
             <p>Checkout </p>
              <span class="icon"><i class="fas fa-credit-card"></i></span>
         </a>
@@ -424,6 +429,12 @@ async function populateCart() {
 
     // Log event when the cart is viewed
     analytics.logEvent('view_cart', analyticsParams);
+
+    // add custom styles from remote config
+    if (remoteConfig.getValue('test_group')._value === 'true') {
+        document.getElementById('checkoutButton').setAttribute(
+            'class','button is-primary is-outlined')
+    }
 
 }
 
@@ -507,3 +518,4 @@ async function addBillingInfo(){
 
     showToast(`Billing Info Added`, 'success');
 }
+
