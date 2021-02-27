@@ -11,6 +11,7 @@
 
     <!--    CUSTOM CSS & JS    -->
     <link type="text/css" href="./src/css/styles.css" rel="stylesheet">
+    <script type="text/javascript" src="src/js/toast.js"></script> <!-- toast service -->
     <script type="text/javascript" src="./src/js/main.js"></script> <!-- the main app's logic -->
     <script type="text/javascript" src="./src/js/styles.js"></script> <!-- styling related logic -->
     <script type="text/javascript" src="./src/js/firestore.js" defer></script> <!-- database related logic-->
@@ -29,7 +30,7 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css" />
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.7.1/firebase-ui-auth.css"/>
 
     <!--Firebase Authentication-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
@@ -37,269 +38,271 @@
     <script src="https://www.gstatic.com/firebasejs/8.0.1/firebase-firestore.js"></script>
     <!--Google Analytics-->
     <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+    <!-- Remote Config -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-remote-config.js"></script>
 
 
 </head>
 
 <body>
 
-    <!--Begin Nav-Bar Here-->
-    <nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="">
-                <img src="src/assets/dsc_lockup.png" width="112" height="28">
-            </a>
+<!--Begin Nav-Bar Here-->
+<nav id="navbar" class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="">
+            <img src="src/assets/dsc_lockup.png" width="112" height="28">
+        </a>
 
-            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-                data-target="navbarBasicExample">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </a>
-        </div>
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+           data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
 
-        <div id="navbarBasicExample" class="navbar-menu">
-            <div class="navbar-start">
-                <div class="navbar-item has-dropdown is-hoverable">
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
 
-                    <a class="navbar-link">
-                        Products
-                    </a>
-
-                    <!--   dropdown section for products -->
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="src/html/shoes.html">
-                            Shoes
-                        </a>
-                        <a class="navbar-item" href="src/html/shirts.html">
-                            Shirts
-                        </a>
-                        <a class="navbar-item" href="src/html/bags.html">
-                            Bags
-                        </a>
-                        <a class="navbar-item" href="src/html/hats.html">
-                            Hats
-                        </a>
-                    </div>
-                </div>
-
-                <a class="navbar-item" href="https://dsc.community.dev">
-                    <!--  could be cool to implement google maps api -->
-                    Locations
+                <a class="navbar-link">
+                    Products
                 </a>
-                <!--  dropdown section for More -->
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        More
+
+                <!--   dropdown section for products -->
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="src/html/shoes.html">
+                        Shoes
                     </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item" href="src/html/resources.html">
-                            Resources
-                        </a>
-
-                        <a class="navbar-item" href="https://firebase.google.com/">
-                            Firebase Console
-                        </a>
-
-                        <a class="navbar-item"
-                            href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop/docs/CONTRIBUTING.md">
-                            Contribute to this website
-                        </a>
-                        <hr class="navbar-divider">
-                        <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
-                            Report an issue
-                        </a>
-                    </div>
+                    <a class="navbar-item" href="src/html/shirts.html">
+                        Shirts
+                    </a>
+                    <a class="navbar-item" href="src/html/bags.html">
+                        Bags
+                    </a>
+                    <a class="navbar-item" href="src/html/hats.html">
+                        Hats
+                    </a>
                 </div>
             </div>
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div id="shoppingCartBtn">
-                        <div class="buttons">
-                            <a class="button is-light" href="./src/html/cart.html">
+
+            <a class="navbar-item" href="https://dsc.community.dev">
+                <!--  could be cool to implement google maps api -->
+                Locations
+            </a>
+            <!--  dropdown section for More -->
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    More
+                </a>
+
+                <div class="navbar-dropdown">
+                    <a class="navbar-item" href="src/html/resources.html">
+                        Resources
+                    </a>
+
+                    <a class="navbar-item" href="https://firebase.google.com/">
+                        Firebase Console
+                    </a>
+
+                    <a class="navbar-item"
+                       href="https://github.com/RafaelZasas/intro-to-firebase/blob/develop/docs/CONTRIBUTING.md">
+                        Contribute to this website
+                    </a>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item" href="https://github.com/RafaelZasas/intro-to-firebase/issues">
+                        Report an issue
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div id="shoppingCartBtn">
+                    <div class="buttons">
+                        <a class="button is-light" href="./src/html/cart.html" id="cart-icon">
                             <span class="icon is-medium">
                                 <i class="fas fa-shopping-cart"></i>
                             </span>
-                            </a>
-                        </div>
+                        </a>
                     </div>
                 </div>
-                <div class="navbar-item">
-                    <div class="buttons">
-                        <div id="log-in">
-                            <a class="button is-light" onclick="toggleAuthModal()">
-                                <strong>Log in</strong>
-                            </a>
-                        </div>
-                        <div id="profile">
-                            <a class="button is-primary" href="src/html/profile.html">
-                                <strong>Profile</strong>
-                            </a>
-                        </div>
+            </div>
+            <div class="navbar-item">
+                <div class="buttons">
+                    <div id="log-in">
+                        <a class="button is-light" onclick="toggleAuthModal()">
+                            <strong>Log in</strong>
+                        </a>
+                    </div>
+                    <div id="profile">
+                        <a class="button is-light" href="src/html/profile.html" id="profileButton">
+                            <strong>Profile</strong>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-    </nav>
-    <!--End Nav-Bar Here-->
+    </div>
+</nav>
+<!--End Nav-Bar Here-->
 
-    <div id="auth-modal" class="modal">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Log In</p>
-                <button class="delete" aria-label="close" onclick="toggleAuthModal()"></button>
-            </header>
-            <section class="modal-card-body">
-                <div class="columns">
-                    <div class="column">
-                        <h1 class="is-size-4">Have an account?</h1>
-                        <div class="field">
-                            <label class="label">Email</label>
-                            <div class="control">
-                                <label for="auth-signin-email"></label>
-                                <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
-                            </div>
-                        </div>
-                        <form class="field">
-                            <label class="label" for="auth-signin-password">Password</label>
-                            <div class="control">
-                                <input
-                                        id="auth-signin-password"
-                                        class="input"
-                                        autocomplete="password"
-                                        type="password">
-                            </div>
-                        </form>
-                        <a onclick="handleResetPassword()">Forgot your password?</a>
-                        <p id="auth-signin-errors" class="help is-danger"></p>
+<div id="auth-modal" class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Log In</p>
+            <button class="delete" aria-label="close" onclick="toggleAuthModal()"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="columns">
+                <div class="column">
+                    <h1 class="is-size-4">Have an account?</h1>
+                    <div class="field">
+                        <label class="label">Email</label>
                         <div class="control">
-                            <button class="button" onclick="handleSignIn()">Sign In</button>
+                            <label for="auth-signin-email"></label>
+                            <input id="auth-signin-email" class="input" type="email" placeholder="Text input">
                         </div>
                     </div>
-                    <div class="column">
-                        <h1 class="is-size-4">Create one</h1>
-                        <div class="field">
-                            <label class="label" for="auth-signup-email">Email</label>
-                            <div class="control">
-                                <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
-                            </div>
-                        </div>
-                        <form class="field">
-                            <label class="label" for="auth-signup-password">Password</label>
-                            <div class="control">
-                                <input
-                                        id="auth-signup-password"
-                                        autocomplete="password"
-                                        class="input" type="password">
-                            </div>
-                        </form>
-                        <form class="field">
-                            <label class="label" for="auth-signup-password-confirm">Confirm Password</label>
-                            <div class="control">
-                                <input
-                                        id="auth-signup-password-confirm"
-                                        class="input"
-                                        autocomplete="password"
-                                        type="password">
-                            </div>
-                        </form>
-                        <p id="auth-signup-errors" class="help is-danger"></p>
+                    <form class="field">
+                        <label class="label" for="auth-signin-password">Password</label>
                         <div class="control">
-                            <button class="button" onclick="handleSignUp()">Sign Up</button>
+                            <input
+                                    id="auth-signin-password"
+                                    class="input"
+                                    autocomplete="password"
+                                    type="password">
                         </div>
+                    </form>
+                    <a onclick="handleResetPassword()">Forgot your password?</a>
+                    <p id="auth-signin-errors" class="help is-danger"></p>
+                    <div class="control">
+                        <button class="button" onclick="handleSignIn()">Sign In</button>
                     </div>
                 </div>
-                <hr>
-                <div class="control">
-                    <button class="button" onclick="handleSignInWithProvider('google')">
+                <div class="column">
+                    <h1 class="is-size-4">Create one</h1>
+                    <div class="field">
+                        <label class="label" for="auth-signup-email">Email</label>
+                        <div class="control">
+                            <input id="auth-signup-email" class="input" type="email" placeholder="Text input">
+                        </div>
+                    </div>
+                    <form class="field">
+                        <label class="label" for="auth-signup-password">Password</label>
+                        <div class="control">
+                            <input
+                                    id="auth-signup-password"
+                                    autocomplete="password"
+                                    class="input" type="password">
+                        </div>
+                    </form>
+                    <form class="field">
+                        <label class="label" for="auth-signup-password-confirm">Confirm Password</label>
+                        <div class="control">
+                            <input
+                                    id="auth-signup-password-confirm"
+                                    class="input"
+                                    autocomplete="password"
+                                    type="password">
+                        </div>
+                    </form>
+                    <p id="auth-signup-errors" class="help is-danger"></p>
+                    <div class="control">
+                        <button class="button" onclick="handleSignUp()">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="control">
+                <button class="button" onclick="handleSignInWithProvider('google')">
                         <span class="icon">
                             <i class="fab fa-google"></i>
                         </span>
-                        <span>Google</span>
-                    </button>
-                    <button class="button" onclick="handleSignInWithProvider('github')">
+                    <span>Google</span>
+                </button>
+                <button class="button" onclick="handleSignInWithProvider('github')">
                         <span class="icon">
                             <i class="fab fa-github"></i>
                         </span>
-                        <span>GitHub</span>
-                    </button>
-                </div>
-                <p id="auth-provider-errors" class="help is-danger"></p>
-            </section>
-        </div>
+                    <span>GitHub</span>
+                </button>
+            </div>
+            <p id="auth-provider-errors" class="help is-danger"></p>
+        </section>
     </div>
+</div>
 
-    <section class="section is-desktop is-vcentered">
-        <div class="container">
-            <h1 class="title">Products</h1>
+<section class="section is-desktop is-vcentered">
+    <div class="container">
+        <h1 class="title">Products</h1>
 
-            <br>
+        <br>
 
-            <div class="columns columns">
-                <div class="column">
-                    <a href="./src/html/shoes.html">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-4by3">
-                                    <img src="src/assets/google-shoes.jpg" alt="Shoes">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-4">Shoes</p>
-                            </div>
+        <div class="columns columns">
+            <div class="column">
+                <a href="./src/html/shoes.html">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="src/assets/google-shoes.jpg" alt="Shoes">
+                            </figure>
                         </div>
-                    </a>
-                </div>
-
-                <div class="column">
-                    <a href="./src/html/shirts.html">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-4by3">
-                                    <img src="src/assets/google-shirt.jpg" alt="Shirts">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-4">Shirts</p>
-                            </div>
+                        <div class="card-content">
+                            <p class="title is-4">Shoes</p>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
+            </div>
 
-                <div class="column">
-                    <a href="./src/html/bags.html">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-4by3">
-                                    <img src="src/assets/google-bag.jpg" alt="Bags">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-4">Bags</p>
-                            </div>
+            <div class="column">
+                <a href="./src/html/shirts.html">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="src/assets/google-shirt.jpg" alt="Shirts">
+                            </figure>
                         </div>
-                    </a>
-                </div>
+                        <div class="card-content">
+                            <p class="title is-4">Shirts</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
-                <div class="column">
-                    <a href="./src/html/hats.html">
-                        <div class="card">
-                            <div class="card-image">
-                                <figure class="image is-4by3">
-                                    <img src="src/assets/google-hat.jpg" alt="Hats">
-                                </figure>
-                            </div>
-                            <div class="card-content">
-                                <p class="title is-4">Hats</p>
-                            </div>
+            <div class="column">
+                <a href="./src/html/bags.html">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="src/assets/google-bag.jpg" alt="Bags">
+                            </figure>
                         </div>
-                    </a>
-                </div>
+                        <div class="card-content">
+                            <p class="title is-4">Bags</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="column">
+                <a href="./src/html/hats.html">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="src/assets/google-hat.jpg" alt="Hats">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <p class="title is-4">Hats</p>
+                        </div>
+                    </div>
+                </a>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 </body>
 
 </html>

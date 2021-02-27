@@ -8,6 +8,39 @@
  */
 function populateNavbar() {
     let headTag = document.querySelector('#navbar');
+
+    remoteConfig.fetchAndActivate()
+        .then((val) => {
+            if(val){ console.log('Refreshed Remote Config') }
+        })
+        .catch((err) => {
+            console.log(`error: ${err}`);
+            // ...
+        });
+
+    const googleButton = `
+        <button class="button" onclick="handleSignInWithProvider('google')">
+            <span class="icon">
+                <i class="fab fa-google"></i>
+            </span>
+            <span>Google</span>
+        </button>
+    `;
+
+    const gitHubButton = `
+        <button class="button" onclick="handleSignInWithProvider('github')">
+            <span class="icon">
+                <i class="fab fa-github"></i>
+            </span>
+            <span>GitHub</span>
+        </button>
+    `;
+
+    const authOption = remoteConfig.getValue('auth_method')._value;
+    console.log('Auth Option:', authOption);
+
+    const providerButton = authOption === 'github' ? gitHubButton : googleButton;
+
     headTag.innerHTML = `
     <div class="navbar-brand">
         <a class="navbar-item" href="../../index.html">
@@ -83,7 +116,7 @@ function populateNavbar() {
                 <div class="navbar-item">
                     <div id="shoppingCartBtn">
                         <div class="buttons">
-                            <a class="button is-light" href="../html/cart.html">
+                            <a class="button is-light" href="../html/cart.html" id="cart-icon">
                                 <span class="icon is-medium">
                                     <i class="fas fa-shopping-cart"></i>
                                 </span>
@@ -100,7 +133,7 @@ function populateNavbar() {
                             </a>
                         </div>
                         <div id="profile">
-                            <a class="button is-primary" href="../html/profile.html">
+                            <a class="button is-primary" href="../html/profile.html" id="profileButton">
                                 <strong>Profile</strong>
                             </a>
                         </div>
@@ -188,18 +221,7 @@ function populateNavbar() {
                 </div>
                 <hr>
                 <div class="control">
-                    <button class="button" onclick="handleSignInWithProvider('google')">
-                        <span class="icon">
-                            <i class="fab fa-google"></i>
-                        </span>
-                        <span>Google</span>
-                    </button>
-                    <button class="button" onclick="handleSignInWithProvider('github')">
-                        <span class="icon">
-                            <i class="fab fa-github"></i>
-                        </span>
-                        <span>GitHub</span>
-                    </button>
+                    ${providerButton}
                 </div>
                 <p id="auth-provider-errors" class="help is-danger"></p>
             </section>
@@ -233,7 +255,7 @@ async function populateProductDetails(doc) {
         </button>
     `
     let addToCartButton = `
-        <button class="button is-primary" onclick="addCart()">
+        <button class="button is-primary" onclick="addCart()" id="addToCartButton">
             <span>Add to Cart</span>
             <span class="icon is-small">
                 <i class="fas fa-shopping-cart"></i>
@@ -261,6 +283,10 @@ async function populateProductDetails(doc) {
     // log event for user viewing a product
     analytics.logEvent('product_viewed', {name: doc.data().name});
 
+    // add custom styles from remote config
+    if (remoteConfig.getValue('test_group')._value === 'true') {
+        changeButtonStyles('is-primary is-outlined', ['addToCartButton']);
+    }
 }
 
 /**
@@ -390,7 +416,7 @@ async function populateCart() {
         <p class="title is-3">Total: $${cartTotal}</p>
      </div>
      <div class="row my-3 has-text-centered-mobile">
-        <a class="button is-primary" onclick="handleCheckout(${cartTotal})">
+        <a class="button is-primary" onclick="handleCheckout(${cartTotal})" id="checkoutButton">
             <p>Checkout </p>
              <span class="icon"><i class="fas fa-credit-card"></i></span>
         </a>
@@ -424,6 +450,12 @@ async function populateCart() {
 
     // Log event when the cart is viewed
     analytics.logEvent('view_cart', analyticsParams);
+
+    // add custom styles from remote config
+    if (remoteConfig.getValue('test_group')._value === 'true') {
+        document.getElementById('checkoutButton').setAttribute(
+            'class','button is-primary is-outlined')
+    }
 
 }
 
@@ -507,3 +539,4 @@ async function addBillingInfo(){
 
     showToast(`Billing Info Added`, 'success');
 }
+
