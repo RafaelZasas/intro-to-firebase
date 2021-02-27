@@ -285,8 +285,7 @@ async function populateProductDetails(doc) {
 
     // add custom styles from remote config
     if (remoteConfig.getValue('test_group')._value === 'true') {
-        document.getElementById('addToCartButton').setAttribute(
-            'class','button is-primary is-outlined')
+        changeButtonStyles('is-primary is-outlined', ['addToCartButton']);
     }
 }
 

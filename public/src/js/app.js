@@ -66,6 +66,13 @@ async function displayProfileUI(user) {
     }
 }
 
+function changeButtonStyles(extraClasses, buttonIds) {
+    buttonIds.forEach(id => {
+        const button = document.getElementById(id);
+        if (button) button.setAttribute('class', 'button ' + extraClasses);
+    })
+}
+
 /**
  * Renders styles depending on Remote Config Values.
  * Note* This function only changes styles for dom elements which are loaded with the document and not
@@ -93,32 +100,21 @@ async function personalizeUi() {
      * Render a green cart, profile and search button if user is using a chrome browser
      */
     if (chromeUser === 'true') {
-        document.getElementById('cart-icon').setAttribute('class', 'button is-primary');
-        document.getElementById('profileButton').setAttribute('class', 'button is-primary');
-        let btnSearch = document.getElementById('searchButton');
-        btnSearch ? btnSearch.setAttribute('class', 'button is-primary'): null;
+        changeButtonStyles('is-primary', ['cart-icon', 'profileButton', 'searchButton']);
     }
 
     /**
      * Render a blue cart, profile and search button if user is using a chrome browser
      */
     if (safariUser === 'true') {
-        document.getElementById('cart-icon').setAttribute('class', 'button is-info');
-        document.getElementById('profileButton').setAttribute('class', 'button is-info');
-        let btnSearch = document.getElementById('searchButton');
-        btnSearch ? btnSearch.setAttribute('class', 'button is-info') : null;
+        changeButtonStyles('is-info', ['cart-icon', 'profileButton', 'searchButton']);
     }
 
     /**
      * Render outlined buttons for cart / checkout process buttons for 50% of randomly selected users
      */
     if (remoteConfig.getValue('test_group')._value === 'true') {
-        document.getElementById('addShippingBtn').setAttribute(
-            'class','button is-primary is-outlined my-2');
-        document.getElementById('addBillingInfoBtn').setAttribute(
-            'class', 'button is-primary is-outlined my-2');
-        document.getElementById('purchaseButton').setAttribute(
-            'class', 'button is-primary is-outlined my-2');
+        changeButtonStyles('is-primary is-outlined my-2', ['addShippingBtn', 'addBillingInfoBtn', 'purchaseButton']);
     }
 
     /**
