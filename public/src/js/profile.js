@@ -7,14 +7,13 @@ firebase.auth().onAuthStateChanged(populateProfile)
  */
 async function populateProfile(user) {
     let verifyEmailButton = document.getElementById('verify-email')
-    let userPhoto = user.photoURL;
-    if (!user.photoURL) {
-        let userDetails = await getUserData();
-        userPhoto = userDetails.data().photoURL;
-    }
-
     if (user) {
         document.getElementById('fullName').innerHTML = user.displayName;
+        let userPhoto = user.photoURL;
+        if (!user.photoURL) {
+            let userDetails = await getUserData();
+            userPhoto = userDetails.data().photoURL;
+        }
         if (userPhoto) {
             document.getElementById('small_profile_image').setAttribute('src', userPhoto);
         }
